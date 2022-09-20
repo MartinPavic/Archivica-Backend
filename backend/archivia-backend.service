@@ -1,0 +1,15 @@
+[Unit]
+Description=Archivia Node JS
+
+[Service]
+WorkingDirectory=/home/Archivia/backend
+ExecStart=/usr/bin/npm run start:development
+Restart=no
+# Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=archivia-backend-nodejs
+Environment=NODE_ENV=development
+
+[Install]
+WantedBy=multi-user.target

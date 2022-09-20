@@ -1,0 +1,5 @@
+FROM postgres:9.6 AS dev
+
+ENV POSTGRES_PASSWORD=123456
+ENV POSTGRES_USER=archivia_user
+ENV POSTGRES_DB=archivia_db

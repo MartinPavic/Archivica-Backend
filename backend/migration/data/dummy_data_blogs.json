@@ -1,0 +1,258 @@
+[
+    {
+        "id": 1,
+        "name": "Slavonski Brod is a relaxing town",
+        "description": "Today we are going to talk about a special castle in central Slavonia, we visited the castle during our holiday in Croatia...",
+        "photoPath": "https://picsum.photos/960/540",
+        "readingTime": { "duration": 2, "unit": "h" },
+        "date": "12343346588",
+        "owner": "61640ab4294301d9214a6c83",
+        "comments": [
+            {
+                "owner": "61640ab4294301d9214a6c83",
+                "comment": "This is awesome!",
+                "date": "1634294068"
+            },
+            {
+                "owner": "616415dcf68c587ece36025c",
+                "comment": "Great Post",
+                "date": "1634294068"
+            }
+        ],
+        "likes": [
+            {
+                "owner": "61640ab4294301d9214a6c83",
+                "liked": true,
+                "date": "1634294068"
+            },
+            {
+                "owner": "616415dcf68c587ece36025c",
+                "liked": false,
+                "date": "1634294068"
+            }
+        ],
+        "gallery": [
+            {
+                "name": "Image1",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image2",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image3",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image4",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            }
+        ],
+        "connectedPosts": [
+            { "post": "616585414e130f4ddb6f95d4" },
+            { "post": "616585414e130f4ddb6f95dd" },
+            { "post": "616585414e130f4ddb6f95e9" }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Pula is a relaxing town",
+        "description": "Today we are going to talk about a special castle in central Slavonia, we visited the castle during our holiday in Croatia...",
+        "photoPath": "https://picsum.photos/960/540",
+        "readingTime": { "duration": 2, "unit": "h" },
+        "date": "12343346588",
+        "owner": "61640ab4294301d9214a6c83",
+        "comments": [
+            {
+                "owner": "61640ab4294301d9214a6c83",
+                "comment": "This is awesome!",
+                "date": "1634294068"
+            },
+            {
+                "owner": "616415dcf68c587ece36025c",
+                "comment": "Great Post",
+                "date": "1634294068"
+            }
+        ],
+        "likes": [
+            {
+                "owner": "61640ab4294301d9214a6c83",
+                "liked": true,
+                "date": "1634294068"
+            },
+            {
+                "owner": "616415dcf68c587ece36025c",
+                "liked": false,
+                "date": "1634294068"
+            }
+        ],
+        "gallery": [
+            {
+                "name": "Image1",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image2",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image3",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image4",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            }
+        ],
+        "connectedPosts": [
+            { "post": "616585414e130f4ddb6f95d4" },
+            { "post": "616585414e130f4ddb6f95dd" },
+            { "post": "616585414e130f4ddb6f95e9" }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Zadar",
+        "description": "Today we are going to talk about a special castle in central Slavonia, we visited the castle during our holiday in Croatia...",
+        "photoPath": "https://picsum.photos/960/540",
+        "readingTime": { "duration": 2, "unit": "h" },
+        "date": "12343346588",
+        "owner": "61640ab4294301d9214a6c83",
+        "comments": [
+            {
+                "owner": "61640ab4294301d9214a6c83",
+                "comment": "This is awesome!",
+                "date": "1634294068"
+            },
+            {
+                "owner": "616415dcf68c587ece36025c",
+                "comment": "Great Post",
+                "date": "1634294068"
+            }
+        ],
+        "likes": [
+            {
+                "owner": "61640ab4294301d9214a6c83",
+                "liked": true,
+                "date": "1634294068"
+            },
+            {
+                "owner": "616415dcf68c587ece36025c",
+                "liked": false,
+                "date": "1634294068"
+            }
+        ],
+        "gallery": [
+            {
+                "name": "Image1",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image2",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image3",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image4",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            }
+        ],
+        "connectedPosts": [
+            { "post": "616585414e130f4ddb6f95d4" },
+            { "post": "616585414e130f4ddb6f95dd" },
+            { "post": "616585414e130f4ddb6f95e9" }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Zagreb is NOT a relaxing town",
+        "description": "Today we are going to talk about a special castle in central Slavonia, we visited the castle during our holiday in Croatia...",
+        "photoPath": "https://picsum.photos/960/540",
+        "readingTime": { "duration": 2, "unit": "h" },
+        "date": "12343346588",
+        "owner": "61640ab4294301d9214a6c83",
+        "comments": [
+            {
+                "owner": "61640ab4294301d9214a6c83",
+                "comment": "This is awesome!",
+                "date": "1634294068"
+            },
+            {
+                "owner": "616415dcf68c587ece36025c",
+                "comment": "Great Post",
+                "date": "1634294068"
+            }
+        ],
+        "likes": [
+            {
+                "owner": "61640ab4294301d9214a6c83",
+                "liked": true,
+                "date": "1634294068"
+            },
+            {
+                "owner": "616415dcf68c587ece36025c",
+                "liked": false,
+                "date": "1634294068"
+            }
+        ],
+        "gallery": [
+            {
+                "name": "Image1",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image2",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image3",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            },
+            {
+                "name": "Image4",
+                "imagePath": "https://picsum.photos/960/540",
+                "width": 960,
+                "height": 540
+            }
+        ],
+        "connectedPosts": [
+            { "post": "616585414e130f4ddb6f95d4" },
+            { "post": "616585414e130f4ddb6f95dd" },
+            { "post": "616585414e130f4ddb6f95e9" }
+        ]
+    }
+]

@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  # Backend
+  api:
+    container_name: "archivia_api"
+    build: ./backend
+    restart: always
+    volumes:
+      - ./backend/:/app
+    depends_on:
+      - redis
+      - mongodb
+    environment:
+      NODE_ENV: development
+    ports:
+      - "4000:4000"
+  # Redis
+  redis:
+    image: 'redis:5.0.0'
+    command: redis-server
+    ports:
+      - "6379:6379"
+  # MongoDB
+  mongodb:
+    build: ./mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+volumes:
+  mongodata:
