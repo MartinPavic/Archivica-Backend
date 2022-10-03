@@ -13,13 +13,13 @@ const ContinentSchema = new mongoose.Schema({
 });
 
 ContinentSchema.statics.migrateContinents = async function() {
-    const Continent = this;
-    const count = await Continent.count();
+    const count = await this.count();
 
-    if(count === 0) {
-        Continent.insertMany(Continents);
+    if (count === 0) {
+        this.insertMany(Continents);
     }
 
 };
 
-module.exports = mongoose.model('Continent', ContinentSchema);
+const Continent = mongoose.model('Continent', ContinentSchema);
+export default Continent;

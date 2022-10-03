@@ -15,13 +15,13 @@ const ArchitectSchema = new mongoose.Schema({
 });
 
 ArchitectSchema.statics.migrateArchitects = async function() {
-    const Architect = this;
-    const count = await Architect.count();
+    const count = await this.count();
 
-    if(count === 0) {
-        await Architect.insertMany(Architects);
+    if (count === 0) {
+        await this.insertMany(Architects);
     }
 
 };
 
-module.exports = mongoose.model('Architect', ArchitectSchema);
+const Architect = mongoose.model('Architect', ArchitectSchema);
+export default Architect;

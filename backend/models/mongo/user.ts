@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { IJWTUser } from 'interfaces/models';
-const _ = require('lodash');
-const validator = require('validator');
+import _ from 'lodash';
+import validator from 'validator';
 
-const { setUserToken, deleteUserToken, getUserToken } = require('../../redis/client');
+import { setUserToken, deleteUserToken, getUserToken } from '../../redis/client';
 
 const UserSchema = new mongoose.Schema({
     firstName: {
@@ -47,7 +47,6 @@ UserSchema.methods.toJSON = function() {
 };
 
 UserSchema.statics.findByToken = async function(token) {
-    const User = this;
     let decodedUser: IJWTUser;
 
     if (!token) {
@@ -62,15 +61,14 @@ UserSchema.statics.findByToken = async function(token) {
     const cacheToken = await getUserToken(decodedUser._id);
 
     if (cacheToken === token) {
-        const user = await User.findById(decodedUser._id);
+        const user = await this.findById(decodedUser._id);
         return user;
     }
     throw new Error('Missing token');
 };
 
 UserSchema.statics.findByCredentials = async function(email: string, password: string) {
-    const User = this;
-    const existingUser = await User.findOne({ email }).catch((error: any) => Promise.reject(error));
+    const existingUser = await this.findOne({ email }).catch((error: any) => Promise.reject(error));
 
     if (existingUser) {
         return new Promise((resolve, reject) => {
@@ -91,26 +89,24 @@ UserSchema.statics.findByCredentials = async function(email: string, password: s
 };
 
 UserSchema.methods.generateAuthToken = async function() {
-    const user = this;
     const access = 'auth';
 
     const token = jwt
-        .sign({ _id: user._id.toHexString(), access }, process.env.JWT_SECRET as jwt.Secret)
+        .sign({ _id: this._id.toHexString(), access }, process.env.JWT_SECRET as jwt.Secret)
         .toString();
-    await setUserToken(user._id.toHexString(), Number(process.env.REDIS_EXPIRE_LOGIN), token).catch((err: any) => new Error(err));
+    await setUserToken(this._id.toHexString(), Number(process.env.REDIS_EXPIRE_LOGIN), token).catch((err: any) => new Error(err));
     return token;
 };
 
 UserSchema.methods.getAuthToken = async function() {
-    const user = this;
-    const token = await getUserToken(user._id.toHexString());
+    const token = await getUserToken(this._id.toHexString());
     return token;
 };
 
 UserSchema.methods.removeToken = async function() {
-    const user = this;
-    const result = await deleteUserToken(user._id.toHexString());
+    const result = await deleteUserToken(this._id.toHexString());
     return result;
 };
 
-export = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+export default User;

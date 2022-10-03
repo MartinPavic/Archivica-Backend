@@ -9,13 +9,14 @@ const AgeSchema = new mongoose.Schema({
 });
 
 AgeSchema.statics.migrateAges = async function() {
-    const Age = this;
-    const count = await Age.count();
+    const count = await this.count();
 
-    if(count === 0) {
-        await Age.insertMany(Ages);
+    if (count === 0) {
+        await this.insertMany(Ages);
     }
 
 };
 
-module.exports = mongoose.model('Age', AgeSchema);
+const Age = mongoose.model('Age', AgeSchema);
+
+export default Age;

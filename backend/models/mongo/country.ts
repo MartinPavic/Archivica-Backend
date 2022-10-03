@@ -12,14 +12,13 @@ const CountrySchema = new mongoose.Schema({
     },
     continentId: {
         type: Number
-    },
+    }
 });
 
 CountrySchema.statics.migrateCountries = async function() {
-    const Country = this;
-    const count = await Country.count();
+    const count = await this.count();
 
-    if(count === 0) {
+    if (count === 0) {
         Counties.forEach(async (country: any) => {
             const newCountry = new Country();
             newCountry.id = country.id;
@@ -31,4 +30,5 @@ CountrySchema.statics.migrateCountries = async function() {
 
 };
 
-module.exports = mongoose.model('Country', CountrySchema);
+const Country = mongoose.model('Country', CountrySchema);
+export default Country;

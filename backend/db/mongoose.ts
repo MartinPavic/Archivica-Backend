@@ -7,6 +7,7 @@ const City = require('../models/mongo/city');
 const Architect = require('../models/mongo/architect');
 const ArchitectureStyle = require('../models/mongo/architectureStyle');
 const ArchitectureType = require('../models/mongo/architectureType');
+const ArchitectureStatus = require('../models/mongo/architectureStatus');
 const Post = require('../models/mongo/post');
 const Blog = require('../models/mongo/blog');
 mongoose.Promise = global.Promise;
@@ -22,6 +23,7 @@ mongoose
         Architect.migrateArchitects();
         ArchitectureStyle.migrateArchitectureStyles();
         ArchitectureType.migrateArchitectureTypes();
+        ArchitectureStatus.migrateStatuses();
         Post.migrateDummyDataPosts();
         Blog.migrateDummyDataBlogs();
         console.log('MongoDB connected');

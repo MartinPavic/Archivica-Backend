@@ -55,24 +55,22 @@ const PostSchema = new mongoose.Schema({
 });
 
 PostSchema.statics.migrateDummyDataPosts = async function() {
-    const Post = this;
-    const count = await Post.count();
+    const count = await this.count();
 
-    if(count === 0) {
-        await Post.insertMany(DummyData);
+    if (count === 0) {
+        await this.insertMany(DummyData);
     }
 
 };
 
 PostSchema.statics.getAllPosts = async function() {
-    const Post = this;
-    const Posts = await Post.aggregate([
+    const Posts = await this.aggregate([
         {
-            "$lookup": {
-                "from": "users",
-                "localField": "owner",
-                "foreignField": "_id",
-                "as": "owner"
+            '$lookup': {
+                'from': 'users',
+                'localField': 'owner',
+                'foreignField': '_id',
+                'as': 'owner'
             }
         },
         {
@@ -80,16 +78,16 @@ PostSchema.statics.getAllPosts = async function() {
         },
         {
             $project: {
-                name: "$name",
-                date: "$date",
-                photoPath: "$photoPath",
-                description: "$description",
+                name: '$name',
+                date: '$date',
+                photoPath: '$photoPath',
+                description: '$description',
                 owner: {
-                    firstName: "$owner.firstName",
-                    lastName: "$owner.lastName"
+                    firstName: '$owner.firstName',
+                    lastName: '$owner.lastName'
                 },
-                comment_count: { $size: "$comments" },
-                likes_count: { 
+                'comment_count': { $size: '$comments' },
+                'likes_count': {
                     '$size': {
                         '$filter': {
                             'input': '$likes',
@@ -97,16 +95,16 @@ PostSchema.statics.getAllPosts = async function() {
                         }
                     }
                 },
-                dislikes_count: { 
+                'dislikes_count': {
                     '$size': {
                         '$filter': {
                             'input': '$likes',
                             'cond': { $and: [
-                                { $eq: [ "$$this.liked", false ] }
-                              ] }
+                                { $eq: ['$$this.liked', false] }
+                            ] }
                         }
                     }
-                },
+                }
             }
         }
     ]);
@@ -115,108 +113,107 @@ PostSchema.statics.getAllPosts = async function() {
 };
 
 PostSchema.statics.getPostById = async function(id) {
-    const Post = this;
-    const post = await Post.aggregate([
-        { "$match": { _id: new mongoose.Types.ObjectId(id) } },
+    const post = await this.aggregate([
+        { '$match': { _id: new mongoose.Types.ObjectId(id) } },
         {
-            "$lookup": {
-                "from": "architects",
-                "localField": "architect",
-                "foreignField": "_id",
-                "as": "architect"
+            '$lookup': {
+                'from': 'architects',
+                'localField': 'architect',
+                'foreignField': '_id',
+                'as': 'architect'
             }
         },
         {
             $unwind: '$architect'
         },
         {
-            "$lookup": {
-                "from": "cities",
-                "localField": "city",
-                "foreignField": "_id",
-                "as": "city"
+            '$lookup': {
+                'from': 'cities',
+                'localField': 'city',
+                'foreignField': '_id',
+                'as': 'city'
             }
         },
         {
             $unwind: '$city'
         },
         {
-            "$lookup": {
-                "from": "countries",
-                "localField": "city.countryId",
-                "foreignField": "id",
-                "as": "country"
+            '$lookup': {
+                'from': 'countries',
+                'localField': 'city.countryId',
+                'foreignField': 'id',
+                'as': 'country'
             }
         },
         {
             $unwind: '$country'
         },
         {
-            "$lookup": {
-                "from": "continents",
-                "localField": "country.continentId",
-                "foreignField": "id",
-                "as": "continent"
+            '$lookup': {
+                'from': 'continents',
+                'localField': 'country.continentId',
+                'foreignField': 'id',
+                'as': 'continent'
             }
         },
         {
             $unwind: '$continent'
         },
         {
-            "$lookup": {
-                "from": "subages",
-                "localField": "subAge",
-                "foreignField": "_id",
-                "as": "subAge"
+            '$lookup': {
+                'from': 'subages',
+                'localField': 'subAge',
+                'foreignField': '_id',
+                'as': 'subAge'
             }
         },
         {
             $unwind: '$subAge'
         },
         {
-            "$lookup": {
-                "from": "ages",
-                "localField": "subAge.ageId",
-                "foreignField": "_id",
-                "as": "age"
+            '$lookup': {
+                'from': 'ages',
+                'localField': 'subAge.ageId',
+                'foreignField': '_id',
+                'as': 'age'
             }
         },
         {
             $unwind: '$age'
         },
         {
-            "$lookup": {
-                "from": "users",
-                "localField": "owner",
-                "foreignField": "_id",
-                "as": "owner"
+            '$lookup': {
+                'from': 'users',
+                'localField': 'owner',
+                'foreignField': '_id',
+                'as': 'owner'
             }
         },
         {
             $unwind: '$owner'
         },
         {
-            "$lookup": {
-                "from": "users",
+            '$lookup': {
+                'from': 'users',
                 'let': { 'pid': '$comments.owner' },
                 'pipeline': [
                     { '$match': { '$expr': { '$in': ['$_id', '$$pid'] } } }
                 ],
-                "as": "lookupComments"
+                'as': 'lookupComments'
             }
         },
         {
-            "$addFields": {
-                "comments": {
-                    "$map": {
-                        "input": "$comments",
-                        "as": "rel",
-                        "in": {
-                            "$mergeObjects": [
-                                "$$rel",
+            '$addFields': {
+                'comments': {
+                    '$map': {
+                        'input': '$comments',
+                        'as': 'rel',
+                        'in': {
+                            '$mergeObjects': [
+                                '$$rel',
                                 {
-                                    "firstName": { "$arrayElemAt": ["$lookupComments.firstName", { "$indexOfArray": ["$lookupComments._id", "$$rel._id"] }] },
-                                    "lastName": { "$arrayElemAt": ["$lookupComments.lastName", { "$indexOfArray": ["$lookupComments._id", "$$rel._id"] }] }
+                                    'firstName': { '$arrayElemAt': ['$lookupComments.firstName', { '$indexOfArray': ['$lookupComments._id', '$$rel._id'] }] },
+                                    'lastName': { '$arrayElemAt': ['$lookupComments.lastName', { '$indexOfArray': ['$lookupComments._id', '$$rel._id'] }] }
                                 }
                             ]
                         }
@@ -225,27 +222,27 @@ PostSchema.statics.getPostById = async function(id) {
             }
         },
         {
-            "$lookup": {
-                "from": "users",
+            '$lookup': {
+                'from': 'users',
                 'let': { 'pid': '$likes.owner' },
                 'pipeline': [
                     { '$match': { '$expr': { '$in': ['$_id', '$$pid'] } } }
                 ],
-                "as": "lookupLikes"
+                'as': 'lookupLikes'
             }
         },
         {
-            "$addFields": {
-                "likes": {
-                    "$map": {
-                        "input": "$likes",
-                        "as": "rel",
-                        "in": {
-                            "$mergeObjects": [
-                                "$$rel",
+            '$addFields': {
+                'likes': {
+                    '$map': {
+                        'input': '$likes',
+                        'as': 'rel',
+                        'in': {
+                            '$mergeObjects': [
+                                '$$rel',
                                 {
-                                    "firstName": { "$arrayElemAt": ["$lookupLikes.firstName", { "$indexOfArray": ["$lookupLikes._id", "$$rel._id"] }] },
-                                    "lastName": { "$arrayElemAt": ["$lookupLikes.lastName", { "$indexOfArray": ["$lookupLikes._id", "$$rel._id"] }] }
+                                    'firstName': { '$arrayElemAt': ['$lookupLikes.firstName', { '$indexOfArray': ['$lookupLikes._id', '$$rel._id'] }] },
+                                    'lastName': { '$arrayElemAt': ['$lookupLikes.lastName', { '$indexOfArray': ['$lookupLikes._id', '$$rel._id'] }] }
                                 }
                             ]
                         }
@@ -255,23 +252,23 @@ PostSchema.statics.getPostById = async function(id) {
         },
         {
             $project: {
-                name: "$name",
-                date: "$date",
-                photoPath: "$photoPath",
-                description: "$description",
-                architect: "$architect",
-                city: "$city.name",
-                country: "$country.name",
-                continent: "$continent.name",
-                subAge: "$subAge.name",
-                age: "$age.name",
+                name: '$name',
+                date: '$date',
+                photoPath: '$photoPath',
+                description: '$description',
+                architect: '$architect',
+                city: '$city.name',
+                country: '$country.name',
+                continent: '$continent.name',
+                subAge: '$subAge.name',
+                age: '$age.name',
                 owner: {
-                    firstName: "$owner.firstName",
-                    lastName: "$owner.lastName"
+                    firstName: '$owner.firstName',
+                    lastName: '$owner.lastName'
                 },
-                gallery: "$gallery",
-                comments: "$comments",
-                likes: "$likes"
+                gallery: '$gallery',
+                comments: '$comments',
+                likes: '$likes'
             }
         }
     ]);
@@ -279,4 +276,5 @@ PostSchema.statics.getPostById = async function(id) {
     return post.shift();
 };
 
-module.exports = mongoose.model('Post', PostSchema);
+const Post = mongoose.model('Post', PostSchema);
+export default Post;

@@ -5,8 +5,8 @@ import { sendErrorResponse } from 'utils';
 import { IRequest } from '../../../interfaces/express';
 import api from '../../../constants';
 import authenticate from 'middleware/authenticate';
+import Post from '../../../models/mongo/post';
 
-const Post = require('../../../models/mongo/post');
 const router = Router();
 
 router.post(api.POST_LIKE, authenticate, async (req: IRequest, res) => {
@@ -14,7 +14,7 @@ router.post(api.POST_LIKE, authenticate, async (req: IRequest, res) => {
         const newLike = _.pick(req.body, [
             'postId',
             'liked'
-        ])
+        ]);
 
         if (!ObjectId.isValid(newLike.postId)) {
             return res.status(404).send(`${newLike.postId} id is not valid mongoose ObjectId`);
@@ -43,11 +43,11 @@ router.post(api.POST_LIKE, authenticate, async (req: IRequest, res) => {
             );
         } else {
             await Post.updateOne(
-                { _id: newLike.postId, "likes.owner": req.user._id },
+                { _id: newLike.postId, 'likes.owner': req.user._id },
                 {
                     $set: {
-                        "likes.$.liked": newLike.liked
-                     }
+                        'likes.$.liked': newLike.liked
+                    }
                 }
             );
         }

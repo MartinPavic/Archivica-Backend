@@ -10,13 +10,13 @@ const ArchitectureStyleSchema = new mongoose.Schema({
 });
 
 ArchitectureStyleSchema.statics.migrateArchitectureStyles = async function() {
-    const ArchitectureStyle = this;
-    const count = await ArchitectureStyle.count();
+    const count = await this.count();
 
-    if(count === 0) {
-        await ArchitectureStyle.insertMany(ArchitectureStyles);
+    if (count === 0) {
+        await this.insertMany(ArchitectureStyles);
     }
 
 };
 
-module.exports = mongoose.model('ArchitectureStyle', ArchitectureStyleSchema);
+const ArchitectureStyle = mongoose.model('ArchitectureStyle', ArchitectureStyleSchema);
+export default ArchitectureStyle;

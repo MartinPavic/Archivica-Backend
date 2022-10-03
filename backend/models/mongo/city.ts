@@ -13,13 +13,13 @@ const CitySchema = new mongoose.Schema({
 });
 
 CitySchema.statics.migrateCities = async function() {
-    const City = this;
-    const count = await City.count();
+    const count = await this.count();
 
-    if(count === 0) {
-        await City.insertMany(Cities);
+    if (count === 0) {
+        await this.insertMany(Cities);
     }
 
 };
 
-module.exports = mongoose.model('City', CitySchema);
+const City = mongoose.model('City', CitySchema);
+export default City;

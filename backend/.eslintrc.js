@@ -13,7 +13,8 @@ module.exports = {
         'plugin:@typescript-eslint/recommended'
     ],
     'plugins': [
-        '@typescript-eslint'
+        '@typescript-eslint',
+        'import'
     ],
     'rules': {
         'indent': ['error', 4, { 'SwitchCase': 1 }],
@@ -25,7 +26,7 @@ module.exports = {
         'import/no-named-as-default-member': 0,
         'arrow-parens': 0,
         'comma-dangle': ['error', 'never'],
-        'max-len': ['error', { 'code': 160 }],
+        'max-len': ['warning', { 'code': 160 }],
         'no-multiple-empty-lines': ['error', { 'max': 1, 'maxBOF': 0, 'maxEOF': 0 }],
         'no-console': 0,
         'semi': ['error', 'always'],
@@ -51,10 +52,13 @@ module.exports = {
         '@typescript-eslint/no-inferrable-types': 'off',
         'space-in-parens': 'error',
         'array-bracket-spacing': ['error', 'never'],
-        'no-multi-spaces': 'error'
+        'no-multi-spaces': 'error',
+        'import/no-unresolved': 0,
+        'import/no-commonjs': 2,
+        'import/extensions': [0, 'ignorePackages']
     },
     'parserOptions': {
-        'ecmaVersion': 2018,
+        'ecmaVersion': 2021,
         'ecmaFeatures': {
             'arrowFunctions': true
         },

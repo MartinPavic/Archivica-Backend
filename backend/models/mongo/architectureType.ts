@@ -10,13 +10,13 @@ const ArchitectureTypeSchema = new mongoose.Schema({
 });
 
 ArchitectureTypeSchema.statics.migrateArchitectureTypes = async function() {
-    const ArchitectureType = this;
-    const count = await ArchitectureType.count();
+    const count = await this.count();
 
-    if(count === 0) {
-        await ArchitectureType.insertMany(ArchitectureTypes);
+    if (count === 0) {
+        await this.insertMany(ArchitectureTypes);
     }
 
 };
 
-module.exports = mongoose.model('ArchitectureType', ArchitectureTypeSchema);
+const ArchitectureType = mongoose.model('ArchitectureType', ArchitectureTypeSchema);
+export default ArchitectureType;

@@ -8,10 +8,10 @@ const BlogSchema = new mongoose.Schema({
     },
     description: { type: String },
     photoPath: { type: String },
-    readingTime: { 
+    readingTime: {
         duration: { type: Number },
         unit: { type: String }
-     },
+    },
     date: {
         type: Date,
         default: Date.now
@@ -55,24 +55,22 @@ const BlogSchema = new mongoose.Schema({
 });
 
 BlogSchema.statics.migrateDummyDataBlogs = async function() {
-    const Blog = this;
-    const count = await Blog.count();
+    const count = await this.count();
 
-    if(count === 0) {
-        await Blog.insertMany(DummyData);
+    if (count === 0) {
+        await this.insertMany(DummyData);
     }
 
 };
 
 BlogSchema.statics.getAllBlogs = async function() {
-    const Blog = this;
-    const Blogs = await Blog.aggregate([
+    const Blogs = await this.aggregate([
         {
-            "$lookup": {
-                "from": "users",
-                "localField": "owner",
-                "foreignField": "_id",
-                "as": "owner"
+            '$lookup': {
+                'from': 'users',
+                'localField': 'owner',
+                'foreignField': '_id',
+                'as': 'owner'
             }
         },
         {
@@ -80,14 +78,14 @@ BlogSchema.statics.getAllBlogs = async function() {
         },
         {
             $project: {
-                name: "$name",
-                description: "$description",
-                photoPath: "$photoPath",
-                readingTime: "$readingTime",
-                date: "$date",
+                name: '$name',
+                description: '$description',
+                photoPath: '$photoPath',
+                readingTime: '$readingTime',
+                date: '$date',
                 owner: {
-                    firstName: "$owner.firstName",
-                    lastName: "$owner.lastName"
+                    firstName: '$owner.firstName',
+                    lastName: '$owner.lastName'
                 }
             }
         }
@@ -97,52 +95,51 @@ BlogSchema.statics.getAllBlogs = async function() {
 };
 
 BlogSchema.statics.getBlogById = async function(id) {
-    const Blog = this;
-    const blog = await Blog.aggregate([
-        { "$match": { _id: new mongoose.Types.ObjectId(id) } },
+    const blog = await this.aggregate([
+        { '$match': { _id: new mongoose.Types.ObjectId(id) } },
         {
-            "$lookup": {
-                "from": "users",
-                "localField": "owner",
-                "foreignField": "_id",
-                "as": "owner"
+            '$lookup': {
+                'from': 'users',
+                'localField': 'owner',
+                'foreignField': '_id',
+                'as': 'owner'
             }
         },
         {
             $unwind: '$owner'
         },
         {
-            "$lookup": {
-                "from": "posts",
+            '$lookup': {
+                'from': 'posts',
                 'let': { 'pid': '$connectedPosts.post' },
                 'pipeline': [
                     { '$match': { '$expr': { '$in': ['$_id', '$$pid'] } } }
                 ],
-                "as": "connectedPosts"
+                'as': 'connectedPosts'
             }
         },
         {
-            "$lookup": {
-                "from": "users",
+            '$lookup': {
+                'from': 'users',
                 'let': { 'pid': '$comments.owner' },
                 'pipeline': [
                     { '$match': { '$expr': { '$in': ['$_id', '$$pid'] } } }
                 ],
-                "as": "lookupComments"
+                'as': 'lookupComments'
             }
         },
         {
-            "$addFields": {
-                "comments": {
-                    "$map": {
-                        "input": "$comments",
-                        "as": "rel",
-                        "in": {
-                            "$mergeObjects": [
-                                "$$rel",
+            '$addFields': {
+                'comments': {
+                    '$map': {
+                        'input': '$comments',
+                        'as': 'rel',
+                        'in': {
+                            '$mergeObjects': [
+                                '$$rel',
                                 {
-                                    "firstName": { "$arrayElemAt": ["$lookupComments.firstName", { "$indexOfArray": ["$lookupComments._id", "$$rel._id"] }] },
-                                    "lastName": { "$arrayElemAt": ["$lookupComments.lastName", { "$indexOfArray": ["$lookupComments._id", "$$rel._id"] }] }
+                                    'firstName': { '$arrayElemAt': ['$lookupComments.firstName', { '$indexOfArray': ['$lookupComments._id', '$$rel._id'] }] },
+                                    'lastName': { '$arrayElemAt': ['$lookupComments.lastName', { '$indexOfArray': ['$lookupComments._id', '$$rel._id'] }] }
                                 }
                             ]
                         }
@@ -151,27 +148,27 @@ BlogSchema.statics.getBlogById = async function(id) {
             }
         },
         {
-            "$lookup": {
-                "from": "users",
+            '$lookup': {
+                'from': 'users',
                 'let': { 'pid': '$likes.owner' },
                 'pipeline': [
                     { '$match': { '$expr': { '$in': ['$_id', '$$pid'] } } }
                 ],
-                "as": "lookupLikes"
+                'as': 'lookupLikes'
             }
         },
         {
-            "$addFields": {
-                "likes": {
-                    "$map": {
-                        "input": "$likes",
-                        "as": "rel",
-                        "in": {
-                            "$mergeObjects": [
-                                "$$rel",
+            '$addFields': {
+                'likes': {
+                    '$map': {
+                        'input': '$likes',
+                        'as': 'rel',
+                        'in': {
+                            '$mergeObjects': [
+                                '$$rel',
                                 {
-                                    "firstName": { "$arrayElemAt": ["$lookupLikes.firstName", { "$indexOfArray": ["$lookupLikes._id", "$$rel._id"] }] },
-                                    "lastName": { "$arrayElemAt": ["$lookupLikes.lastName", { "$indexOfArray": ["$lookupLikes._id", "$$rel._id"] }] }
+                                    'firstName': { '$arrayElemAt': ['$lookupLikes.firstName', { '$indexOfArray': ['$lookupLikes._id', '$$rel._id'] }] },
+                                    'lastName': { '$arrayElemAt': ['$lookupLikes.lastName', { '$indexOfArray': ['$lookupLikes._id', '$$rel._id'] }] }
                                 }
                             ]
                         }
@@ -181,28 +178,28 @@ BlogSchema.statics.getBlogById = async function(id) {
         },
         {
             $project: {
-                name: "$name",
-                description: "$description",
-                photoPath: "$photoPath",
-                readingTime: "$readingTime",
-                date: "$date",
+                name: '$name',
+                description: '$description',
+                photoPath: '$photoPath',
+                readingTime: '$readingTime',
+                date: '$date',
                 owner: {
-                    firstName: "$owner.firstName",
-                    lastName: "$owner.lastName"
+                    firstName: '$owner.firstName',
+                    lastName: '$owner.lastName'
                 },
-                comments: "$comments",
-                likes: "$likes",
+                comments: '$comments',
+                likes: '$likes',
                 connectedPosts: {
-                    '$map': { 
+                    '$map': {
                         'input': '$connectedPosts',
                         'as': 'post',
-                        'in': { 
+                        'in': {
                             'id': '$$post._id',
                             'name': '$$post.name'
                         }
                     }
                 },
-                gallery: "$gallery"
+                gallery: '$gallery'
             }
         }
     ]);
@@ -210,4 +207,5 @@ BlogSchema.statics.getBlogById = async function(id) {
     return blog.shift();
 };
 
-module.exports = mongoose.model('Blog', BlogSchema);
+const Blog = mongoose.model('Blog', BlogSchema);
+export default Blog;
