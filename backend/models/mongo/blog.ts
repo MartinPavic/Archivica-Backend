@@ -1,7 +1,46 @@
-import mongoose from 'mongoose';
-import DummyData from 'migration/data/dummy_data_blogs.json';
+import { model, Schema, Model, Document, Types } from "mongoose";
+import DummyData from "migration/data/dummy_data_blogs.json";
 
-const BlogSchema = new mongoose.Schema({
+export interface IBlog extends Document {
+    name: string;
+    description: string;
+    photoPath: string;
+    readingTime: {
+        duration: number;
+        unit: string;
+    };
+    date: Date;
+    owner: Schema.Types.ObjectId;
+    comments: [
+        {
+            owner: Schema.Types.ObjectId;
+            comment: string;
+            date: Date;
+        }
+    ];
+    likes: [
+        {
+            owner: Schema.Types.ObjectId;
+            liked: boolean;
+            date: Date;
+        }
+    ];
+    gallery: [
+        {
+            name: string;
+            imagePath: string;
+            width: number,
+            height: number
+        }
+    ];
+    connectedPosts: [
+        {
+            post: Schema.Types.ObjectId
+        }
+    ]
+}
+
+const BlogSchema: Schema = new Schema({
     name: {
         type: String,
         required: true
@@ -17,13 +56,13 @@ const BlogSchema = new mongoose.Schema({
         default: Date.now
     },
     owner: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'users'
+        ref: "users"
     },
     comments: [
         {
-            owner: { type: mongoose.Schema.Types.ObjectId },
+            owner: { type: Schema.Types.ObjectId },
             comment: { type: String },
             date: {
                 type: Date,
@@ -33,7 +72,7 @@ const BlogSchema = new mongoose.Schema({
     ],
     likes: [
         {
-            owner: { type: mongoose.Schema.Types.ObjectId },
+            owner: { type: Schema.Types.ObjectId },
             liked: { type: Boolean },
             date: {
                 type: Date,
@@ -50,7 +89,7 @@ const BlogSchema = new mongoose.Schema({
         }
     ],
     connectedPosts: [
-        { post: { type: mongoose.Schema.Types.ObjectId } }
+        { post: { type: Schema.Types.ObjectId } }
     ]
 });
 
@@ -66,26 +105,26 @@ BlogSchema.statics.migrateDummyDataBlogs = async function() {
 BlogSchema.statics.getAllBlogs = async function() {
     const Blogs = await this.aggregate([
         {
-            '$lookup': {
-                'from': 'users',
-                'localField': 'owner',
-                'foreignField': '_id',
-                'as': 'owner'
+            "$lookup": {
+                "from": "users",
+                "localField": "owner",
+                "foreignField": "_id",
+                "as": "owner"
             }
         },
         {
-            $unwind: '$owner'
+            $unwind: "$owner"
         },
         {
             $project: {
-                name: '$name',
-                description: '$description',
-                photoPath: '$photoPath',
-                readingTime: '$readingTime',
-                date: '$date',
+                name: "$name",
+                description: "$description",
+                photoPath: "$photoPath",
+                readingTime: "$readingTime",
+                date: "$date",
                 owner: {
-                    firstName: '$owner.firstName',
-                    lastName: '$owner.lastName'
+                    firstName: "$owner.firstName",
+                    lastName: "$owner.lastName"
                 }
             }
         }
@@ -94,52 +133,52 @@ BlogSchema.statics.getAllBlogs = async function() {
     return Blogs;
 };
 
-BlogSchema.statics.getBlogById = async function(id) {
+BlogSchema.statics.getBlogById = async function(id: Types.ObjectId) {
     const blog = await this.aggregate([
-        { '$match': { _id: new mongoose.Types.ObjectId(id) } },
+        { "$match": { _id: new Types.ObjectId(id) } },
         {
-            '$lookup': {
-                'from': 'users',
-                'localField': 'owner',
-                'foreignField': '_id',
-                'as': 'owner'
+            "$lookup": {
+                "from": "users",
+                "localField": "owner",
+                "foreignField": "_id",
+                "as": "owner"
             }
         },
         {
-            $unwind: '$owner'
+            $unwind: "$owner"
         },
         {
-            '$lookup': {
-                'from': 'posts',
-                'let': { 'pid': '$connectedPosts.post' },
-                'pipeline': [
-                    { '$match': { '$expr': { '$in': ['$_id', '$$pid'] } } }
+            "$lookup": {
+                "from": "posts",
+                "let": { "pid": "$connectedPosts.post" },
+                "pipeline": [
+                    { "$match": { "$expr": { "$in": ["$_id", "$$pid"] } } }
                 ],
-                'as': 'connectedPosts'
+                "as": "connectedPosts"
             }
         },
         {
-            '$lookup': {
-                'from': 'users',
-                'let': { 'pid': '$comments.owner' },
-                'pipeline': [
-                    { '$match': { '$expr': { '$in': ['$_id', '$$pid'] } } }
+            "$lookup": {
+                "from": "users",
+                "let": { "pid": "$comments.owner" },
+                "pipeline": [
+                    { "$match": { "$expr": { "$in": ["$_id", "$$pid"] } } }
                 ],
-                'as': 'lookupComments'
+                "as": "lookupComments"
             }
         },
         {
-            '$addFields': {
-                'comments': {
-                    '$map': {
-                        'input': '$comments',
-                        'as': 'rel',
-                        'in': {
-                            '$mergeObjects': [
-                                '$$rel',
+            "$addFields": {
+                "comments": {
+                    "$map": {
+                        "input": "$comments",
+                        "as": "rel",
+                        "in": {
+                            "$mergeObjects": [
+                                "$$rel",
                                 {
-                                    'firstName': { '$arrayElemAt': ['$lookupComments.firstName', { '$indexOfArray': ['$lookupComments._id', '$$rel._id'] }] },
-                                    'lastName': { '$arrayElemAt': ['$lookupComments.lastName', { '$indexOfArray': ['$lookupComments._id', '$$rel._id'] }] }
+                                    "firstName": { "$arrayElemAt": ["$lookupComments.firstName", { "$indexOfArray": ["$lookupComments._id", "$$rel._id"] }] },
+                                    "lastName": { "$arrayElemAt": ["$lookupComments.lastName", { "$indexOfArray": ["$lookupComments._id", "$$rel._id"] }] }
                                 }
                             ]
                         }
@@ -148,27 +187,27 @@ BlogSchema.statics.getBlogById = async function(id) {
             }
         },
         {
-            '$lookup': {
-                'from': 'users',
-                'let': { 'pid': '$likes.owner' },
-                'pipeline': [
-                    { '$match': { '$expr': { '$in': ['$_id', '$$pid'] } } }
+            "$lookup": {
+                "from": "users",
+                "let": { "pid": "$likes.owner" },
+                "pipeline": [
+                    { "$match": { "$expr": { "$in": ["$_id", "$$pid"] } } }
                 ],
-                'as': 'lookupLikes'
+                "as": "lookupLikes"
             }
         },
         {
-            '$addFields': {
-                'likes': {
-                    '$map': {
-                        'input': '$likes',
-                        'as': 'rel',
-                        'in': {
-                            '$mergeObjects': [
-                                '$$rel',
+            "$addFields": {
+                "likes": {
+                    "$map": {
+                        "input": "$likes",
+                        "as": "rel",
+                        "in": {
+                            "$mergeObjects": [
+                                "$$rel",
                                 {
-                                    'firstName': { '$arrayElemAt': ['$lookupLikes.firstName', { '$indexOfArray': ['$lookupLikes._id', '$$rel._id'] }] },
-                                    'lastName': { '$arrayElemAt': ['$lookupLikes.lastName', { '$indexOfArray': ['$lookupLikes._id', '$$rel._id'] }] }
+                                    "firstName": { "$arrayElemAt": ["$lookupLikes.firstName", { "$indexOfArray": ["$lookupLikes._id", "$$rel._id"] }] },
+                                    "lastName": { "$arrayElemAt": ["$lookupLikes.lastName", { "$indexOfArray": ["$lookupLikes._id", "$$rel._id"] }] }
                                 }
                             ]
                         }
@@ -178,28 +217,28 @@ BlogSchema.statics.getBlogById = async function(id) {
         },
         {
             $project: {
-                name: '$name',
-                description: '$description',
-                photoPath: '$photoPath',
-                readingTime: '$readingTime',
-                date: '$date',
+                name: "$name",
+                description: "$description",
+                photoPath: "$photoPath",
+                readingTime: "$readingTime",
+                date: "$date",
                 owner: {
-                    firstName: '$owner.firstName',
-                    lastName: '$owner.lastName'
+                    firstName: "$owner.firstName",
+                    lastName: "$owner.lastName"
                 },
-                comments: '$comments',
-                likes: '$likes',
+                comments: "$comments",
+                likes: "$likes",
                 connectedPosts: {
-                    '$map': {
-                        'input': '$connectedPosts',
-                        'as': 'post',
-                        'in': {
-                            'id': '$$post._id',
-                            'name': '$$post.name'
+                    "$map": {
+                        "input": "$connectedPosts",
+                        "as": "post",
+                        "in": {
+                            "id": "$$post._id",
+                            "name": "$$post.name"
                         }
                     }
                 },
-                gallery: '$gallery'
+                gallery: "$gallery"
             }
         }
     ]);
@@ -207,5 +246,10 @@ BlogSchema.statics.getBlogById = async function(id) {
     return blog.shift();
 };
 
-const Blog = mongoose.model('Blog', BlogSchema);
-export default Blog;
+export interface BlogModel extends Model<IBlog> {
+    migrateDummyDataBlogs(): Promise<any>
+    getAllBlogs(): Promise<any[]>
+    getBlogById(id: Types.ObjectId): Promise<any>
+}
+
+export default model<IBlog, BlogModel>("Blog", BlogSchema);

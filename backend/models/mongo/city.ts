@@ -1,7 +1,14 @@
-import mongoose from 'mongoose';
-import Cities from 'migration/data/cities.json';
+import { model, Document, Schema, Model } from "mongoose";
+import Cities from "migration/data/cities.json";
 
-const CitySchema = new mongoose.Schema({
+export interface ICity extends Document {
+    name: string;
+    countryId: number;
+    latitude: string;
+    longitude: string;
+}
+
+const CitySchema: Schema = new Schema({
     name: {
         type: String,
         required: true,
@@ -21,5 +28,8 @@ CitySchema.statics.migrateCities = async function() {
 
 };
 
-const City = mongoose.model('City', CitySchema);
-export default City;
+export interface CityModel extends Model<ICity> {
+    migrateCities(): Promise<any>
+}
+
+export default model<ICity, CityModel>("City", CitySchema);

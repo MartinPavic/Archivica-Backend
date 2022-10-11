@@ -5,8 +5,8 @@ import authenticate from 'middleware/authenticate';
 import _ from 'lodash';
 import api from '../../../constants';
 import { IRequest } from '../../../interfaces/express';
+import Blog from '../../../models/mongo/blog';
 
-const Blog = require('../../../models/mongo/blog');
 const router = Router();
 
 // Unauthenticated routes
@@ -26,7 +26,7 @@ router.get(api.BLOG + '/:id', async (req, res) => {
             return res.status(404).send(`${id} id is not valid mongoose ObjectId`);
         }
 
-        const blog = await Blog.getBlogById(id);
+        const blog = await Blog.findById(id);
         if (!blog) {
             return res.status(404).send(`Blog with ${id} id does not exist`);
         }

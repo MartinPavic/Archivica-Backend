@@ -1,7 +1,11 @@
-import mongoose from 'mongoose';
-import ArchitectureTypes from 'migration/data/architectureType.json';
+import { model, Document, Schema, Model } from "mongoose";
+import ArchitectureTypes from "migration/data/architectureType.json";
 
-const ArchitectureTypeSchema = new mongoose.Schema({
+export interface IArchitectureType extends Document {
+    name: string;
+}
+
+const ArchitectureTypeSchema: Schema = new Schema({
     name: {
         type: String,
         trim: true,
@@ -18,5 +22,8 @@ ArchitectureTypeSchema.statics.migrateArchitectureTypes = async function() {
 
 };
 
-const ArchitectureType = mongoose.model('ArchitectureType', ArchitectureTypeSchema);
-export default ArchitectureType;
+export interface ArchitectureTypeModel extends Model<IArchitectureType> {
+    migrateArchitectureTypes(): Promise<any>
+}
+
+export default model<IArchitectureType, ArchitectureTypeModel>("ArchitectureType", ArchitectureTypeSchema);

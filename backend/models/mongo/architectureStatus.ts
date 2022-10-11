@@ -1,7 +1,11 @@
-import mongoose from 'mongoose';
+import { model, Document, Schema, Model } from 'mongoose';
 import Statuses from 'migration/data/architectureStatus.json';
 
-const ArchitectureStatusSchema = new mongoose.Schema({
+export interface IArchitectureStatus extends Document {
+    name: string;
+}
+
+const ArchitectureStatusSchema: Schema = new Schema({
     name: {
         type: String,
         required: true,
@@ -17,5 +21,8 @@ ArchitectureStatusSchema.statics.migrateStatuses = async function() {
     }
 };
 
-const ArchitectureStatus = mongoose.model('ArchitectureStatus', ArchitectureStatusSchema);
-export default ArchitectureStatus;
+export interface ArchitectureStatusModel extends Model<IArchitectureStatus> {
+    migrateStatuses(): Promise<any>
+}
+
+export default model<IArchitectureStatus, ArchitectureStatusModel>("ArchitectureStatus", ArchitectureStatusSchema);

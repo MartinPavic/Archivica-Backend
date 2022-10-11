@@ -1,7 +1,11 @@
-import mongoose from 'mongoose';
-import Ages from 'migration/data/ages.json';
+import { model, Document, Schema, Model } from "mongoose";
+import Ages from "migration/data/ages.json";
 
-const AgeSchema = new mongoose.Schema({
+export interface IAge extends Document {
+    name: string;
+}
+
+const AgeSchema: Schema = new Schema({
     name: {
         type: String,
         required: true
@@ -17,6 +21,8 @@ AgeSchema.statics.migrateAges = async function() {
 
 };
 
-const Age = mongoose.model('Age', AgeSchema);
+export interface AgeModel extends Model<IAge> {
+    migrateAges(): Promise<any>
+}
 
-export default Age;
+export default model<IAge, AgeModel>("Age", AgeSchema);

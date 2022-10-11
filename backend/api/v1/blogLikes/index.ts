@@ -5,8 +5,8 @@ import { sendErrorResponse } from 'utils';
 import { IRequest } from '../../../interfaces/express';
 import api from '../../../constants';
 import authenticate from 'middleware/authenticate';
+import Blog from '../../../models/mongo/blog';
 
-const Blog = require('../../../models/mongo/blog');
 const router = Router();
 
 router.post(api.BLOG_LIKE, authenticate, async (req: IRequest, res) => {

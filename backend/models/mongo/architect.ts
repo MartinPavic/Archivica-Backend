@@ -1,7 +1,12 @@
-import mongoose from 'mongoose';
-import Architects from 'migration/data/architects.json';
+import { model, Document, Schema, Model } from "mongoose";
+import Architects from "migration/data/architects.json";
 
-const ArchitectSchema = new mongoose.Schema({
+export interface IArchitect extends Document {
+    firstName: string;
+    lastName: string;
+}
+
+const ArchitectSchema: Schema = new Schema({
     firstName: {
         type: String,
         trim: true,
@@ -23,5 +28,8 @@ ArchitectSchema.statics.migrateArchitects = async function() {
 
 };
 
-const Architect = mongoose.model('Architect', ArchitectSchema);
-export default Architect;
+export interface ArchitectModel extends Model<IArchitect> {
+    migrateArchitects(): Promise<any>
+}
+
+export default model<IArchitect, ArchitectModel>("Architect", ArchitectSchema);

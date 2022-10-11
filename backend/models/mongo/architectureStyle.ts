@@ -1,7 +1,11 @@
-import mongoose from 'mongoose';
-import ArchitectureStyles from 'migration/data/architectureStyle.json';
+import { model, Document, Schema, Model } from "mongoose";
+import ArchitectureStyles from "migration/data/architectureStyle.json";
 
-const ArchitectureStyleSchema = new mongoose.Schema({
+export interface IArchitectureStyle extends Document {
+    name: string
+}
+
+const ArchitectureStyleSchema: Schema = new Schema({
     name: {
         type: String,
         trim: true,
@@ -18,5 +22,8 @@ ArchitectureStyleSchema.statics.migrateArchitectureStyles = async function() {
 
 };
 
-const ArchitectureStyle = mongoose.model('ArchitectureStyle', ArchitectureStyleSchema);
-export default ArchitectureStyle;
+export interface ArchitectureStyleModel extends Model<IArchitectureStyle> {
+    migrateArchitectureStyles(): Promise<any>
+}
+
+export default model<IArchitectureStyle, ArchitectureStyleModel>("ArchitectureStyle", ArchitectureStyleSchema);

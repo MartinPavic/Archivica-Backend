@@ -1,13 +1,20 @@
-import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { IJWTUser } from 'interfaces/models';
-import _ from 'lodash';
-import validator from 'validator';
+import { model, Document, Schema, Model } from "mongoose";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { IJWTUser } from "interfaces/models";
+import validator from "validator";
 
-import { setUserToken, deleteUserToken, getUserToken } from '../../redis/client';
+import { setUserToken, deleteUserToken, getUserToken } from "../../redis/client";
 
-const UserSchema = new mongoose.Schema({
+export interface IUser extends Document {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    image: string;
+}
+
+const UserSchema: Schema = new Schema({
     firstName: {
         type: String,
         trim: true,
@@ -26,7 +33,7 @@ const UserSchema = new mongoose.Schema({
         unique: true,
         validate: {
             validator: validator.isEmail,
-            message: '{VALUE} is not valid email.'
+            message: "{VALUE} is not valid email."
         }
     },
     password: {
@@ -50,7 +57,7 @@ UserSchema.statics.findByToken = async function(token) {
     let decodedUser: IJWTUser;
 
     if (!token) {
-        throw new Error('Missing token');
+        throw new Error("Missing token");
     }
 
     try {
@@ -64,7 +71,7 @@ UserSchema.statics.findByToken = async function(token) {
         const user = await this.findById(decodedUser._id);
         return user;
     }
-    throw new Error('Missing token');
+    throw new Error("Missing token");
 };
 
 UserSchema.statics.findByCredentials = async function(email: string, password: string) {
@@ -80,16 +87,16 @@ UserSchema.statics.findByCredentials = async function(email: string, password: s
                 if (found === true) {
                     resolve(existingUser);
                 }
-                reject(new Error('Unknown user'));
+                reject(new Error("Unknown user"));
             });
         });
     }
 
-    return Promise.reject(new Error('Unknown user'));
+    return Promise.reject(new Error("Unknown user"));
 };
 
 UserSchema.methods.generateAuthToken = async function() {
-    const access = 'auth';
+    const access = "auth";
 
     const token = jwt
         .sign({ _id: this._id.toHexString(), access }, process.env.JWT_SECRET as jwt.Secret)
@@ -108,5 +115,13 @@ UserSchema.methods.removeToken = async function() {
     return result;
 };
 
-const User = mongoose.model('User', UserSchema);
-export default User;
+export interface UserModel extends Model<IUser> {
+    toJSON(): any;
+    findByToken(token: string): Promise<any>;
+    findByCredentials(email: string, password: string): Promise<any>;
+    generateAuthToken(): Promise<any>;
+    getAuthToken(): Promise<any>;
+    removeToken(): Promise<any>;
+}
+
+export default model<IUser, UserModel>("User", UserSchema);
