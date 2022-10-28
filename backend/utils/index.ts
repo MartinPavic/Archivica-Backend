@@ -1,12 +1,14 @@
-import { Response } from 'express';
-import bcrypt from 'bcryptjs';
+import { Response } from "express";
+import bcrypt from "bcryptjs";
+import { Either, makeRight, makeLeft } from "./either";
+import jwt from "jsonwebtoken";
 
 const sendErrorResponse = (res: Response, ex: Error): Response<any, Record<string, any>> => {
     if (ex.message) {
-        return res.status(400).send({ message: ex.message });
+        return res.status(400).json({ message: ex.message });
     }
 
-    return res.status(400).send(ex);
+    return res.status(400).json(JSON.parse(ex.toString()));
 };
 
 const convertSecondsToTime = (seconds: number): string => {
@@ -14,9 +16,9 @@ const convertSecondsToTime = (seconds: number): string => {
     const m = Math.floor(seconds % 3600 / 60);
     const s = Math.floor(seconds % 3600 % 60);
 
-    const hDisplay = h > 0 ? h + (h == 1 ? ' hour, ' : ' hours, ') : '';
-    const mDisplay = m > 0 ? m + (m == 1 ? ' minute, ' : ' minutes, ') : '';
-    const sDisplay = s > 0 ? s + (s == 1 ? ' second' : ' seconds') : '';
+    const hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    const mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+    const sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
     return hDisplay + mDisplay + sDisplay;
 };
 
@@ -24,28 +26,56 @@ const convertBytesToMB = (bytes: number): string => {
     return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 };
 
-const generateHashedPassword = (user: any) => {
+const generateHashedPassword = (password: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(10, (err, salt) => {
             if (err) {
                 reject(err);
             }
-
-            bcrypt.hash(user.password, salt, (hashErr, hash) => {
+            bcrypt.hash(password, salt, (hashErr, hash) => {
                 if (hashErr) {
                     reject(hashErr);
                 }
 
-                user.password = hash;
-                resolve(user);
+                resolve(hash);
             });
         });
     });
+};
+
+const checkPassword = (password: string, hashedPassword: string): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, hashedPassword, (err, found) => {
+            if (err) {
+                reject(false);
+            }
+
+            if (found === true) {
+                resolve(true);
+            }
+            reject(false);
+        });
+    });
+};
+
+const generateAuthToken = (userId: string): Either<Error, string> => {
+    try {
+        const token = jwt.sign(
+            { id: userId },
+            process.env.JWT_SECRET as jwt.Secret,
+            { expiresIn: Number(process.env.REDIS_EXPIRE_TOKEN) }
+        ).toString();
+        return makeRight(token);
+    } catch (e) {
+        return makeLeft(e);
+    }
 };
 
 export {
     sendErrorResponse,
     convertBytesToMB,
     convertSecondsToTime,
-    generateHashedPassword
+    generateHashedPassword,
+    checkPassword,
+    generateAuthToken
 };

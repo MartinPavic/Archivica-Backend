@@ -54,7 +54,7 @@ const readCountriesCSV = (): Promise<IContinentResponse> => {
 
         fs.createReadStream(EXISTING_DATA_CSV_PATH, { encoding: ENCODING })
             .pipe(parser)
-            .on("data", row => {
+            .on("data", (row: any[]) => {
                 const INDEX_COUNTRY_ID = 0;
                 const INDEX_COUNTRY = 1;
                 const INDEX_REGION = 11;
@@ -95,7 +95,7 @@ const readCountriesCSV = (): Promise<IContinentResponse> => {
                     console.info("NOWHERE: ", name);
                 }
             })
-            .on("error", err => {
+            .on("error", (err: any) => {
                 reject(err);
             })
             .on("end", () => {
@@ -131,7 +131,7 @@ const readStatesCSV = (): Promise<IState[]> => {
 
         fs.createReadStream(EXISTING_STATES_CSV_PATH, { encoding: ENCODING })
             .pipe(parser)
-            .on("data", row => {
+            .on("data", (row: any[]) => {
                 const name = row[INDEX_CITY_NAME];
                 const countryId = row[INDEX_COUNTRY_ID];
                 const latitude = row[INDEX_LATITUDE];
@@ -145,7 +145,7 @@ const readStatesCSV = (): Promise<IState[]> => {
                     });
                 }
             })
-            .on("error", err => {
+            .on("error", (err: any) => {
                 reject(err);
             })
             .on("end", () => {
@@ -174,7 +174,7 @@ const readCitiesCSV = (): Promise<ICity[]> => {
 
         fs.createReadStream(EXISTING_CITIES_CSV_PATH, { encoding: ENCODING })
             .pipe(parser)
-            .on("data", row => {
+            .on("data", (row: any[]) => {
                 const name = row[INDEX_CITY_NAME];
                 const countryId = row[INDEX_COUNTRY_ID];
                 const latitude = row[INDEX_LATITUDE];
@@ -188,7 +188,7 @@ const readCitiesCSV = (): Promise<ICity[]> => {
                     });
                 }
             })
-            .on("error", err => {
+            .on("error", (err: any) => {
                 reject(err);
             })
             .on("end", () => {
