@@ -58,14 +58,21 @@ const checkPassword = (password: string, hashedPassword: string): Promise<boolea
     });
 };
 
-const generateAuthToken = (userId: string): Either<Error, string> => {
+const generateAccessAndRefreshTokens = (userId: string): Either<Error, { accessToken: string, refreshToken: string }> => {
     try {
-        const token = jwt.sign(
+        const accessToken = jwt.sign(
             { id: userId },
             process.env.JWT_SECRET as jwt.Secret,
             { expiresIn: Number(process.env.REDIS_EXPIRE_TOKEN) }
         ).toString();
-        return makeRight(token);
+
+        const refreshToken = jwt.sign(
+            { id: userId },
+            process.env.JWT_SECRET as jwt.Secret,
+            { expiresIn: Number(process.env.REDIS_EXPIRE_TOKEN) }
+        ).toString();
+
+        return makeRight({ accessToken, refreshToken });
     } catch (e) {
         return makeLeft(e);
     }
@@ -77,5 +84,5 @@ export {
     convertSecondsToTime,
     generateHashedPassword,
     checkPassword,
-    generateAuthToken
+    generateAccessAndRefreshTokens
 };

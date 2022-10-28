@@ -1,6 +1,6 @@
 import { UserRepository } from "src/repositories/user.repository";
 import { Either, makeLeft, map, flatMapAsync, mapAsync } from "utils/either";
-import { generateHashedPassword, generateAuthToken } from "utils";
+import { generateHashedPassword, generateAccessAndRefreshTokens } from "utils";
 import { LoginInput, LoginOutput, RegisterInput, RegisterOutput } from "src/models/api/user";
 import logger from "utils/logger";
 import { UserDomain } from "src/models/domain/user";
@@ -29,18 +29,18 @@ export class UserController {
         try {
             const userOrError = await this.userRepository.getByCredentials(loginInput);
             return await flatMapAsync(userOrError, async (user) => {
-                const tokenOrError = generateAuthToken(user.id);
-                return await mapAsync(tokenOrError, async (token) => {
+                const tokensOrError = generateAccessAndRefreshTokens(user.id);
+                return await mapAsync(tokensOrError, async (tokens) => {
                     const userDomain = UserDomain.fromDocument(user);
                     const expiresIn = Number(process.env.REDIS_EXPIRE_LOGIN) || 1800;
-                    await setUserToken(user.id!, expiresIn, token);
+                    await setUserToken(user.id!, expiresIn, tokens.accessToken);
                     logger.info("[UserController] Successfully logged in");
                     return {
                         ...userDomain,
-                        accessToken: token,
+                        accessToken: tokens.accessToken,
                         expiresIn: expiresIn,
                         expiresOn: new Date(new Date().getTime() + expiresIn * 1000),
-                        refreshToken: "aaa"
+                        refreshToken: tokens.refreshToken
                     };
                 });
             });
