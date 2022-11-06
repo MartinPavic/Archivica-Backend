@@ -2,13 +2,23 @@ import { Response } from "express";
 import bcrypt from "bcryptjs";
 import { Either, makeRight, makeLeft } from "./either";
 import jwt from "jsonwebtoken";
+import { CustomException, ExceptionType } from "src/models/exceptions/custom.exception";
 
-const sendErrorResponse = (res: Response, ex: Error): Response<any, Record<string, any>> => {
-    if (ex.message) {
-        return res.status(400).json({ message: ex.message });
+const sendErrorResponse = (response: Response, exception: CustomException): Response<any, Record<string, any>> => {
+    switch (exception.type) {
+        case ExceptionType.ALREADY_EXISTS:
+            return response.status(400).json({ message: `${exception.message} already exists` });
+        case ExceptionType.NOT_AUTHORIZED:
+            return response.status(401).json({ message: "Not authorized." });
+        case ExceptionType.BAD_REQUEST:
+            return response.status(400).json({ message: exception.message });
+        case ExceptionType.DATABASE:
+            return response.status(500).json({ message: exception.message });
+        case ExceptionType.NOT_FOUND:
+            return response.status(400).json({ name: exception.name, message: exception.message });
+        default:
+            return response.status(exception.statusCode || 500).json({ name: exception.name, message: exception.message });
     }
-
-    return res.status(400).json(JSON.parse(ex.toString()));
 };
 
 const convertSecondsToTime = (seconds: number): string => {
@@ -58,18 +68,26 @@ const checkPassword = (password: string, hashedPassword: string): Promise<boolea
     });
 };
 
-const generateAccessAndRefreshTokens = (userId: string): Either<Error, { accessToken: string, refreshToken: string }> => {
+// eslint-disable-next-line no-unused-vars
+enum TokenType {
+    // eslint-disable-next-line no-unused-vars
+    ACCESS = "ACCESS",
+    // eslint-disable-next-line no-unused-vars
+    REFRESH = "REFRESH"
+}
+
+const generateAccessAndRefreshTokens = (userId: string): Either<CustomException, { accessToken: string, refreshToken: string }> => {
     try {
         const accessToken = jwt.sign(
-            { id: userId },
+            { id: userId, type: TokenType.ACCESS },
             process.env.JWT_SECRET as jwt.Secret,
             { expiresIn: Number(process.env.REDIS_EXPIRE_TOKEN) }
         ).toString();
 
         const refreshToken = jwt.sign(
-            { id: userId },
+            { id: userId, type: TokenType.REFRESH },
             process.env.JWT_SECRET as jwt.Secret,
-            { expiresIn: Number(process.env.REDIS_EXPIRE_TOKEN) }
+            { expiresIn: Number(process.env.REDIS_EXPIRE_REFRESH_TOKEN) }
         ).toString();
 
         return makeRight({ accessToken, refreshToken });
@@ -79,6 +97,7 @@ const generateAccessAndRefreshTokens = (userId: string): Either<Error, { accessT
 };
 
 export {
+    TokenType,
     sendErrorResponse,
     convertBytesToMB,
     convertSecondsToTime,

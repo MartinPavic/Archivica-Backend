@@ -1,6 +1,6 @@
 import { promisify } from "util";
 import redis from "redis";
-import logger from "utils/logger";
+import logger from "src/utils/logger";
 
 const redisClient = redis.createClient({
     host: process.env.REDIS_HOST,
@@ -10,7 +10,7 @@ const redisClient = redis.createClient({
 const setExRedisAsync = promisify(redisClient.setex).bind(redisClient);
 const getRedisAsync = promisify(redisClient.get).bind(redisClient);
 
-const setUserToken = (key: number, time: number, value: string): Promise<string> => {
+const setUserToken = (key: number | string, time: number, value: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         redisClient.select(0, async (err: any, res: string | PromiseLike<string>) => {
             if (err) {

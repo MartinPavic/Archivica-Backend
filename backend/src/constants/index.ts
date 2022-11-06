@@ -5,13 +5,7 @@ export default {
     CURRENT_USER: "/api/v1/users/current",
     REFRESH_TOKEN: "/api/v1/users/refresh-token",
     POSTS: "/api/v1/posts",
-    POST: "/api/v1/post",
-    POST_COMMENT: "/api/v1/post-comment",
-    POST_LIKE: "/api/v1/post-like",
     BLOGS: "/api/v1/blogs",
-    BLOG: "/api/v1/blog",
-    BLOG_COMMENT: "/api/v1/blog-comment",
-    BLOG_LIKE: "/api/v1/blog-like",
     HEALTH: "/api/v1/health",
     CODENAMES: "/api/v1/codenames"
 };

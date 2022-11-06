@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
 import api from "../../constants";
 import { UserController } from "src/controllers/user.controller";
-import { LoginInput, RegisterInput } from "src/models/api/user";
-import { match } from "utils/either";
-import { sendErrorResponse } from "utils";
+import { LoginInput, RefreshTokenInput, RegisterInput } from "src/models/api/user";
+import { match } from "src/utils/either";
+import { sendErrorResponse } from "src/utils";
 import authenticate from "src/middleware/authenticaton.middleware";
 import { UserDomain } from "src/models/domain/user";
 import { deleteUserToken } from "src/db/redis";
@@ -58,13 +58,19 @@ export const userRouter = (router: Router, controller: UserController): void => 
         }
     });
 
-    // router.get(api.REFRESH_TOKEN, async (request: Request, response: Response) => {
-    //     try {
-    //         const
-    //     } catch (error) {
-
-    //     }
-    // });
+    router.post(api.REFRESH_TOKEN, async (request: Request, response: Response) => {
+        try {
+            const refreshTokenInput: RefreshTokenInput = request.body as RefreshTokenInput;
+            const result = await controller.refreshToken(refreshTokenInput);
+            match(
+                result,
+                (refreshTokenOutput) => response.json(refreshTokenOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
 };
 
 export default userRouter;

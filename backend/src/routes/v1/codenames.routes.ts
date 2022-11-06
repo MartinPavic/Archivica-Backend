@@ -1,5 +1,5 @@
 import Router, { Request } from "express";
-import { sendErrorResponse, convertBytesToMB, convertSecondsToTime } from "utils";
+import { sendErrorResponse, convertBytesToMB, convertSecondsToTime } from "src/utils";
 import api from "../../constants";
 
 import Age from "src/models/mongo/age.model";

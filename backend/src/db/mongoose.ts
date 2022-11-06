@@ -8,7 +8,7 @@ import Architect from "../models/mongo/architect.model";
 import ArchitectureStyle from "../models/mongo/architectureStyle.model";
 import ArchitectureType from "../models/mongo/architectureType.model";
 import ArchitectureStatus from "../models/mongo/architectureStatus.model";
-import Post from "../models/mongo/post.model";
+// import { PostModel } from "../models/mongo/post.model";
 import Blog from "../models/mongo/blog.model";
 mongoose.Promise = global.Promise;
 
@@ -40,7 +40,7 @@ export const connectMongo = async (): Promise<void> => {
         ArchitectureStyle.migrateArchitectureStyles();
         ArchitectureType.migrateArchitectureTypes();
         ArchitectureStatus.migrateStatuses();
-        Post.migrateDummyDataPosts();
+        // PostModel.migrateDummyDataPosts();
         Blog.migrateDummyDataBlogs();
         console.log("Connected to db");
     });

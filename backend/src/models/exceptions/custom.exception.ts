@@ -2,10 +2,14 @@
 enum ExceptionType {
     NOT_AUTHORIZED,
     ALREADY_EXISTS,
+    BAD_REQUEST,
+    DATABASE,
+    NOT_FOUND
 }
 
-abstract class CustomException extends Error {
+interface CustomException extends Error {
     type: ExceptionType;
+    statusCode?: number;
 }
 
 export { ExceptionType, CustomException };

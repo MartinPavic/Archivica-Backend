@@ -25,3 +25,12 @@ export type RegisterOutput = {
     firstName: string;
     lastName: string;
 }
+
+export type RefreshTokenInput = {
+    refreshToken: string;
+}
+
+export type RefreshTokenOutput = {
+    accessToken: string;
+    refreshToken: string;
+}
