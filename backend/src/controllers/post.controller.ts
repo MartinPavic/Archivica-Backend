@@ -1,7 +1,9 @@
+import { ParsedQs } from "qs";
 import { CreatePostInput, CreatePostOutput, GetAllOutput, GetByIdOutput, UpdatePostInput, UpdatePostOutput } from "src/models/api/post";
-import { CustomException, ExceptionType } from "src/models/exceptions/custom.exception";
+import { CustomException } from "src/models/exceptions/custom.exception";
 import { PostRepository } from "src/repositories/post.repository";
-import { Either, makeLeft, mapLeft } from "src/utils/either";
+import { PaginateFilterSortService } from "src/services/paginateFilterSort.service";
+import { Either, makeLeft } from "src/utils/either";
 import logger from "src/utils/logger";
 
 export class PostController {
@@ -11,10 +13,13 @@ export class PostController {
         this.postRepository = postRepository;
     }
 
-    public async getAll(): Promise<Either<CustomException, GetAllOutput>> {
+    public async getAll(reqQuery: ParsedQs): Promise<Either<CustomException, GetAllOutput>> {
         try {
-            const result = await this.postRepository.getAll();
-            return mapLeft(result, (error) => ({ ...error, type: ExceptionType.BAD_REQUEST }));
+            const [page, limit, filters, sort] = PaginateFilterSortService.getParamsFromQuery(reqQuery);
+            const mongoFilter = PaginateFilterSortService.convertToMongoFilter(filters);
+            const mongoSort = PaginateFilterSortService.convertToMongoSort(sort);
+            const result = await this.postRepository.getAll(mongoFilter, mongoSort, (page - 1) * limit, limit);
+            return result;
         } catch (error) {
             logger.error(error, "[PostController] getAll failed");
             return makeLeft(error);

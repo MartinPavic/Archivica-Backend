@@ -1,4 +1,5 @@
 import { FilterQuery, Model, UpdateQuery } from "mongoose";
+import { MongoSort } from "src/models/api/filterSort";
 import { CustomException, ExceptionType } from "src/models/exceptions/custom.exception";
 import { DatabaseError } from "src/models/exceptions/db.exception";
 import { Either, makeLeft, makeRight } from "src/utils/either";
@@ -13,9 +14,9 @@ export class BaseRepository<T> {
         this.name = name;
     }
 
-    async getAll(): Promise<Either<CustomException, T[]>> {
+    async getAll(filter: FilterQuery<T>, sort?: MongoSort, skip?: number, limit?: number): Promise<Either<CustomException, T[]>> {
         try {
-            const data = await this.model.find();
+            const data = await this.model.find(filter, [], { skip, limit, sort });
             return makeRight(data);
         } catch (error) {
             logger.error(error, `[${this.name}Repository] getAll failed`);

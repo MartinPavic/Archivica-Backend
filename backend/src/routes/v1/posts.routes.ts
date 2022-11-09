@@ -13,7 +13,7 @@ export const postRouter = (router: Router, controller: PostController): void => 
 
     router.get(api.POSTS, authenticate, async (request: Request, response: Response) => {
         try {
-            const result = await controller.getAll();
+            const result = await controller.getAll(request.query);
             match(
                 result,
                 (getPostsOutput) => response.json(getPostsOutput),

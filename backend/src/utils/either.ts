@@ -118,7 +118,3 @@ export const mapLeft = <E, A, B>(e: Either<E, A>, f: (er: E) => B): Either<B, A>
     }
     return e;
 };
-
-export const mapBoth = <E1, E2, A, B>(e: Either<E1, A>, onLeft: (er: E1) => E2, onRight: (a: A) => B): Either<E2, B> => {
-    return isRight(e) ? map<E2, A, B>(e, onRight) : mapLeft<E1, B, E2>(e, onLeft);
-};
