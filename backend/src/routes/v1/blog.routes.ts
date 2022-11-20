@@ -1,13 +1,82 @@
-// import { Router, Request } from "express";
-// import { sendErrorResponse } from "utils";
-// import { ObjectId } from "mongodb";
-// import authenticate from "src/middleware/authenticate";
-// import _ from "lodash";
-// import api from "../../constants";
-// import Blog from "../../models/mongo/blog.model";
-// import paginate from "src/middleware/paginateFilterSort";
+import { Router, Request, Response } from "express";
+import authenticate from "../../middleware/authenticaton.middleware";
+import api from "../../constants";
+import { match } from "src/utils/either";
+import { sendErrorResponse } from "src/utils";
+import { BlogController } from "src/controllers/blog.controller";
+import { CreateBlogInput, UpdateBlogInput } from "src/models/api/blog";
 
-// const router = Router();
+export const blogRouter = (router: Router, controller: BlogController) => {
+    router.get(api.BLOGS, authenticate, async (request: Request, response: Response) => {
+        try {
+            const result = await controller.getAll(request.query);
+            match(
+                result,
+                (getBlogsOutput) => response.json(getBlogsOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+
+    router.get(api.BLOGS + "/:id", authenticate, async (request: Request, response: Response) => {
+        try {
+            const id = request.params.id;
+            const result = await controller.getById(id);
+            match(
+                result,
+                (getBlogOutput) => response.json(getBlogOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+
+    router.post(api.BLOGS, authenticate, async (request: Request, response: Response) => {
+        try {
+            const input = request.body as CreateBlogInput;
+            const result = await controller.create(input);
+            match(
+                result,
+                (createBlogOutput) => response.json(createBlogOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+
+    router.put(api.BLOGS + "/:id", authenticate, async (request: Request, response: Response) => {
+        try {
+            const input = request.body as UpdateBlogInput;
+            const id = request.params.id;
+            const result = await controller.update(id, input);
+            match(
+                result,
+                (updateBlogOutput) => response.json(updateBlogOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+
+    router.delete(api.BLOGS + "/:id", authenticate, async (request: Request, response: Response) => {
+        try {
+            const id = request.params.id;
+            const result = await controller.delete(id);
+            match(
+                result,
+                (deleteBlogOutput) => response.json(deleteBlogOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+};
 
 // // Unauthenticated routes
 // router.get(api.BLOGS, paginate(Blog), async (_req, res) => {

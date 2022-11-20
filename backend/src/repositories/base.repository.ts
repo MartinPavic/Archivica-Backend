@@ -1,22 +1,22 @@
-import { FilterQuery, Model, UpdateQuery } from "mongoose";
-import { MongoSort } from "src/models/api/filterSort";
+import { Document, FilterQuery, Model, UpdateQuery } from "mongoose";
+import { MongoFilter, MongoSort } from "src/models/api/filterSort";
 import { CustomException, ExceptionType } from "src/models/exceptions/custom.exception";
 import { DatabaseError } from "src/models/exceptions/db.exception";
 import { Either, makeLeft, makeRight } from "src/utils/either";
 import logger from "src/utils/logger";
 
-export class BaseRepository<T> {
-    name: string;
-    private model: Model<T>;
+export class BaseRepository<T extends Document> {
+    public name: string;
+    public model: Model<T>;
 
     constructor(name: string, model: Model<T>) {
         this.model = model;
         this.name = name;
     }
 
-    async getAll(filter: FilterQuery<T>, sort?: MongoSort, skip?: number, limit?: number): Promise<Either<CustomException, T[]>> {
+    async getAll(filter: MongoFilter, sort?: MongoSort, skip?: number, limit?: number): Promise<Either<CustomException, T[]>> {
         try {
-            const data = await this.model.find(filter, [], { skip, limit, sort });
+            const data = await this.model.find(filter as FilterQuery<T>, [], { skip, limit, sort });
             return makeRight(data);
         } catch (error) {
             logger.error(error, `[${this.name}Repository] getAll failed`);

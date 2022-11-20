@@ -72,5 +72,3 @@ export const userRouter = (router: Router, controller: UserController): void => 
         }
     });
 };
-
-export default userRouter;

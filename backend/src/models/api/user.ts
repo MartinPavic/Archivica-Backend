@@ -1,12 +1,19 @@
 import { UserDocument } from "src/models/mongo/user.model";
-import { UserDomain } from "../domain/user";
+
+export type UserOutput = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password?: string;
+    image?: string
+}
 
 export type LoginInput = {
     email: UserDocument["email"];
     password: string;
 }
 
-export type LoginOutput = UserDomain & {
+export type LoginOutput = UserOutput & {
     accessToken: string;
     expiresIn: number;
     expiresOn: Date;

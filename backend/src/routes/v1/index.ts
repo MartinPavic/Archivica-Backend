@@ -2,7 +2,6 @@ import express, { Router } from "express";
 import helmet from "helmet";
 import cors from "src/middleware/cors.middleware";
 
-import userRouter from "./users.routes";
 // import codenamesApi from "./codenames.routes";
 // import postsApi from "./posts.routes";
 // import postCommentsApi from "./postComments.routes";
@@ -10,13 +9,21 @@ import userRouter from "./users.routes";
 // import blogsApi from "./blog.routes";
 // import blogCommentsApi from "./blogComments.routes";
 // import blogLikesApi from "./blogLikes.routes";
+
+// User imports
+import { userRouter } from "./users.routes";
 import { UserController } from "src/controllers/user.controller";
 import { UserRepository } from "src/repositories/user.repository";
 import { UserModel } from "src/models/mongo/user.model";
+
+// Post imports
 import { postRouter } from "./posts.routes";
 import { PostController } from "src/controllers/post.controller";
 import { PostRepository } from "src/repositories/post.repository";
 import { PostModel } from "src/models/mongo/post.model";
+
+// Blog imports
+import { blogRouter } from "./blog.routes";
 
 const router = Router();
 

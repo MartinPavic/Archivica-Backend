@@ -15,7 +15,7 @@ type OperatorValue = {
 };
 
 export interface MongoFilter {
-    [property: string]: OperatorValue
+    [property: string]: OperatorValue | undefined;
 }
 
 export type SortOperator = "asc" | "desc";

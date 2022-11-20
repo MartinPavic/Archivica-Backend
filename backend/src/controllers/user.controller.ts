@@ -3,7 +3,6 @@ import { Either, makeLeft, map, flatMapAsync, mapAsync } from "src/utils/either"
 import { generateHashedPassword, generateAccessAndRefreshTokens, TokenType } from "src/utils";
 import { LoginInput, LoginOutput, RefreshTokenInput, RefreshTokenOutput, RegisterInput, RegisterOutput } from "src/models/api/user";
 import logger from "src/utils/logger";
-import { UserDomain } from "src/models/domain/user";
 import { getUserToken, setUserToken } from "src/db/redis";
 import jwt from "jsonwebtoken";
 import { JwtUser } from "src/middleware/authenticaton.middleware";
@@ -43,12 +42,15 @@ export class UserController {
             return await flatMapAsync(userOrError, async (user) => {
                 const tokensOrError = generateAccessAndRefreshTokens(user.id);
                 return await mapAsync(tokensOrError, async (tokens) => {
-                    const userDomain = UserDomain.fromDocument(user);
                     const expiresIn = Number(process.env.REDIS_EXPIRE_LOGIN) || 1800;
                     await setUserToken(user.id!, expiresIn, tokens.accessToken);
                     logger.info("[UserController] Successfully logged in");
                     return {
-                        ...userDomain,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        password: user.password,
+                        image: user.image,
                         accessToken: tokens.accessToken,
                         expiresIn: expiresIn,
                         expiresOn: new Date(new Date().getTime() + expiresIn * 1000),

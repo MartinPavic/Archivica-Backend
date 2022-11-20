@@ -1,4 +1,6 @@
-export class PostDomain {
+import { Domain } from ".";
+
+export class PostDomain implements Domain {
     name: string;
     date: Date;
     photoPath: string;
@@ -29,4 +31,8 @@ export class PostDomain {
             liked: boolean
         }
     ];
+
+    toJson(): string {
+        return JSON.stringify(this);
+    }
 }
