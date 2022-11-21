@@ -1,11 +1,10 @@
 import { Router, Request, Response } from "express";
 import api from "../../constants";
 import { UserController } from "src/controllers/user.controller";
-import { LoginInput, RefreshTokenInput, RegisterInput } from "src/models/api/user";
+import { LoginInput, RefreshTokenInput, RegisterInput, UserOutput } from "src/models/api/user";
 import { match } from "src/utils/either";
 import { sendErrorResponse } from "src/utils";
 import authenticate from "src/middleware/authenticaton.middleware";
-import { UserDomain } from "src/models/domain/user";
 import { deleteUserToken } from "src/db/redis";
 import { UserDocument } from "src/models/mongo/user.model";
 
@@ -40,8 +39,12 @@ export const userRouter = (router: Router, controller: UserController): void => 
 
     router.get(api.CURRENT_USER, authenticate, (request: Request, response: Response) => {
         try {
-            const user: UserDomain = UserDomain.fromDocument(response.locals.user);
-            delete user.password;
+            const user: UserOutput = {
+                email: response.locals.user.email,
+                firstName: response.locals.user.firstName,
+                lastName: response.locals.user.lastName,
+                image: response.locals.user.image
+            };
             response.json(user);
         } catch (error) {
             sendErrorResponse(response, error);
