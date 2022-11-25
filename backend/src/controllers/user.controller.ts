@@ -44,7 +44,7 @@ export class UserController {
                 return await mapAsync(tokensOrError, async (tokens) => {
                     const expiresIn = Number(process.env.REDIS_EXPIRE_LOGIN) || 1800;
                     await setUserToken(user.id!, expiresIn, tokens.accessToken);
-                    logger.info("[UserController] Successfully logged in");
+                    logger.info(`[UserController] ${user.email} successfully logged in`);
                     return {
                         firstName: user.firstName,
                         lastName: user.lastName,

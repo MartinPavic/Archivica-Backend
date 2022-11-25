@@ -13,6 +13,7 @@ export class BlogDomain implements Domain {
     owner: string;
     comments: [
         {
+            id: string;
             owner: string;
             comment: string;
             date: Date;

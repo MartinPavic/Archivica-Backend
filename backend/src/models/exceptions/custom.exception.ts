@@ -4,7 +4,8 @@ enum ExceptionType {
     ALREADY_EXISTS,
     BAD_REQUEST,
     DATABASE,
-    NOT_FOUND
+    NOT_FOUND,
+    NOT_OWNER
 }
 
 interface CustomException extends Error {

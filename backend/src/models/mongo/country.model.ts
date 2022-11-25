@@ -1,37 +1,51 @@
 import { model, Document, Schema, Model } from "mongoose";
-import Counties from "migration/data/countries.json";
+import { CountryDomain } from "../domain/country";
 
-export interface ICountry extends Document {
-    id: number;
-    name: string;
-    continentId: number;
-}
+type CountryDocument = CountryDomain & Document
 
 const CountrySchema: Schema = new Schema({
     id: {
-        type: Number,
+        type: Schema.Types.ObjectId,
         unique: true
     },
     name: {
-        type: String,
+        type: Schema.Types.String,
         required: true
     },
     continentId: {
-        type: Number
+        type: Schema.Types.ObjectId,
+        ref: "continents"
+    },
+    yearStart: {
+        type: Schema.Types.Number
+    },
+    yearStartAD: {
+        type: Schema.Types.Boolean
+    },
+    yearEnd: {
+        type: Schema.Types.Number
+    },
+    yearEndAD: {
+        type: Schema.Types.Boolean
+    },
+    previousCountryId: {
+        type: Schema.Types.ObjectId,
+        ref: "countries"
+    },
+    stillActive: {
+        type: Schema.Types.Boolean
     }
 });
 
-CountrySchema.statics.migrateCountries = async function() {
-    const count = await this.count();
+// CountrySchema.statics.migrateCountries = async function() {
+//     const count = await this.count();
 
-    if (count === 0) {
-        await this.insertMany(Counties);
-    }
+//     if (count === 0) {
+//         await this.insertMany(Counties);
+//     }
 
-};
+// };
 
-export interface CountryModel extends Model<ICountry> {
-    migrateCountries(): Promise<any>
-}
+const CountryModel: Model<CountryDocument> = model<CountryDocument>("Country", CountrySchema);
 
-export default model<ICountry, CountryModel>("Country", CountrySchema);
+export { CountryDocument, CountryModel };

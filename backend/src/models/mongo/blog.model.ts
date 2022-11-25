@@ -25,6 +25,7 @@ const BlogSchema: Schema = new Schema({
     },
     comments: [
         {
+            id: { type: Schema.Types.ObjectId },
             owner: { type: Schema.Types.ObjectId },
             comment: { type: String },
             date: {

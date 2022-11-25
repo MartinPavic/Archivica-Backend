@@ -24,6 +24,9 @@ import { PostModel } from "src/models/mongo/post.model";
 
 // Blog imports
 import { blogRouter } from "./blog.routes";
+import { BlogController } from "src/controllers/blog.controller";
+import { BlogRepository } from "src/repositories/blog.repository";
+import { BlogModel } from "src/models/mongo/blog.model";
 
 const router = Router();
 
@@ -42,7 +45,7 @@ postRouter(router, new PostController(new PostRepository("Post", PostModel)));
 // /* =========== Post Likes routes =========== */
 // router.use("/", postLikesApi);
 // /* =========== Blogs routes =========== */
-// router.use("/", blogsApi);
+blogRouter(router, new BlogController(new BlogRepository("Blog", BlogModel)));
 // /* =========== Blog Comments routes =========== */
 // router.use("/", blogCommentsApi);
 // /* =========== Blog Likes routes =========== */

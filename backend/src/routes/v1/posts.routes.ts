@@ -7,7 +7,7 @@ import api from "../../constants";
 import { PostController } from "src/controllers/post.controller";
 import { match } from "src/utils/either";
 import authenticate from "src/middleware/authenticaton.middleware";
-import { CreatePostInput, UpdatePostInput } from "src/models/api/post";
+import { CreatePostInput, PostCommentInput, PostLikeInput, UpdatePostInput } from "src/models/api/post";
 
 export const postRouter = (router: Router, controller: PostController): void => {
 
@@ -74,6 +74,71 @@ export const postRouter = (router: Router, controller: PostController): void => 
             match(
                 result,
                 (deletePostOutput) => response.json(deletePostOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+
+    router.post(api.POSTS + ":/id" + "/comment", authenticate, async (request: Request, response: Response) => {
+        try {
+            const postId = request.params.id;
+            const user = response.locals.user;
+            const input = request.body as PostCommentInput;
+            const result = await controller.createComment(postId, user.id, input.comment);
+            match(
+                result,
+                (commentPostOutput) => response.json(commentPostOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+
+    router.put(api.POSTS + ":/id" + "/comment" + ":/commentId", authenticate, async (request: Request, response: Response) => {
+        try {
+            const postId = request.params.id;
+            const user = response.locals.user;
+            const commentId = request.params.commentId;
+            const input = request.body as PostCommentInput;
+            const result = await controller.updateComment(postId, user.id, commentId, input.comment);
+            match(
+                result,
+                (commentPostOutput) => response.json(commentPostOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+
+    router.delete(api.POSTS + ":/id" + "/comment" + ":/commentId", authenticate, async (request: Request, response: Response) => {
+        try {
+            const postId = request.params.id;
+            const user = response.locals.user;
+            const commentId = request.params.commentId;
+            const result = await controller.deleteComment(postId, user.id, commentId);
+            match(
+                result,
+                (commentPostOutput) => response.json(commentPostOutput),
+                (error) => sendErrorResponse(response, error)
+            );
+        } catch (error) {
+            sendErrorResponse(response, error);
+        }
+    });
+
+    router.post(api.POSTS + ":/id" + "/like", authenticate, async (request: Request, response: Response) => {
+        try {
+            const post = request.params.id;
+            const user = response.locals.user;
+            const input = request.body as PostLikeInput;
+            const result = await controller.like(post, user.id, input.like);
+            match(
+                result,
+                (likePostOutput) => response.json(likePostOutput),
                 (error) => sendErrorResponse(response, error)
             );
         } catch (error) {

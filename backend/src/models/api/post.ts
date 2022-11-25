@@ -12,3 +12,15 @@ export type CreatePostOutput = PostDocument
 export type UpdatePostInput = PostDomain
 
 export type UpdatePostOutput = PostDocument
+
+export type PostCommentInput = {
+    comment: string
+}
+
+export type CreatePostCommentOutput = string
+
+export type UpdatePostCommentOutput = string
+
+export type PostLikeInput = {
+    like: boolean
+}

@@ -8,7 +8,7 @@ import { Domain } from "src/models/domain";
 import { Document } from "mongoose";
 
 export class BaseController<T extends Document, D extends Domain> {
-    public repository: BaseRepository<T>;
+    private repository: BaseRepository<T>;
 
     constructor(repository: BaseRepository<T>) {
         this.repository = repository;

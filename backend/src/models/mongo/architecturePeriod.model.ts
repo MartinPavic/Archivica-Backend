@@ -1,9 +1,9 @@
 import { model, Document, Schema, Model } from "mongoose";
-import { ArchitectureStyleDomain } from "../domain/architectureStyle";
+import { ArchitecturePeriodDomain } from "../domain/architecturePeriod";
 
-type ArchitectureStyleDocument = ArchitectureStyleDomain & Document
+type ArchitecturePeriodDocument = ArchitecturePeriodDomain & Document
 
-const ArchitectureStyleSchema: Schema = new Schema({
+const ArchitecturePeriodSchema: Schema = new Schema({
     id: {
         type: Schema.Types.ObjectId
     },
@@ -28,15 +28,15 @@ const ArchitectureStyleSchema: Schema = new Schema({
     }
 });
 
-// ArchitectureStyleSchema.statics.migrateArchitectureStyles = async function() {
+// PeriodSchema.statics.migratePeriods = async function() {
 //     const count = await this.count();
 
 //     if (count === 0) {
-//         await this.insertMany(ArchitectureStyles);
+//         await this.insertMany(Periods);
 //     }
 
 // };
 
-const ArchitectureStyleModel: Model<ArchitectureStyleDocument> = model<ArchitectureStyleDocument>("ArchitectureStyle", ArchitectureStyleSchema);
+const ArchitecturePeriodModel: Model<ArchitecturePeriodDocument> = model<ArchitecturePeriodDocument>("ArchitecturePeriod", ArchitecturePeriodSchema);
 
-export { ArchitectureStyleDocument, ArchitectureStyleModel };
+export { ArchitecturePeriodDocument, ArchitecturePeriodModel };
