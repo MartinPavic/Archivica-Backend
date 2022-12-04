@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { Domain } from ".";
 
 export class PostDomain implements Domain {
@@ -5,10 +6,10 @@ export class PostDomain implements Domain {
     date: Date;
     photoPath: string;
     description: string;
-    architect: string;
-    city: string;
-    subAge: string;
-    owner: string;
+    architect: ObjectId;
+    city: ObjectId;
+    subAge: ObjectId;
+    owner: ObjectId;
     gallery: [
         {
             name: string,
@@ -20,14 +21,14 @@ export class PostDomain implements Domain {
 
     comments: [
         {
-            owner: string,
+            owner: ObjectId,
             comment: string
         }
     ];
 
     likes: [
         {
-            owner: string,
+            owner: ObjectId,
             liked: boolean
         }
     ];

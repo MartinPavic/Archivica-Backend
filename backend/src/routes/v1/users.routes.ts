@@ -15,7 +15,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
             const result = await controller.registerUser(registerInput);
             match(
                 result,
-                (registerOutput) => response.json(registerOutput),
+                (registerOutput) => response.status(201).json(registerOutput),
                 (error) => sendErrorResponse(response, error)
             );
         } catch (error) {

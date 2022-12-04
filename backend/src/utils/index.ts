@@ -11,11 +11,10 @@ const sendErrorResponse = (response: Response, exception: CustomException): Resp
         case ExceptionType.NOT_AUTHORIZED:
             return response.status(401).json({ message: "Not authorized." });
         case ExceptionType.BAD_REQUEST:
+        case ExceptionType.NOT_FOUND:
             return response.status(400).json({ message: exception.message });
         case ExceptionType.DATABASE:
             return response.status(500).json({ message: exception.message });
-        case ExceptionType.NOT_FOUND:
-            return response.status(400).json({ name: exception.name, message: exception.message });
         default:
             return response.status(exception.statusCode || 500).json({ name: exception.name, message: exception.message });
     }

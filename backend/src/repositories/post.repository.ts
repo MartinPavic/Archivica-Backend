@@ -35,7 +35,7 @@ export class PostRepository extends BaseRepository<PostDocument> {
     public async updateComment(postId: string, userId: string, commentId: string, comment: string): Promise<Either<CustomException, PostDocument>> {
         try {
             const updatedPost = await PostModel.findOneAndUpdate(
-                { id: postId, "comments.id": commentId, "comments.owner": userId },
+                { _id: postId, "comments.id": commentId, "comments.owner": userId },
                 { $set: { "comments.$.comment": comment } }
             );
             if (!updatedPost) {
@@ -56,9 +56,8 @@ export class PostRepository extends BaseRepository<PostDocument> {
 
     public async deleteComment(postId: string, userId: string, commentId: string): Promise<Either<CustomException, PostDocument>> {
         try {
-            const updatedPost = await PostModel.findOneAndUpdate(
-                { id: postId, "comments.id": commentId, "comments.owner": userId },
-                { $pull: { comments: { id: commentId } } },
+            const updatedPost = await PostModel.findByIdAndUpdate(postId,
+                { $pull: { comments: { _id: commentId, owner: userId } } },
                 { new: true }
             );
             if (!updatedPost) {
@@ -77,7 +76,7 @@ export class PostRepository extends BaseRepository<PostDocument> {
         }
     }
 
-    public async like(postId: string, userId: string, like: boolean): Promise<Either<CustomException, PostDocument>> {
+    public async like(postId: string, userId: string, isLike: boolean): Promise<Either<CustomException, PostDocument>> {
         try {
             const post = await PostModel.findById(postId);
             if (!post) {
@@ -89,21 +88,25 @@ export class PostRepository extends BaseRepository<PostDocument> {
                 logger.error(`[PostRepository] ${error.message}`);
                 return makeLeft(error);
             }
-            const like = post.likes.find((like) => like.owner === userId);
+            const like = post.likes.find((like) => like.owner.toString() === userId);
             if (!like) {
-                const updatedPost = await PostModel.findByIdAndUpdate(userId,
+                const updatedPost = await PostModel.findByIdAndUpdate(postId,
                     { $push: {
                         likes: {
                             owner: userId,
-                            like,
-                            date: new Date()
+                            liked: isLike
                         }
                     }
-                    });
+                    }, { new: true });
                 return makeRight(updatedPost);
             } else {
-                const updatedPost = await PostModel.findByIdAndUpdate(userId,
-                    { $pull: { likes: { owner: userId } } });
+                const updatedPost = await PostModel.findByIdAndUpdate(postId,
+                    { $pull: {
+                        likes: {
+                            owner: userId
+                        }
+                    }
+                    }, { new: true });
                 return makeRight(updatedPost);
             }
         } catch (error) {

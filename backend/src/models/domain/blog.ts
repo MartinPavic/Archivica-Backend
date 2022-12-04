@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { Domain } from "../domain";
 
 export class BlogDomain implements Domain {
@@ -10,21 +11,19 @@ export class BlogDomain implements Domain {
     };
 
     date: Date;
-    owner: string;
+    owner: ObjectId;
     comments: [
         {
-            id: string;
-            owner: string;
+            id: ObjectId;
+            owner: ObjectId;
             comment: string;
-            date: Date;
         }
     ];
 
     likes: [
         {
-            owner: string;
+            owner: ObjectId;
             liked: boolean;
-            date: Date;
         }
     ];
 
@@ -39,7 +38,7 @@ export class BlogDomain implements Domain {
 
     connectedPosts: [
         {
-            post: string
+            post: ObjectId
         }
     ]
 

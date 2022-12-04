@@ -77,7 +77,7 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
         }
     }
 
-    public async like(blogId: string, userId: string, like: boolean): Promise<Either<CustomException, BlogDocument>> {
+    public async like(blogId: string, userId: string, isLike: boolean): Promise<Either<CustomException, BlogDocument>> {
         try {
             const blog = await BlogModel.findById(blogId);
             if (!blog) {
@@ -89,21 +89,20 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
                 logger.error(`[BlogRepository] ${error.message}`);
                 return makeLeft(error);
             }
-            const like = blog.likes.find((like) => like.owner === userId);
+            const like = blog.likes.find((like) => like.owner.toString() === userId);
             if (!like) {
                 const updatedBlog = await BlogModel.findByIdAndUpdate(userId,
                     { $push: {
                         likes: {
                             owner: userId,
-                            like,
-                            date: new Date()
+                            liked: isLike
                         }
                     }
-                    });
+                    }, { new: true });
                 return makeRight(updatedBlog);
             } else {
                 const updatedBlog = await BlogModel.findByIdAndUpdate(userId,
-                    { $pull: { likes: { owner: userId } } });
+                    { $pull: { likes: { owner: userId } } }, { new: true });
                 return makeRight(updatedBlog);
             }
         } catch (error) {

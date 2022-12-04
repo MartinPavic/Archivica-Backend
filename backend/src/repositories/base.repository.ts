@@ -71,7 +71,7 @@ export class BaseRepository<T extends Document> {
 
     async delete(id: string): Promise<Either<CustomException, string>> {
         try {
-            const model = await this.model.deleteOne({ id } as FilterQuery<T>);
+            const model = await this.model.findByIdAndDelete(id);
             if (!model) {
                 const error = `Couldn't delete ${this.name} with id: ${id}`;
                 logger.error(`[${this.name}Repository] ${error}`);

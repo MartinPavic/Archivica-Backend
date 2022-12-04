@@ -46,12 +46,12 @@ export class PostController extends BaseController<PostDocument, PostDomain> {
         }
     }
 
-    public async like(blogId: string, userId: string, like: boolean): Promise<Either<CustomException, string>> {
+    public async like(postId: string, userId: string, like: boolean): Promise<Either<CustomException, string>> {
         try {
-            const either = await this.postRepository.like(blogId, userId, like);
-            return map(either, (blog) => "Successfully liked post");
+            const either = await this.postRepository.like(postId, userId, like);
+            return map(either, (post) => "Successfully liked post");
         } catch (error) {
-            logger.error(error, "[BlogController] like failed");
+            logger.error(error, "[PostController] like failed");
             return makeLeft(error);
         }
     }
