@@ -77,7 +77,7 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
         }
     });
 
-    router.post(api.BLOGS + ":/id" + "/comment", authenticate, async (request: Request, response: Response) => {
+    router.post(api.BLOGS + "/:id" + "/comment", authenticate, async (request: Request, response: Response) => {
         try {
             const blogId = request.params.id;
             const user = response.locals.user;
@@ -93,7 +93,7 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
         }
     });
 
-    router.put(api.BLOGS + ":/id" + "/comment" + ":/commentId", authenticate, async (request: Request, response: Response) => {
+    router.put(api.BLOGS + "/:id" + "/comment" + "/:commentId", authenticate, async (request: Request, response: Response) => {
         try {
             const blogId = request.params.id;
             const user = response.locals.user;
@@ -110,7 +110,7 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
         }
     });
 
-    router.delete(api.BLOGS + ":/id" + "/comment" + ":/commentId", authenticate, async (request: Request, response: Response) => {
+    router.delete(api.BLOGS + "/:id" + "/comment" + "/:commentId", authenticate, async (request: Request, response: Response) => {
         try {
             const blogId = request.params.id;
             const user = response.locals.user;
@@ -126,7 +126,7 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
         }
     });
 
-    router.post(api.BLOGS + ":/id" + "/like", authenticate, async (request: Request, response: Response) => {
+    router.post(api.BLOGS + "/:id" + "/like", authenticate, async (request: Request, response: Response) => {
         try {
             const blogId = request.params.id;
             const user = response.locals.user;

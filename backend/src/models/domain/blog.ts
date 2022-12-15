@@ -14,9 +14,9 @@ export class BlogDomain implements Domain {
     owner: ObjectId;
     comments: [
         {
-            id: ObjectId;
             owner: ObjectId;
             comment: string;
+            date: Date;
         }
     ];
 

@@ -54,7 +54,10 @@ export const userRouter = (router: Router, controller: UserController): void => 
     router.delete(api.USER_LOGOUT, authenticate, async (request: Request, response: Response) => {
         try {
             const user: UserDocument = response.locals.user;
-            await deleteUserToken(user.id!);
+            const result = await deleteUserToken(user.id!);
+            if (result instanceof Error) {
+                throw result;
+            }
             response.json("Successfully logged out!");
         } catch (error) {
             sendErrorResponse(response, error);

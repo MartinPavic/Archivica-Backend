@@ -1,13 +1,5 @@
 import mongoose from "mongoose";
-import Age from "../models/mongo/age.model";
-// import SubAge from "../models/mongo/subAge.model";
-// import Continent from "../models/mongo/continent.model";
-// import Country from "../models/mongo/country.model";
-import City from "../models/mongo/city.model";
-import Architect from "../models/mongo/architect.model";
-// import ArchitectureStyle from "../models/mongo/architectureStyle.model";
-// import { PostModel } from "../models/mongo/post.model";
-// import Blog from "../models/mongo/blog.model";
+
 mongoose.Promise = global.Promise;
 
 let db: mongoose.Connection;
@@ -29,14 +21,6 @@ export const connectMongo = async (): Promise<void> => {
     db = mongoose.connection;
 
     db.once("open", async () => {
-        Age.migrateAges();
-        // SubAge.migrateSubAges();
-        // Continent.migrateContinents();
-        // Country.migrateCountries();
-        City.migrateCities();
-        Architect.migrateArchitects();
-        // PostModel.migrateDummyDataPosts();
-        // Blog.migrateDummyDataBlogs();
         console.log("Connected to db");
     });
 

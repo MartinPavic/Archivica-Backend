@@ -35,8 +35,9 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
     public async updateComment(blogId: string, userId: string, commentId: string, comment: string): Promise<Either<CustomException, BlogDocument>> {
         try {
             const updatedBlog = await BlogModel.findOneAndUpdate(
-                { id: blogId, "comments.id": commentId, "comments.owner": userId },
-                { $set: { "comments.$.comment": comment } }
+                { _id: blogId, "comments._id": commentId, "comments.owner": userId },
+                { $set: { "comments.$.comment": comment } },
+                { new: true }
             );
             if (!updatedBlog) {
                 const error: CustomException = {
@@ -57,8 +58,8 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
     public async deleteComment(blogId: string, userId: string, commentId: string): Promise<Either<CustomException, BlogDocument>> {
         try {
             const updatedBlog = await BlogModel.findOneAndUpdate(
-                { id: blogId, "comments.id": commentId, "comments.owner": userId },
-                { $pull: { comments: { id: commentId } } },
+                { _id: blogId, "comments._id": commentId, "comments.owner": userId },
+                { $pull: { comments: { _id: commentId } } },
                 { new: true }
             );
             if (!updatedBlog) {
@@ -91,18 +92,20 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
             }
             const like = blog.likes.find((like) => like.owner.toString() === userId);
             if (!like) {
-                const updatedBlog = await BlogModel.findByIdAndUpdate(userId,
+                const updatedBlog = await BlogModel.findByIdAndUpdate(blogId,
                     { $push: {
                         likes: {
                             owner: userId,
-                            liked: isLike
+                            liked: isLike,
+                            date: new Date()
                         }
                     }
                     }, { new: true });
                 return makeRight(updatedBlog);
             } else {
-                const updatedBlog = await BlogModel.findByIdAndUpdate(userId,
-                    { $pull: { likes: { owner: userId } } }, { new: true });
+                const updatedBlog = await BlogModel.findOneAndUpdate(
+                    { _id: blogId, "likes.owner": userId },
+                    { $set: { "likes.$.liked": isLike, "likes.$.date": new Date() } }, { new: true });
                 return makeRight(updatedBlog);
             }
         } catch (error) {
