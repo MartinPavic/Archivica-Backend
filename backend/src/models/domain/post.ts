@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import { Domain } from ".";
 
 export class PostDomain implements Domain {
+	_id: string;
     name: string;
     date: Date;
     photoPath: string;
@@ -34,6 +35,6 @@ export class PostDomain implements Domain {
     ];
 
     toJson(): string {
-        return JSON.stringify(this);
+    	return JSON.stringify(this);
     }
 }

@@ -4,7 +4,6 @@ export type UserOutput = {
     firstName: string;
     lastName: string;
     email: string;
-    password?: string;
     image?: string
 }
 
@@ -15,8 +14,6 @@ export type LoginInput = {
 
 export type LoginOutput = UserOutput & {
     accessToken: string;
-    expiresIn: number;
-    expiresOn: Date;
     refreshToken: string;
 }
 
@@ -41,3 +38,9 @@ export type RefreshTokenOutput = {
     accessToken: string;
     refreshToken: string;
 }
+
+export type ForgotPasswordInput = {
+    email: string
+}
+
+export type ForgotPasswordOutput = string;

@@ -5,8 +5,8 @@ import { BaseController } from "./base.controller";
 
 export class ArchitectureStyleController extends BaseController<ArchitectureStyleDocument, ArchitectureStyleDomain> {
 
-    constructor(architectureStyleRepository: ArchitectureStyleRepository) {
-        super(architectureStyleRepository);
-    }
+	constructor(architectureStyleRepository: ArchitectureStyleRepository) {
+		super(architectureStyleRepository);
+	}
 
 }

@@ -21,7 +21,7 @@
         "removeComments": true,
         "strict": false,
         "strictBindCallApply": true,
-        "strictFunctionTypes": false, // recommended => true
+        "strictFunctionTypes": true, // recommended => true
         "strictNullChecks": true,
         "target": "es2017"
     },

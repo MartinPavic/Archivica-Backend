@@ -10,36 +10,36 @@ import { UserDomain } from "../domain/user";
 type UserDocument = Document & UserDomain
 
 const UserSchema: Schema = new Schema({
-    firstName: {
-        type: String,
-        trim: true,
-        required: true
-    },
-    lastName: {
-        type: String,
-        trim: true,
-        required: true
-    },
-    email: {
-        type: String,
-        minlength: 19,
-        required: true,
-        trim: true,
-        unique: true,
-        validate: {
-            validator: validator.isEmail,
-            message: "{VALUE} is not valid email."
-        }
-    },
-    password: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    image: {
-        type: String,
-        required: false
-    }
+	firstName: {
+		type: String,
+		trim: true,
+		required: true,
+	},
+	lastName: {
+		type: String,
+		trim: true,
+		required: true,
+	},
+	email: {
+		type: String,
+		minlength: 19,
+		required: true,
+		trim: true,
+		unique: true,
+		validate: {
+			validator: validator.isEmail,
+			message: "{VALUE} is not valid email.",
+		},
+	},
+	password: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	image: {
+		type: String,
+		required: false,
+	},
 });
 
 const UserModel: Model<UserDocument> = model<UserDocument>("User", UserSchema);
