@@ -28,6 +28,8 @@ export type RegisterOutput = {
     email: UserDocument["email"];
     firstName: string;
     lastName: string;
+	accessToken: string;
+    refreshToken: string;
 }
 
 export type RefreshTokenInput = {

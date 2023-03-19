@@ -1,24 +1,23 @@
 export type Left<T> = {
-    left: T;
-    right?: never;
+	left: T;
+	right?: never;
 };
 
 export type Right<U> = {
-    left?: never;
-    right: U;
+	left?: never;
+	right: U;
 };
 
 export type Either<T, U> = NonNullable<Left<T> | Right<U>>;
 
 export type UnwrapEither = <T, U>(e: Either<T, U>) => NonNullable<T | U>;
 
-export const unwrapEither: UnwrapEither = <T, U>({
-	left,
-	right,
-}: Either<T, U>) => {
+export const unwrapEither: UnwrapEither = <T, U>({ left, right }: Either<T, U>) => {
 	if (right !== undefined && left !== undefined) {
 		throw new Error(
-			`Received both left and right values at runtime when opening an Either\nLeft: ${JSON.stringify(left)}\nRight: ${JSON.stringify(right)}`,
+			`Received both left and right values at runtime when opening an Either\nLeft: ${JSON.stringify(
+				left,
+			)}\nRight: ${JSON.stringify(right)}`,
 		);
 		/*
      We're throwing in this function because this can only occur at runtime if something
@@ -32,9 +31,7 @@ export const unwrapEither: UnwrapEither = <T, U>({
 	if (right !== undefined) {
 		return right as NonNullable<U>;
 	}
-	throw new Error(
-		"Received no left or right values at runtime when opening Either",
-	);
+	throw new Error("Received no left or right values at runtime when opening Either");
 };
 
 export const isLeft = <T, U>(e: Either<T, U>): e is Left<T> => {
@@ -57,7 +54,10 @@ export const tryCatch = <E, A>(f: () => A, onThrow: (e: unknown) => E): Either<E
 	}
 };
 
-export const tryCatchAsync = async <E, A>(f: () => Promise<Either<E, A>>, onThrow: (e: unknown) => E): Promise<Either<E, A>> => {
+export const tryCatchAsync = async <E, A>(
+	f: () => Promise<Either<E, A>>,
+	onThrow: (e: unknown) => E,
+): Promise<Either<E, A>> => {
 	try {
 		return await f();
 	} catch (error) {
@@ -73,7 +73,10 @@ export const flatMap = <E, A, B>(e: Either<E, A>, f: (a: A) => Either<E, B>): Ei
 	return e;
 };
 
-export const flatMapAsync = async <E, A, B>(e: Either<E, A>, f: (a: A) => Promise<Either<E, B>>): Promise<Either<E, B>> => {
+export const flatMapAsync = async <E, A, B>(
+	e: Either<E, A>,
+	f: (a: A) => Promise<Either<E, B>>,
+): Promise<Either<E, B>> => {
 	if (isRight(e)) {
 		const a = unwrapEither(e);
 		return await f(a);
@@ -117,4 +120,26 @@ export const mapLeft = <E, A, B>(e: Either<E, A>, f: (er: E) => B): Either<B, A>
 		return makeLeft(f(err));
 	}
 	return e;
+};
+
+export const mapBoth = <E1, E2, A, B>(e: Either<E1, A>, onRight: (a: A) => B, onLeft: (e: E1) => E2): Either<E2, B> => {
+	if (isRight(e)) {
+		const result: A = unwrapEither(e);
+		return makeRight(onRight(result));
+	}
+	const error: E1 = unwrapEither(e);
+	return makeLeft(onLeft(error));
+};
+
+export const mapBothAsync = async <E1, E2, A, B>(
+	e: Either<E1, A>,
+	onRight: (a: A) => Promise<B>,
+	onLeft: (e: E1) => Promise<E2>,
+): Promise<Either<E2, B>> => {
+	if (isRight(e)) {
+		const result: A = unwrapEither(e);
+		return makeRight(await onRight(result));
+	}
+	const error: E1 = unwrapEither(e);
+	return makeLeft(await onLeft(error));
 };

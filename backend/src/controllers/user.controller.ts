@@ -1,5 +1,5 @@
 import { UserRepository } from "src/repositories/user.repository";
-import { Either, makeLeft, flatMapAsync, mapAsync, isLeft } from "src/utils/either";
+import { Either, makeLeft, flatMapAsync, mapAsync, mapBoth, isLeft, unwrapEither } from "src/utils/either";
 import { generateHashedPassword, generateAccessAndRefreshTokens, TokenType } from "src/utils";
 import {
 	ForgotPasswordInput,
@@ -33,15 +33,31 @@ export class UserController {
 				...registerInput,
 				password: hashedPassword,
 			});
+
 			if (isLeft(userOrError)) {
-				const error = userOrError.left.originalError;
-				if (error && error.code === 11000) {
+				const error = unwrapEither(userOrError);
+				if (error.originalError && error.originalError.code === 11000) {
 					const customEx = CustomException.badRequest(`Account with this email ${registerInput.email} already exists`);
 					logger.error(customEx.message);
 					return makeLeft(customEx);
 				}
+				return makeLeft(error);
 			}
-			return userOrError;
+
+			const user = unwrapEither(userOrError);
+			const loginOutputOrError = await this.loginUser({ email: user.email, password: registerInput.password });
+			return mapBoth(
+				loginOutputOrError,
+				(loginOutput) => ({
+					email: user.email,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					accessToken: loginOutput.accessToken,
+					refreshToken: loginOutput.refreshToken,
+				}),
+				(error) => error,
+			);
+
 		} catch (error) {
 			logger.error(error, "[UserController] registerUser failed");
 			return makeLeft(error);
