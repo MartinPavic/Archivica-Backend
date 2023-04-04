@@ -4,56 +4,56 @@ import { PostDomain } from "../domain/post";
 type PostDocument = Document & PostDomain
 
 const PostSchema: Schema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now
-    },
-    photoPath: { type: String },
-    description: { type: String },
-    architect: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "architects"
-    },
-    city: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "cities"
-    },
-    subAge: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "subages"
-    },
-    owner: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "users"
-    },
-    gallery: [
-        {
-            name: { type: String },
-            imagePath: { type: String },
-            width: { type: Number },
-            height: { type: Number }
-        }
-    ],
-    comments: [
-        {
-            owner: { type: Schema.Types.ObjectId },
-            comment: { type: String }
-        }
-    ],
-    likes: [
-        {
-            owner: { type: Schema.Types.ObjectId },
-            liked: { type: Boolean }
-        }
-    ]
+	// name: {
+	//     type: String,
+	//     required: true
+	// },
+	date: {
+		type: Date,
+		default: Date.now,
+	},
+	photoPath: { type: String },
+	description: { type: String },
+	architect: {
+		type: Schema.Types.ObjectId,
+		// required: true,
+		ref: "architects",
+	},
+	city: {
+		type: Schema.Types.ObjectId,
+		// required: true,
+		ref: "cities",
+	},
+	subAge: {
+		type: Schema.Types.ObjectId,
+		// required: true,
+		ref: "subages",
+	},
+	owner: {
+		type: Schema.Types.ObjectId,
+		required: true,
+		ref: "users",
+	},
+	gallery: [
+		{
+			name: { type: String },
+			imagePath: { type: String },
+			width: { type: Number },
+			height: { type: Number },
+		},
+	],
+	comments: [
+		{
+			owner: { type: Schema.Types.ObjectId },
+			comment: { type: String },
+		},
+	],
+	likes: [
+		{
+			owner: { type: Schema.Types.ObjectId },
+			liked: { type: Boolean },
+		},
+	],
 });
 
 const PostModel: Model<PostDocument> = model<PostDocument>("Post", PostSchema);

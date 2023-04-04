@@ -20,14 +20,14 @@ export class PostDomain implements Domain {
         }
     ];
 
-    comments?: [
+    comments: [
         {
             owner: ObjectId,
             comment: string
         }
     ];
 
-    likes?: [
+    likes: [
         {
             owner: ObjectId,
             liked: boolean
