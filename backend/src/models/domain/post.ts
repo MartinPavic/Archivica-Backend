@@ -3,15 +3,15 @@ import { Domain } from ".";
 
 export class PostDomain implements Domain {
 	_id: string;
-    name: string;
+    // name: string;
     date: Date;
-    photoPath: string;
+    // photoPath: string;
     description: string;
-    architect: ObjectId;
-    city: ObjectId;
-    subAge: ObjectId;
+    architect?: string;
+    city?: string;
+    subAge?: string;
     owner: ObjectId;
-    gallery: [
+    gallery?: [
         {
             name: string,
             imagePath: string,
@@ -20,14 +20,14 @@ export class PostDomain implements Domain {
         }
     ];
 
-    comments: [
+    comments?: [
         {
             owner: ObjectId,
             comment: string
         }
     ];
 
-    likes: [
+    likes?: [
         {
             owner: ObjectId,
             liked: boolean
