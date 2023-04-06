@@ -1,4 +1,4 @@
-import { UserDocument } from "src/models/mongo/user.model";
+import { UserDocument } from "../mongo/user.model";
 
 export type UserOutput = {
     firstName: string;

@@ -4,14 +4,14 @@ import { ContinentDomain } from "../domain/continent";
 type ContinentDocument = ContinentDomain & Document;
 
 const ContinentSchema: Schema = new Schema({
-    id: {
-        type: Number,
-        unique: true
-    },
-    name: {
-        type: String,
-        required: true
-    }
+	id: {
+		type: Number,
+		unique: true,
+	},
+	name: {
+		type: String,
+		required: true,
+	},
 });
 
 // ContinentSchema.statics.migrateContinents = async function() {

@@ -1,5 +1,5 @@
 import { createTransport, Transporter } from "nodemailer";
-import logger from "src/utils/logger";
+import logger from "../utils/logger";
 
 export default class EmailService {
 

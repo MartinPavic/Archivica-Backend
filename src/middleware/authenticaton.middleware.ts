@@ -1,10 +1,10 @@
 import { Response, NextFunction, Request } from "express";
-import { getUserToken } from "src/db/redis";
-import { UserModel } from "src/models/mongo/user.model";
-import { sendErrorResponse, TokenType } from "src/utils";
+import { getUserToken } from "../db/redis";
+import { UserModel } from "../models/mongo/user.model";
+import { sendErrorResponse, TokenType } from "../utils";
 import jwt from "jsonwebtoken";
-import { CustomException } from "src/models/exceptions/custom.exception";
-import logger from "src/utils/logger";
+import { CustomException } from "../models/exceptions/custom.exception";
+import logger from "../utils/logger";
 
 export type JwtUser = {
     id: string;

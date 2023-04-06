@@ -1,11 +1,11 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { CreateBlogCommentOutput, UpdateBlogCommentOutput } from "src/models/api/blog";
-import { BlogDomain } from "src/models/domain/blog";
-import { CustomException } from "src/models/exceptions/custom.exception";
-import { BlogDocument } from "src/models/mongo/blog.model";
-import { BlogRepository } from "src/repositories/blog.repository";
-import { Either, makeLeft, map } from "src/utils/either";
-import logger from "src/utils/logger";
+import { CreateBlogCommentOutput, UpdateBlogCommentOutput } from "../models/api/blog";
+import { BlogDomain } from "../models/domain/blog";
+import { CustomException } from "../models/exceptions/custom.exception";
+import { BlogDocument } from "../models/mongo/blog.model";
+import { BlogRepository } from "../repositories/blog.repository";
+import { Either, makeLeft, map } from "../utils/either";
+import logger from "../utils/logger";
 import { BaseController } from "./base.controller";
 
 export class BlogController extends BaseController<BlogDocument, BlogDomain> {

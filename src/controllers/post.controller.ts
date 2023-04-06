@@ -1,11 +1,11 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { CreatePostCommentOutput, UpdatePostCommentOutput } from "src/models/api/post";
-import { PostDomain } from "src/models/domain/post";
-import { CustomException } from "src/models/exceptions/custom.exception";
-import { PostDocument } from "src/models/mongo/post.model";
-import { PostRepository } from "src/repositories/post.repository";
-import { Either, makeLeft, map } from "src/utils/either";
-import logger from "src/utils/logger";
+import { CreatePostCommentOutput, UpdatePostCommentOutput } from "../models/api/post";
+import { PostDomain } from "../models/domain/post";
+import { CustomException } from "../models/exceptions/custom.exception";
+import { PostDocument } from "../models/mongo/post.model";
+import { PostRepository } from "../repositories/post.repository";
+import { Either, makeLeft, map } from "../utils/either";
+import logger from "../utils/logger";
 import { BaseController } from "./base.controller";
 
 export class PostController extends BaseController<PostDocument, PostDomain> {

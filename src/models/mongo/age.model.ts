@@ -6,18 +6,18 @@ export interface IAge extends Document {
 }
 
 const AgeSchema: Schema = new Schema({
-    name: {
-        type: String,
-        required: true
-    }
+	name: {
+		type: String,
+		required: true,
+	},
 });
 
 AgeSchema.statics.migrateAges = async function() {
-    const count = await this.count();
+	const count = await this.count();
 
-    if (count === 0) {
-        await this.insertMany(Ages);
-    }
+	if (count === 0) {
+		await this.insertMany(Ages);
+	}
 
 };
 

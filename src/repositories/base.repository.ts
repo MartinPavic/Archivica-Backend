@@ -1,10 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { MongoServerError } from "mongodb";
 import { Document, FilterQuery, Model, UpdateQuery } from "mongoose";
-import { MongoFilter, MongoSort } from "src/models/api/filterSort";
-import { CustomException } from "src/models/exceptions/custom.exception";
-import { Either, isLeft, makeLeft, makeRight } from "src/utils/either";
-import logger from "src/utils/logger";
+import { MongoFilter, MongoSort } from "../models/api/filterSort";
+import { CustomException } from "../models/exceptions/custom.exception";
+import { Either, isLeft, makeLeft, makeRight } from "../utils/either";
+import logger from "../utils/logger";
 
 export class BaseRepository<T extends Document> {
 	public name: string;

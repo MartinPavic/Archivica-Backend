@@ -1,11 +1,11 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { BaseRepository } from "src/repositories/base.repository";
+import { BaseRepository } from "../repositories/base.repository";
 import { ParsedQs } from "qs";
-import { CustomException } from "src/models/exceptions/custom.exception";
-import { Either, makeLeft, map } from "src/utils/either";
-import logger from "src/utils/logger";
-import { PaginateFilterSortService } from "src/services/paginateFilterSort.service";
-import { Domain } from "src/models/domain";
+import { CustomException } from "../models/exceptions/custom.exception";
+import { Either, makeLeft, map } from "../utils/either";
+import logger from "../utils/logger";
+import { PaginateFilterSortService } from "../services/paginateFilterSort.service";
+import { Domain } from "../models/domain";
 import { Document } from "mongoose";
 
 export class BaseController<T extends Document, D extends Domain> {

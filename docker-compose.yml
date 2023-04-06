@@ -3,10 +3,10 @@ services:
   # Backend
   api:
     container_name: "archivia_api"
-    build: ./backend
+    build: ./src
     restart: always
     volumes:
-      - ./backend/:/app
+      - ./src/:/app
     depends_on:
       - redis
       - mongodb

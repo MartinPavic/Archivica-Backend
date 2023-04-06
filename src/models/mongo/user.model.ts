@@ -1,43 +1,29 @@
 import { model, Document, Schema, Model } from "mongoose";
-// import jwt from "jsonwebtoken";
-// import bcrypt from "bcryptjs";
-// import { IJWTUser } from "models/postgres/interfaces";
-import validator from "validator";
 import { UserDomain } from "../domain/user";
 
-// import { setUserToken, deleteUserToken, getUserToken } from "../../db/redis";
-
-type UserDocument = Document & UserDomain
+type UserDocument = Document & UserDomain;
 
 const UserSchema: Schema = new Schema({
-	firstName: {
-		type: String,
-		trim: true,
-		required: true,
-	},
-	lastName: {
-		type: String,
-		trim: true,
-		required: true,
-	},
+	firstName: { type: Schema.Types.String, trim: true, required: true },
+	lastName: { type: Schema.Types.String, trim: true, required: true },
 	email: {
-		type: String,
+		type: Schema.Types.String,
 		minlength: 9,
 		required: true,
 		trim: true,
 		unique: true,
 		validate: {
-			validator: validator.isEmail,
+			validator: (email: string) => !!email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/),
 			message: "{VALUE} is not valid email.",
 		},
 	},
 	password: {
-		type: String,
+		type: Schema.Types.String,
 		required: true,
 		trim: true,
 	},
 	image: {
-		type: String,
+		type: Schema.Types.String,
 		required: false,
 	},
 });

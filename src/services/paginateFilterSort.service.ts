@@ -1,6 +1,6 @@
 import { ParsedQs } from "qs";
-import { IFilter, ISort, MongoFilter, MongoSort, FilterOperator, SortOperator } from "src/models/api/filterSort";
-import { foldr } from "src/utils/fp";
+import { IFilter, ISort, MongoFilter, MongoSort, FilterOperator, SortOperator } from "../models/api/filterSort";
+import { foldr } from "../utils/fp";
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_LIMIT = 10;

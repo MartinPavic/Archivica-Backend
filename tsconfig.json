@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "CommonJS",
         "esModuleInterop": true,
         "moduleResolution": "node",
         "sourceMap": true,
@@ -8,7 +8,6 @@
         "resolveJsonModule": true,
         "types": [
             "node",
-            "jest"
         ],
         "allowJs": false,
         "allowSyntheticDefaultImports": true,
@@ -23,7 +22,7 @@
         "strictBindCallApply": true,
         "strictFunctionTypes": true, // recommended => true
         "strictNullChecks": true,
-        "target": "es2017"
+        "target": "es2017",
     },
     "lib": [
         "es2017"

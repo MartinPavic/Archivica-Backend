@@ -1,7 +1,7 @@
-import { CustomException } from "src/models/exceptions/custom.exception";
-import { PostDocument, PostModel } from "src/models/mongo/post.model";
-import { Either, makeLeft, makeRight } from "src/utils/either";
-import logger from "src/utils/logger";
+import { CustomException } from "../models/exceptions/custom.exception";
+import { PostDocument, PostModel } from "../models/mongo/post.model";
+import { Either, makeLeft, makeRight } from "../utils/either";
+import logger from "../utils/logger";
 import { BaseRepository } from "./base.repository";
 
 export class PostRepository extends BaseRepository<PostDocument> {
@@ -82,7 +82,7 @@ export class PostRepository extends BaseRepository<PostDocument> {
 						},
 					},
 					}, { new: true });
-				return makeRight(updatedPost);
+				return makeRight(updatedPost!);
 			} else {
 				const updatedPost = await PostModel.findByIdAndUpdate(postId,
 					{ $pull: {
@@ -91,7 +91,7 @@ export class PostRepository extends BaseRepository<PostDocument> {
 						},
 					},
 					}, { new: true });
-				return makeRight(updatedPost);
+				return makeRight(updatedPost!);
 			}
 		} catch (error) {
 			logger.error(error, "[PostRepository] like failed");

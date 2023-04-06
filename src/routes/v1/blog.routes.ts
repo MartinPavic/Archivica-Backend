@@ -1,10 +1,10 @@
 import { Router, Request, Response } from "express";
 import authenticate from "../../middleware/authenticaton.middleware";
 import api from "../../constants";
-import { match } from "src/utils/either";
-import { sendErrorResponse } from "src/utils";
-import { BlogController } from "src/controllers/blog.controller";
-import { BlogCommentInput, BlogLikeInput, CreateBlogInput, UpdateBlogInput } from "src/models/api/blog";
+import { match } from "../../utils/either";
+import { sendErrorResponse } from "../../utils";
+import { BlogController } from "../../controllers/blog.controller";
+import { BlogCommentInput, BlogLikeInput, CreateBlogInput, UpdateBlogInput } from "../../models/api/blog";
 
 export const blogRouter = (router: Router, controller: BlogController): void => {
 	router.get(api.BLOGS, authenticate, async (request: Request, response: Response) => {

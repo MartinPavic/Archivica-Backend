@@ -2,7 +2,7 @@ import { Response } from "express";
 import bcrypt from "bcryptjs";
 import { Either, makeRight, makeLeft } from "./either";
 import jwt from "jsonwebtoken";
-import { CustomException } from "src/models/exceptions/custom.exception";
+import { CustomException } from "../models/exceptions/custom.exception";
 import logger from "./logger";
 
 const sendErrorResponse = (response: Response, exception: CustomException): Response<any, Record<string, any>> => {

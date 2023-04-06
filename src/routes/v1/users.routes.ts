@@ -1,12 +1,12 @@
 import { Router, Request, Response } from "express";
 import api from "../../constants";
-import { UserController } from "src/controllers/user.controller";
-import { ForgotPasswordInput, LoginInput, RefreshTokenInput, RegisterInput, UserOutput, ValidateTokenInput } from "src/models/api/user";
-import { match } from "src/utils/either";
-import { sendErrorResponse } from "src/utils";
-import authenticate from "src/middleware/authenticaton.middleware";
-import { deleteUserToken } from "src/db/redis";
-import { UserDocument } from "src/models/mongo/user.model";
+import { UserController } from "../../controllers/user.controller";
+import { ForgotPasswordInput, LoginInput, RefreshTokenInput, RegisterInput, UserOutput, ValidateTokenInput } from "../../models/api/user";
+import { match } from "../../utils/either";
+import { sendErrorResponse } from "../../utils";
+import authenticate from "../../middleware/authenticaton.middleware";
+import { deleteUserToken } from "../../db/redis";
+import { UserDocument } from "../../models/mongo/user.model";
 
 export const userRouter = (router: Router, controller: UserController): void => {
 	router.post(api.USER_REGISTER, async (request: Request, response: Response) => {

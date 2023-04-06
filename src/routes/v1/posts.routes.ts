@@ -1,10 +1,10 @@
 import { Router, Request, Response } from "express";
-import { sendErrorResponse } from "src/utils";
+import { sendErrorResponse } from "../../utils";
 import api from "../../constants";
-import { PostController } from "src/controllers/post.controller";
-import { match } from "src/utils/either";
-import authenticate from "src/middleware/authenticaton.middleware";
-import { CreatePostInput, PostCommentInput, PostLikeInput, UpdatePostInput } from "src/models/api/post";
+import { PostController } from "../../controllers/post.controller";
+import { match } from "../../utils/either";
+import authenticate from "../../middleware/authenticaton.middleware";
+import { CreatePostInput, PostCommentInput, PostLikeInput, UpdatePostInput } from "../../models/api/post";
 
 export const postRouter = (router: Router, controller: PostController): void => {
 	router.get(api.POSTS, authenticate, async (request: Request, response: Response) => {

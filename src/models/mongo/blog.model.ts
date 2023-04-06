@@ -4,57 +4,57 @@ import { BlogDomain } from "../domain/blog";
 type BlogDocument = BlogDomain & Document
 
 const BlogSchema: Schema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    description: { type: String },
-    photoPath: { type: String },
-    readingTime: {
-        duration: { type: Number },
-        unit: { type: String }
-    },
-    date: {
-        type: Date,
-        default: Date.now
-    },
-    owner: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "users"
-    },
-    comments: [
-        {
-            id: { type: Schema.Types.ObjectId },
-            owner: { type: Schema.Types.ObjectId },
-            comment: { type: String },
-            date: {
-                type: Date,
-                default: Date.now
-            }
-        }
-    ],
-    likes: [
-        {
-            owner: { type: Schema.Types.ObjectId },
-            liked: { type: Boolean },
-            date: {
-                type: Date,
-                default: Date.now
-            }
-        }
-    ],
-    gallery: [
-        {
-            name: { type: String },
-            imagePath: { type: String },
-            width: { type: Number },
-            height: { type: Number }
-        }
-    ],
-    connectedPosts: [
-        { post: { type: Schema.Types.ObjectId } }
-    ]
+	name: {
+		type: String,
+		required: true,
+	},
+	description: { type: String },
+	photoPath: { type: String },
+	readingTime: {
+		duration: { type: Number },
+		unit: { type: String },
+	},
+	date: {
+		type: Date,
+		default: Date.now,
+	},
+	owner: {
+		type: Schema.Types.ObjectId,
+		required: true,
+		ref: "users",
+	},
+	comments: [
+		{
+			id: { type: Schema.Types.ObjectId },
+			owner: { type: Schema.Types.ObjectId },
+			comment: { type: String },
+			date: {
+				type: Date,
+				default: Date.now,
+			},
+		},
+	],
+	likes: [
+		{
+			owner: { type: Schema.Types.ObjectId },
+			liked: { type: Boolean },
+			date: {
+				type: Date,
+				default: Date.now,
+			},
+		},
+	],
+	gallery: [
+		{
+			name: { type: String },
+			imagePath: { type: String },
+			width: { type: Number },
+			height: { type: Number },
+		},
+	],
+	connectedPosts: [
+		{ post: { type: Schema.Types.ObjectId } },
+	],
 });
 
 const BlogModel: Model<BlogDocument> = model<BlogDocument>("Blog", BlogSchema);

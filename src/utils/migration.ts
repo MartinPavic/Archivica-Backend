@@ -6,7 +6,7 @@ import {
 	ArchitectCreationAttributes,
 	ArchitectureStyleCreationAttributes,
 	ArchitectureTypeCreationAttributes,
-} from "src/models/postgres/interfaces";
+} from "../models/postgres/interfaces";
 import {
 	Age,
 	SubAge,
@@ -17,7 +17,7 @@ import {
 	Architect,
 	ArchitectureStyle,
 	ArchitectureType,
-} from "src/models/postgres";
+} from "../models/postgres";
 
 const startMigration = async (): Promise<void> => {
 	console.info("Migration started.");

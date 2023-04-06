@@ -1,6 +1,6 @@
-import { UserRepository } from "src/repositories/user.repository";
-import { Either, makeLeft, flatMapAsync, mapAsync, mapBoth, isLeft, unwrapEither, makeRight } from "src/utils/either";
-import { generateHashedPassword, generateAccessAndRefreshTokens, TokenType } from "src/utils";
+import { UserRepository } from "../repositories/user.repository";
+import { Either, makeLeft, flatMapAsync, mapAsync, mapBoth, isLeft, unwrapEither, makeRight } from "../utils/either";
+import { generateHashedPassword, generateAccessAndRefreshTokens, TokenType } from "../utils";
 import {
 	ForgotPasswordInput,
 	ForgotPasswordOutput,
@@ -12,13 +12,13 @@ import {
 	RegisterOutput,
 	ValidateTokenInput,
 	ValidateTokenOutput,
-} from "src/models/api/user";
-import logger from "src/utils/logger";
-import { deleteUserToken, getUserToken, setUserToken } from "src/db/redis";
+} from "../models/api/user";
+import logger from "../utils/logger";
+import { deleteUserToken, getUserToken, setUserToken } from "../db/redis";
 import jwt from "jsonwebtoken";
-import { JwtUser } from "src/middleware/authenticaton.middleware";
-import { CustomException } from "src/models/exceptions/custom.exception";
-import EmailService from "src/services/email.service";
+import { JwtUser } from "../middleware/authenticaton.middleware";
+import { CustomException } from "../models/exceptions/custom.exception";
+import EmailService from "../services/email.service";
 
 export class UserController {
 

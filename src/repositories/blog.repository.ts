@@ -1,7 +1,7 @@
-import { CustomException } from "src/models/exceptions/custom.exception";
-import { BlogDocument, BlogModel } from "src/models/mongo/blog.model";
-import { Either, makeLeft, makeRight } from "src/utils/either";
-import logger from "src/utils/logger";
+import { CustomException } from "../models/exceptions/custom.exception";
+import { BlogDocument, BlogModel } from "../models/mongo/blog.model";
+import { Either, makeLeft, makeRight } from "../utils/either";
+import logger from "../utils/logger";
 import { BaseRepository } from "./base.repository";
 
 export class BlogRepository extends BaseRepository<BlogDocument> {
@@ -85,12 +85,12 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
 						},
 					},
 					}, { new: true });
-				return makeRight(updatedBlog);
+				return makeRight(updatedBlog!);
 			} else {
 				const updatedBlog = await BlogModel.findOneAndUpdate(
 					{ _id: blogId, "likes.owner": userId },
 					{ $set: { "likes.$.liked": isLike, "likes.$.date": new Date() } }, { new: true });
-				return makeRight(updatedBlog);
+				return makeRight(updatedBlog!);
 			}
 		} catch (error) {
 			logger.error(error, "[BlogRepository] like failed");

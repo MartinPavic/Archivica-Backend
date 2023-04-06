@@ -4,28 +4,28 @@ import { ArchitectureStyleDomain } from "../domain/architectureStyle";
 type ArchitectureStyleDocument = ArchitectureStyleDomain & Document
 
 const ArchitectureStyleSchema: Schema = new Schema({
-    id: {
-        type: Schema.Types.ObjectId
-    },
-    name: {
-        type: Schema.Types.String,
-        trim: true,
-        required: true
-    },
-    synonyms: {
-        type: Schema.Types.Array
-    },
-    start: {
-        year: { type: Schema.Types.Number },
-        unit: { type: Schema.Types.String, enum: ["AD", "BC"] }
-    },
-    end: {
-        year: { type: Schema.Types.Number },
-        unit: { type: Schema.Types.String, enum: ["AD", "BC"] }
-    },
-    stillActive: {
-        type: Schema.Types.Boolean
-    }
+	id: {
+		type: Schema.Types.ObjectId,
+	},
+	name: {
+		type: Schema.Types.String,
+		trim: true,
+		required: true,
+	},
+	synonyms: {
+		type: Schema.Types.Array,
+	},
+	start: {
+		year: { type: Schema.Types.Number },
+		unit: { type: Schema.Types.String, enum: ["AD", "BC"] },
+	},
+	end: {
+		year: { type: Schema.Types.Number },
+		unit: { type: Schema.Types.String, enum: ["AD", "BC"] },
+	},
+	stillActive: {
+		type: Schema.Types.Boolean,
+	},
 });
 
 // ArchitectureStyleSchema.statics.migrateArchitectureStyles = async function() {

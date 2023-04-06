@@ -1,9 +1,9 @@
-import { ForgotPasswordInput, LoginInput } from "src/models/api/user";
-import { CustomException } from "src/models/exceptions/custom.exception";
-import { UserModel, UserDocument } from "src/models/mongo/user.model";
-import { checkPassword } from "src/utils";
-import { Either, makeLeft, makeRight } from "src/utils/either";
-import logger from "src/utils/logger";
+import { ForgotPasswordInput, LoginInput } from "../models/api/user";
+import { CustomException } from "../models/exceptions/custom.exception";
+import { UserModel, UserDocument } from "../models/mongo/user.model";
+import { checkPassword } from "../utils";
+import { Either, makeLeft, makeRight } from "../utils/either";
+import logger from "../utils/logger";
 import { BaseRepository } from "./base.repository";
 
 export class UserRepository extends BaseRepository<UserDocument> {
