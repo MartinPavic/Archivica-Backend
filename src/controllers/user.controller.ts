@@ -1,5 +1,5 @@
 import { UserRepository } from "../repositories/user.repository";
-import { Either, makeLeft, flatMapAsync, mapAsync, mapBoth, isLeft, unwrapEither, makeRight } from "../utils/either";
+import { Either, makeLeft, flatMapAsync, mapAsync, mapBoth, isLeft, unwrapEither, makeRight, map } from "../utils/either";
 import { generateHashedPassword, generateAccessAndRefreshTokens, TokenType } from "../utils";
 import {
 	ForgotPasswordInput,
@@ -10,6 +10,8 @@ import {
 	RefreshTokenOutput,
 	RegisterInput,
 	RegisterOutput,
+	ResetPasswordInput,
+	ResetPasswordOutput,
 	ValidateTokenInput,
 	ValidateTokenOutput,
 } from "../models/api/user";
@@ -156,17 +158,38 @@ To reset your password, click on this link: ${resetPasswordLink}
 	public async validateToken(validateTokenInput: ValidateTokenInput): Promise<Either<CustomException, ValidateTokenOutput>> {
 		try {
 			const userOrError = await this.userRepository.getByEmail({ email: validateTokenInput.email });
-			if (isLeft(userOrError)) {
-				return makeRight(false);
-			}
+			if (isLeft(userOrError)) return makeRight(false);
+
 			const tokenExists = await getUserToken(validateTokenInput.email);
-			if (tokenExists) {
-				await deleteUserToken(validateTokenInput.email);
-				return makeRight(true);
-			}
-			return makeRight(false);
+
+			return makeRight(!!tokenExists);
 		} catch (error) {
 			logger.error(error, "[UserController] validateToken failed");
+			return makeLeft(error);
+		}
+	}
+
+	public async resetPassword(resetPasswordInput: ResetPasswordInput): Promise<Either<CustomException, ResetPasswordOutput>> {
+		try {
+			const userOrError = await this.userRepository.getByEmail({ email: resetPasswordInput.email });
+			if (isLeft(userOrError)) return userOrError;
+
+			const tokenExists = await getUserToken(resetPasswordInput.email);
+			if (!tokenExists) return makeLeft(CustomException.unauthorized("Token invalid"));
+
+			if (resetPasswordInput.newPassword !== resetPasswordInput.confirmNewPassword) {
+				return makeLeft(CustomException.badRequest("Passwords are not equal"));
+			}
+
+			await deleteUserToken(resetPasswordInput.email);
+			const user = unwrapEither(userOrError);
+			const hashedPassword = await generateHashedPassword(resetPasswordInput.newPassword);
+
+			const setNewPasswordResult = await this.userRepository.setNewPassword(user.id!, hashedPassword);
+			return map(setNewPasswordResult, (user) => "Password successfully changed");
+
+		} catch (error) {
+			logger.error(error, "[UserController] resetPassword failed");
 			return makeLeft(error);
 		}
 	}

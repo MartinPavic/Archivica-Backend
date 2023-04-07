@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 mongoose.Promise = global.Promise;
+mongoose.set("strictQuery", false);
 
 let db: mongoose.Connection;
 

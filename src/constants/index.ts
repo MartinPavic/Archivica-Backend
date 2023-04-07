@@ -6,6 +6,7 @@ export default {
 	REFRESH_TOKEN: "/api/v1/users/refresh-token",
 	VALIDATE_TOKEN: "/api/v1/users/validate-token",
 	FORGOT_PASSWORD: "/api/v1/users/forgot-password",
+	RESET_PASSWORD: "/api/v1/users/reset-password",
 	POSTS: "/api/v1/posts",
 	BLOGS: "/api/v1/blogs",
 	HEALTH: "/api/v1/health",

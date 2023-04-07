@@ -35,13 +35,22 @@ export class UserRepository extends BaseRepository<UserDocument> {
 			const user = await UserModel.findOne({ email: input.email });
 			if (!user) {
 				const error = CustomException.notFound(`User with email: ${input.email} not found`);
-				console.log(error);
 				logger.error(`[UserRepository] ${error}`);
 				return makeLeft(error);
 			}
 			return makeRight(user);
 		} catch (error) {
 			logger.error(error, "[UserRepository] getByEmail failed");
+			return makeLeft(error);
+		}
+	}
+
+	async setNewPassword(userId: string, newPassword: string): Promise<Either<CustomException, UserDocument>> {
+		try {
+			const result = await this.update<{ password: string }>(userId, { password: newPassword });
+			return result;
+		} catch (error) {
+			logger.error(error, "[UserRepository] setNewPassword failed");
 			return makeLeft(error);
 		}
 	}

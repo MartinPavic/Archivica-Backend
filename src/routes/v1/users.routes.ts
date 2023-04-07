@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import api from "../../constants";
 import { UserController } from "../../controllers/user.controller";
-import { ForgotPasswordInput, LoginInput, RefreshTokenInput, RegisterInput, UserOutput, ValidateTokenInput } from "../../models/api/user";
+import { ForgotPasswordInput, LoginInput, RefreshTokenInput, RegisterInput, ResetPasswordInput, UserOutput, ValidateTokenInput } from "../../models/api/user";
 import { match } from "../../utils/either";
 import { sendErrorResponse } from "../../utils";
 import authenticate from "../../middleware/authenticaton.middleware";
@@ -105,4 +105,19 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			sendErrorResponse(response, error);
 		}
 	});
+
+	router.post(api.RESET_PASSWORD, async (request: Request, response: Response) => {
+		try {
+			const resetPasswordInput: ResetPasswordInput = request.body as ResetPasswordInput;
+			const result = await controller.resetPassword(resetPasswordInput);
+			match(
+				result,
+				(resetPasswordOutput) => response.json(resetPasswordOutput),
+				(error) => sendErrorResponse(response, error),
+			);
+		} catch (error) {
+			sendErrorResponse(response, error);
+		}
+	});
+
 };

@@ -53,3 +53,12 @@ export type ValidateTokenInput = {
 }
 
 export type ValidateTokenOutput = boolean;
+
+export type ResetPasswordInput = {
+	email: string;
+	token: string;
+	newPassword: string;
+	confirmNewPassword: string;
+}
+
+export type ResetPasswordOutput = string
