@@ -5,6 +5,7 @@
     "main": "server.ts",
 	"repository": {"directory": "src"},
     "scripts": {
+		"build": "tsc",
         "compile": "tsc && node dist/server.js",
         "start:local": "cross-env NODE_ENV=local nodemon server.js",
         "start:dev": "rm -rf dist && npm run lint && cross-env NODE_ENV=development NODE_PATH=./dist nodemon -e ts --exec 'npm run compile'",
