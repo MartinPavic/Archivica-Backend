@@ -1,5 +1,5 @@
 import { model, Document, Schema, Model } from "mongoose";
-import Architects from "migration/data/architects.json";
+// import Architects from "migration/data/architects.json";
 
 export interface IArchitect extends Document {
     firstName: string;
@@ -17,16 +17,25 @@ const ArchitectSchema: Schema = new Schema({
 		trim: true,
 		required: true,
 	},
+	yearBorn: {
+		type: Number,
+	},
+	yearEnd: {
+		type: Number,
+	},
+	countryId: {
+		type: Schema.Types.ObjectId,
+	},
 });
 
-ArchitectSchema.statics.migrateArchitects = async function() {
-	const count = await this.count();
+// ArchitectSchema.statics.migrateArchitects = async function() {
+// 	const count = await this.count();
 
-	if (count === 0) {
-		await this.insertMany(Architects);
-	}
+// 	if (count === 0) {
+// 		await this.insertMany(Architects);
+// 	}
 
-};
+// };
 
 export interface ArchitectModel extends Model<IArchitect> {
     migrateArchitects(): Promise<any>

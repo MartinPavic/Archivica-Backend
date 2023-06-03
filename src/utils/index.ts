@@ -4,6 +4,7 @@ import { Either, makeRight, makeLeft } from "./either";
 import jwt from "jsonwebtoken";
 import { CustomException } from "../models/exceptions/custom.exception";
 import logger from "./logger";
+import { getErrorMessage } from "./error";
 
 const sendErrorResponse = (response: Response, exception: CustomException): Response<any, Record<string, any>> => {
 	return response.status(exception.statusCode || 500).json({ name: exception.name, message: exception.message });
@@ -79,9 +80,9 @@ const generateAccessAndRefreshTokens = (userId: string): Either<CustomException,
 		).toString();
 
 		return makeRight({ accessToken, refreshToken });
-	} catch (e) {
-		logger.error(e);
-		return makeLeft(e);
+	} catch (error) {
+		logger.error(error);
+		return makeLeft(new CustomException(getErrorMessage(error)));
 	}
 };
 

@@ -28,10 +28,6 @@ const CountrySchema: Schema = new Schema({
 	yearEndAD: {
 		type: Schema.Types.Boolean,
 	},
-	previousCountryId: {
-		type: Schema.Types.ObjectId,
-		ref: "countries",
-	},
 	stillActive: {
 		type: Schema.Types.Boolean,
 	},

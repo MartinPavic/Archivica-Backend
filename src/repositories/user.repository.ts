@@ -1,3 +1,4 @@
+import { getErrorMessage } from "../utils/error";
 import { ForgotPasswordInput, LoginInput } from "../models/api/user";
 import { CustomException } from "../models/exceptions/custom.exception";
 import { UserModel, UserDocument } from "../models/mongo/user.model";
@@ -26,7 +27,7 @@ export class UserRepository extends BaseRepository<UserDocument> {
 			return makeLeft(error);
 		} catch (error) {
 			logger.error(error, "[UserRepository] getByCredentials failed");
-			return error;
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -41,7 +42,7 @@ export class UserRepository extends BaseRepository<UserDocument> {
 			return makeRight(user);
 		} catch (error) {
 			logger.error(error, "[UserRepository] getByEmail failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -51,7 +52,7 @@ export class UserRepository extends BaseRepository<UserDocument> {
 			return result;
 		} catch (error) {
 			logger.error(error, "[UserRepository] setNewPassword failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 

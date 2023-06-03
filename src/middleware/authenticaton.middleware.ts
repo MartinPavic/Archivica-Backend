@@ -5,6 +5,7 @@ import { sendErrorResponse, TokenType } from "../utils";
 import jwt from "jsonwebtoken";
 import { CustomException } from "../models/exceptions/custom.exception";
 import logger from "../utils/logger";
+import { getErrorMessage } from "../utils/error";
 
 export type JwtUser = {
     id: string;
@@ -39,7 +40,7 @@ const authenticate = async (
 			sendErrorResponse(res, CustomException.unauthorized("User not authorized"));
 		}
 	} catch (error) {
-		logger.error(error.name);
+		logger.error(getErrorMessage(error));
 		sendErrorResponse(res, CustomException.unauthorized("User not authorized"));
 	}
 };

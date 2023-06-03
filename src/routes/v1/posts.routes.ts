@@ -5,6 +5,8 @@ import { PostController } from "../../controllers/post.controller";
 import { match } from "../../utils/either";
 import authenticate from "../../middleware/authenticaton.middleware";
 import { CreatePostInput, PostCommentInput, PostLikeInput, UpdatePostInput } from "../../models/api/post";
+import { CustomException } from "../../models/exceptions/custom.exception";
+import { getErrorMessage } from "../../utils/error";
 
 export const postRouter = (router: Router, controller: PostController): void => {
 	router.get(api.POSTS, authenticate, async (request: Request, response: Response) => {
@@ -16,21 +18,21 @@ export const postRouter = (router: Router, controller: PostController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
 	router.get(api.POSTS + "/:id", authenticate, async (request: Request, response: Response) => {
 		try {
 			const id = request.params.id;
-			const result = await controller.getById(id);
+			const result = await controller.getById(id!);
 			match(
 				result,
 				(getPostOutput) => response.json(getPostOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -44,7 +46,7 @@ export const postRouter = (router: Router, controller: PostController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -52,28 +54,28 @@ export const postRouter = (router: Router, controller: PostController): void => 
 		try {
 			const input = request.body as UpdatePostInput;
 			const id = request.params.id;
-			const result = await controller.update(id, input);
+			const result = await controller.update(id!, input);
 			match(
 				result,
 				(updatePostOutput) => response.json(updatePostOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
 	router.delete(api.POSTS + "/:id", authenticate, async (request: Request, response: Response) => {
 		try {
 			const id = request.params.id;
-			const result = await controller.delete(id);
+			const result = await controller.delete(id!);
 			match(
 				result,
 				(deletePostOutput) => response.json(deletePostOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -82,14 +84,14 @@ export const postRouter = (router: Router, controller: PostController): void => 
 			const postId = request.params.id;
 			const user = response.locals.user;
 			const input = request.body as PostCommentInput;
-			const result = await controller.createComment(postId, user.id, input.comment);
+			const result = await controller.createComment(postId!, user.id, input.comment);
 			match(
 				result,
 				(commentPostOutput) => response.status(201).json(commentPostOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -102,14 +104,14 @@ export const postRouter = (router: Router, controller: PostController): void => 
 				const user = response.locals.user;
 				const commentId = request.params.commentId;
 				const input = request.body as PostCommentInput;
-				const result = await controller.updateComment(postId, user.id, commentId, input.comment);
+				const result = await controller.updateComment(postId!, user.id, commentId!, input.comment);
 				match(
 					result,
 					(commentPostOutput) => response.json(commentPostOutput),
 					(error) => sendErrorResponse(response, error),
 				);
 			} catch (error) {
-				sendErrorResponse(response, error);
+				sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 			}
 		},
 	);
@@ -122,14 +124,14 @@ export const postRouter = (router: Router, controller: PostController): void => 
 				const postId = request.params.id;
 				const user = response.locals.user;
 				const commentId = request.params.commentId;
-				const result = await controller.deleteComment(postId, user.id, commentId);
+				const result = await controller.deleteComment(postId!, user.id, commentId!);
 				match(
 					result,
 					(commentPostOutput) => response.json(commentPostOutput),
 					(error) => sendErrorResponse(response, error),
 				);
 			} catch (error) {
-				sendErrorResponse(response, error);
+				sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 			}
 		},
 	);
@@ -139,14 +141,14 @@ export const postRouter = (router: Router, controller: PostController): void => 
 			const post = request.params.id;
 			const user = response.locals.user;
 			const input = request.body as PostLikeInput;
-			const result = await controller.like(post, user.id, input.like);
+			const result = await controller.like(post!, user.id, input.like);
 			match(
 				result,
 				(likePostOutput) => response.status(201).json(likePostOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 };

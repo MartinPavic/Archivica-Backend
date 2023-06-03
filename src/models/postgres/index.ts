@@ -51,18 +51,18 @@ PostComment.belongsTo(User, { foreignKey: "userId" });
 PostComment.belongsTo(Post, { foreignKey: "postId" });
 
 export {
-    Age,
-    Continent,
-    Country,
-    Image,
-    SubAge,
-    State,
-    User,
-    City,
-    Architect,
-    ArchitectureStyle,
-    ArchitectureType,
-    Post,
-    PostGallery,
-    PostComment
+	Age,
+	Continent,
+	Country,
+	Image,
+	SubAge,
+	State,
+	User,
+	City,
+	Architect,
+	ArchitectureStyle,
+	ArchitectureType,
+	Post,
+	PostGallery,
+	PostComment,
 };

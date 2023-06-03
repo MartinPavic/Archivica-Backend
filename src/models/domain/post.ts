@@ -1,17 +1,18 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { ObjectId } from "mongodb";
 import { Domain } from ".";
 
 export class PostDomain implements Domain {
-	_id: string;
-    // name: string;
-    date: Date;
-    // photoPath: string;
-    description: string;
-    architect?: string;
-    city?: string;
-    subAge?: string;
-    owner: ObjectId;
-    gallery?: [
+	_id!: string;
+	// name: string;
+	date!: Date;
+	// photoPath: string;
+	description!: string;
+	architect?: string;
+	city?: string;
+	subAge?: string;
+	owner!: ObjectId;
+	gallery?: [
         {
             name: string,
             imagePath: string,
@@ -20,21 +21,21 @@ export class PostDomain implements Domain {
         }
     ];
 
-    comments: [
-        {
-            owner: ObjectId,
-            comment: string
-        }
-    ];
+	comments!: [
+		{
+			owner: ObjectId;
+			comment: string;
+		}
+	];
 
-    likes: [
-        {
-            owner: ObjectId,
-            liked: boolean
-        }
-    ];
+	likes!: [
+		{
+			owner: ObjectId;
+			liked: boolean;
+		}
+	];
 
-    toJson(): string {
+	toJson(): string {
     	return JSON.stringify(this);
-    }
+	}
 }

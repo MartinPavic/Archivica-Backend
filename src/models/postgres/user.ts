@@ -5,7 +5,7 @@ import {
 } from "sequelize";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { setUserToken, deleteUserToken } from "../../db/redis";
+import { setUserToken } from "../../db/redis";
 import { IUserAttributes, UserCreationAttributes } from "./interfaces";
 
 class User extends Model<IUserAttributes, UserCreationAttributes> implements IUserAttributes {

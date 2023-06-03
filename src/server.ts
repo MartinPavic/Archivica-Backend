@@ -1,9 +1,14 @@
 import express from "express";
-import api from "./src/routes/v1";
+import api from "./routes/v1";
 import path from "path";
-import { connectMongo } from "./src/db/mongoose";
-// eslint-disable-next-line import/no-commonjs, @typescript-eslint/no-var-requires
-require("dotenv").config();
+import { connectMongo } from "./db/mongoose";
+import { config } from "dotenv";
+import { fileURLToPath } from "url";
+
+config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function run(): Promise<void> {
 	const app = express();

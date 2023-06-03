@@ -1,3 +1,4 @@
+import { getErrorMessage } from "../utils/error";
 import { CustomException } from "../models/exceptions/custom.exception";
 import { BlogDocument, BlogModel } from "../models/mongo/blog.model";
 import { Either, makeLeft, makeRight } from "../utils/either";
@@ -24,7 +25,7 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
 			return makeRight(blog);
 		} catch (error) {
 			logger.error(error, "[BlogRepository] createComment failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -43,7 +44,7 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
 			return makeRight(updatedBlog);
 		} catch (error) {
 			logger.error(error, "[BlogRepository] updateComment failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -62,7 +63,7 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
 			return makeRight(updatedBlog);
 		} catch (error) {
 			logger.error(error, "[BlogRepository] deleteComment failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -94,7 +95,7 @@ export class BlogRepository extends BaseRepository<BlogDocument> {
 			}
 		} catch (error) {
 			logger.error(error, "[BlogRepository] like failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 

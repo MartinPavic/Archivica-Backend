@@ -7,6 +7,8 @@ import { sendErrorResponse } from "../../utils";
 import authenticate from "../../middleware/authenticaton.middleware";
 import { deleteUserToken } from "../../db/redis";
 import { UserDocument } from "../../models/mongo/user.model";
+import { CustomException } from "../../models/exceptions/custom.exception";
+import { getErrorMessage } from "../../utils/error";
 
 export const userRouter = (router: Router, controller: UserController): void => {
 	router.post(api.USER_REGISTER, async (request: Request, response: Response) => {
@@ -19,7 +21,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -33,7 +35,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -47,7 +49,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			};
 			response.json(user);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -60,7 +62,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			}
 			response.json("Successfully logged out!");
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -74,7 +76,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -88,7 +90,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -102,7 +104,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -116,7 +118,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 

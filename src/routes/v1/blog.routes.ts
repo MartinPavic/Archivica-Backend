@@ -5,6 +5,8 @@ import { match } from "../../utils/either";
 import { sendErrorResponse } from "../../utils";
 import { BlogController } from "../../controllers/blog.controller";
 import { BlogCommentInput, BlogLikeInput, CreateBlogInput, UpdateBlogInput } from "../../models/api/blog";
+import { CustomException } from "../../models/exceptions/custom.exception";
+import { getErrorMessage } from "../../utils/error";
 
 export const blogRouter = (router: Router, controller: BlogController): void => {
 	router.get(api.BLOGS, authenticate, async (request: Request, response: Response) => {
@@ -16,21 +18,21 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
 	router.get(api.BLOGS + "/:id", authenticate, async (request: Request, response: Response) => {
 		try {
 			const id = request.params.id;
-			const result = await controller.getById(id);
+			const result = await controller.getById(id!);
 			match(
 				result,
 				(getBlogOutput) => response.json(getBlogOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -44,7 +46,7 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -52,28 +54,28 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
 		try {
 			const input = request.body as UpdateBlogInput;
 			const id = request.params.id;
-			const result = await controller.update(id, input);
+			const result = await controller.update(id!, input);
 			match(
 				result,
 				(updateBlogOutput) => response.json(updateBlogOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
 	router.delete(api.BLOGS + "/:id", authenticate, async (request: Request, response: Response) => {
 		try {
 			const id = request.params.id;
-			const result = await controller.delete(id);
+			const result = await controller.delete(id!);
 			match(
 				result,
 				(deleteBlogOutput) => response.json(deleteBlogOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -82,14 +84,14 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
 			const blogId = request.params.id;
 			const user = response.locals.user;
 			const input = request.body as BlogCommentInput;
-			const result = await controller.createComment(blogId, user.id, input.comment);
+			const result = await controller.createComment(blogId!, user.id, input.comment);
 			match(
 				result,
 				(commentBlogOutput) => response.status(201).json(commentBlogOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -99,14 +101,14 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
 			const user = response.locals.user;
 			const commentId = request.params.commentId;
 			const input = request.body as BlogCommentInput;
-			const result = await controller.updateComment(blogId, user.id, commentId, input.comment);
+			const result = await controller.updateComment(blogId!, user.id, commentId!, input.comment);
 			match(
 				result,
 				(commentBlogOutput) => response.json(commentBlogOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -115,14 +117,14 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
 			const blogId = request.params.id;
 			const user = response.locals.user;
 			const commentId = request.params.commentId;
-			const result = await controller.deleteComment(blogId, user.id, commentId);
+			const result = await controller.deleteComment(blogId!, user.id, commentId!);
 			match(
 				result,
 				(commentBlogOutput) => response.json(commentBlogOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
@@ -131,14 +133,14 @@ export const blogRouter = (router: Router, controller: BlogController): void => 
 			const blogId = request.params.id;
 			const user = response.locals.user;
 			const input = request.body as BlogLikeInput;
-			const result = await controller.like(blogId, user.id, input.like);
+			const result = await controller.like(blogId!, user.id, input.like);
 			match(
 				result,
 				(likeBlogOutput) => response.status(201).json(likeBlogOutput),
 				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
-			sendErrorResponse(response, error);
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 };

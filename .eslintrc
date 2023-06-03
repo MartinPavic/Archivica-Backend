@@ -1,4 +1,4 @@
-module.exports = {
+{
 	"root": true,
 	"env": {
 		"jest": true,
@@ -63,4 +63,4 @@ module.exports = {
 		},
 		"sourceType": "module",
 	},
-};
+}

@@ -5,6 +5,7 @@ import { MongoFilter, MongoSort } from "../models/api/filterSort";
 import { CustomException } from "../models/exceptions/custom.exception";
 import { Either, isLeft, makeLeft, makeRight } from "../utils/either";
 import logger from "../utils/logger";
+import { getErrorMessage } from "../utils/error";
 
 export class BaseRepository<T extends Document> {
 	public name: string;
@@ -26,7 +27,7 @@ export class BaseRepository<T extends Document> {
 			return makeRight(data);
 		} catch (error) {
 			logger.error(error, `[${this.name}Repository] getAll failed`);
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -44,7 +45,7 @@ export class BaseRepository<T extends Document> {
 			return dataOrError;
 		} catch (error) {
 			logger.error(error, `[${this.name}Repository] getById failed`);
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -62,7 +63,7 @@ export class BaseRepository<T extends Document> {
 			return modelOrError;
 		} catch (error) {
 			logger.error(error, `[${this.name}Repository] create failed`);
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -80,7 +81,7 @@ export class BaseRepository<T extends Document> {
 			return modelOrError;
 		} catch (error) {
 			logger.error(error, `[${this.name}Repository] update failed`);
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -95,7 +96,7 @@ export class BaseRepository<T extends Document> {
 			return makeRight(`${this.name} with id: ${id} successfully deleted`);
 		} catch (error) {
 			logger.error(error, `[${this.name}Repository] update failed`);
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 }

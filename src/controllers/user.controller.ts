@@ -21,6 +21,7 @@ import jwt from "jsonwebtoken";
 import { JwtUser } from "../middleware/authenticaton.middleware";
 import { CustomException } from "../models/exceptions/custom.exception";
 import EmailService from "../services/email.service";
+import { getErrorMessage } from "../utils/error";
 
 export class UserController {
 
@@ -46,7 +47,7 @@ export class UserController {
 					logger.error(customEx.message);
 					return makeLeft(customEx);
 				}
-				return makeLeft(error);
+				return makeLeft(new CustomException(getErrorMessage(error)));
 			}
 
 			const user = unwrapEither(userOrError);
@@ -65,7 +66,7 @@ export class UserController {
 
 		} catch (error) {
 			logger.error(error, "[UserController] registerUser failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -90,7 +91,7 @@ export class UserController {
 			});
 		} catch (error) {
 			logger.error(error, "[UserController] loginUser failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -122,7 +123,7 @@ export class UserController {
 			});
 		} catch (error) {
 			logger.error(error, "[UserController] refreshToken failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -151,7 +152,7 @@ To reset your password, click on this link: ${resetPasswordLink}
 			});
 		} catch (error) {
 			logger.error(error, "[UserController] forgotPassword failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -165,7 +166,7 @@ To reset your password, click on this link: ${resetPasswordLink}
 			return makeRight(!!tokenExists);
 		} catch (error) {
 			logger.error(error, "[UserController] validateToken failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -190,7 +191,7 @@ To reset your password, click on this link: ${resetPasswordLink}
 
 		} catch (error) {
 			logger.error(error, "[UserController] resetPassword failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 }

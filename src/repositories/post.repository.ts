@@ -1,3 +1,4 @@
+import { getErrorMessage } from "../utils/error";
 import { CustomException } from "../models/exceptions/custom.exception";
 import { PostDocument, PostModel } from "../models/mongo/post.model";
 import { Either, makeLeft, makeRight } from "../utils/either";
@@ -24,7 +25,7 @@ export class PostRepository extends BaseRepository<PostDocument> {
 			return makeRight(post);
 		} catch (error) {
 			logger.error(error, "[PostRepository] createComment failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -42,7 +43,7 @@ export class PostRepository extends BaseRepository<PostDocument> {
 			return makeRight(updatedPost);
 		} catch (error) {
 			logger.error(error, "[PostRepository] updateComment failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -60,7 +61,7 @@ export class PostRepository extends BaseRepository<PostDocument> {
 			return makeRight(updatedPost);
 		} catch (error) {
 			logger.error(error, "[PostRepository] deleteComment failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 
@@ -95,7 +96,7 @@ export class PostRepository extends BaseRepository<PostDocument> {
 			}
 		} catch (error) {
 			logger.error(error, "[PostRepository] like failed");
-			return makeLeft(error);
+			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
 }

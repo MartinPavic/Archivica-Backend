@@ -40,6 +40,6 @@ export class PaginateFilterSortService {
 
 	private static convertStringToIFilter(string: string): IFilter {
 		const [property, operator, value] = string.split(",");
-		return { property, operator: operator as FilterOperator, value };
+		return { property: property!, operator: operator as FilterOperator, value: value! };
 	}
 }

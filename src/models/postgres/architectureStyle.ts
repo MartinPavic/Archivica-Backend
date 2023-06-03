@@ -1,30 +1,30 @@
 import { IArchitectureStyleAttributes, ArchitectureStyleCreationAttributes } from "./interfaces";
 import {
-    Model,
-    Sequelize,
-    DataTypes
+	Model,
+	Sequelize,
+	DataTypes,
 } from "sequelize";
 
 class ArchitectureStyle extends Model<IArchitectureStyleAttributes, ArchitectureStyleCreationAttributes> implements IArchitectureStyleAttributes {
     public id?: number;
-    public name: string;
+    public name!: string;
 
     public static initialize(sequelize: Sequelize): void {
-        this.init({
-            id: {
-                autoIncrement: true,
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                primaryKey: true,
-                field: "id"
-            },
-            name: { type: DataTypes.STRING, allowNull: false }
-        }, {
-            sequelize,
-            tableName: "architectureStyles",
-            timestamps: false,
-            modelName: "architectureStyle"
-        });
+    	this.init({
+    		id: {
+    			autoIncrement: true,
+    			type: DataTypes.INTEGER,
+    			allowNull: false,
+    			primaryKey: true,
+    			field: "id",
+    		},
+    		name: { type: DataTypes.STRING, allowNull: false },
+    	}, {
+    		sequelize,
+    		tableName: "architectureStyles",
+    		timestamps: false,
+    		modelName: "architectureStyle",
+    	});
     }
 }
 
