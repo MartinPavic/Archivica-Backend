@@ -1,10 +1,8 @@
 import { model, Document, Schema, Model } from "mongoose";
+import { ArchitectDomain } from "../domain/architect";
 // import Architects from "migration/data/architects.json";
 
-export interface IArchitect extends Document {
-    firstName: string;
-    lastName: string;
-}
+type ArchitectDocument = Document & ArchitectDomain
 
 const ArchitectSchema: Schema = new Schema({
 	firstName: {
@@ -19,12 +17,15 @@ const ArchitectSchema: Schema = new Schema({
 	},
 	yearBorn: {
 		type: Number,
+		required: false,
 	},
-	yearEnd: {
+	yearDied: {
 		type: Number,
+		required: false,
 	},
 	countryId: {
 		type: Schema.Types.ObjectId,
+		ref: "countries",
 	},
 });
 
@@ -37,8 +38,6 @@ const ArchitectSchema: Schema = new Schema({
 
 // };
 
-export interface ArchitectModel extends Model<IArchitect> {
-    migrateArchitects(): Promise<any>
-}
+const ArchitectModel: Model<ArchitectDocument> = model<ArchitectDocument>("Architect", ArchitectSchema);
 
-export default model<IArchitect, ArchitectModel>("Architect", ArchitectSchema);
+export { ArchitectDocument, ArchitectModel };

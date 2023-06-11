@@ -11,4 +11,5 @@ export default {
 	BLOGS: "/api/v1/blogs",
 	HEALTH: "/api/v1/health",
 	CODENAMES: "/api/v1/codenames",
+	ARCHITECTS: "/api/v1/architects",
 };
