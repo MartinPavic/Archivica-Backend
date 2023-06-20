@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { Domain } from "../domain";
 
 export class BlogDomain implements Domain {
+	_id!: ObjectId;
 	name!: string;
 	description!: string;
 	photoPath!: string;

@@ -4,10 +4,6 @@ import { CountryDomain } from "../domain/country";
 type CountryDocument = CountryDomain & Document
 
 const CountrySchema: Schema = new Schema({
-	id: {
-		type: Schema.Types.ObjectId,
-		unique: true,
-	},
 	name: {
 		type: Schema.Types.String,
 		required: true,
@@ -15,21 +11,6 @@ const CountrySchema: Schema = new Schema({
 	continentId: {
 		type: Schema.Types.ObjectId,
 		ref: "continents",
-	},
-	yearStart: {
-		type: Schema.Types.Number,
-	},
-	yearStartAD: {
-		type: Schema.Types.Boolean,
-	},
-	yearEnd: {
-		type: Schema.Types.Number,
-	},
-	yearEndAD: {
-		type: Schema.Types.Boolean,
-	},
-	stillActive: {
-		type: Schema.Types.Boolean,
 	},
 });
 

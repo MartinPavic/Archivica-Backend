@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { Domain } from ".";
 
 export class PostDomain implements Domain {
-	_id!: string;
+	_id!: ObjectId;
 	// name: string;
 	date!: Date;
 	// photoPath: string;

@@ -12,4 +12,5 @@ export default {
 	HEALTH: "/api/v1/health",
 	CODENAMES: "/api/v1/codenames",
 	ARCHITECTS: "/api/v1/architects",
+	COUNTRIES: "/api/v1/countries",
 };

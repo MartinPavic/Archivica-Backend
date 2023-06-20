@@ -4,9 +4,6 @@ import { ArchitectureStyleDomain } from "../domain/architectureStyle";
 type ArchitectureStyleDocument = ArchitectureStyleDomain & Document
 
 const ArchitectureStyleSchema: Schema = new Schema({
-	id: {
-		type: Schema.Types.ObjectId,
-	},
 	name: {
 		type: Schema.Types.String,
 		trim: true,

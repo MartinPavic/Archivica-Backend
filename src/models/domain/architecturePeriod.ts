@@ -1,7 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { ObjectId } from "mongodb";
 import { Domain } from ".";
 
 export class ArchitecturePeriodDomain implements Domain {
+	_id!: ObjectId;
 	name!: string;
 	synonyms: string[] = [];
 	start!: {

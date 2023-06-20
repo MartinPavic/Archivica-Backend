@@ -31,6 +31,10 @@ import { architectRouter } from "./architects.routes";
 import { ArchitectController } from "../../controllers/architect.controller";
 import { ArchitectRepository } from "../../repositories/architect.repository";
 import { ArchitectModel } from "../../models/mongo/architect.model";
+import { countryRouter } from "./country.routes";
+import { CountryController } from "../../controllers/country.controller";
+import { CountryRepository } from "../../repositories/country.repository";
+import { CountryModel } from "../../models/mongo/country.model";
 
 const router = Router();
 
@@ -56,4 +60,7 @@ blogRouter(router, new BlogController(new BlogRepository("Blog", BlogModel)));
 // router.use("/", blogLikesApi)
 /* =========== Architect routes =========== */
 architectRouter(router, new ArchitectController(new ArchitectRepository("Architect", ArchitectModel)));
+
+/* =========== Country routes =========== */
+countryRouter(router, new CountryController(new CountryRepository("Country", CountryModel)));
 export default router;

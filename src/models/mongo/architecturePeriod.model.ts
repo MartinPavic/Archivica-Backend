@@ -4,9 +4,6 @@ import { ArchitecturePeriodDomain } from "../domain/architecturePeriod";
 type ArchitecturePeriodDocument = ArchitecturePeriodDomain & Document
 
 const ArchitecturePeriodSchema: Schema = new Schema({
-	id: {
-		type: Schema.Types.ObjectId,
-	},
 	name: {
 		type: Schema.Types.String,
 		trim: true,
