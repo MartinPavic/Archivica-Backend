@@ -6,6 +6,7 @@ import { match } from "../../utils/either";
 import { sendErrorResponse } from "../../utils";
 import { CustomException } from "../../models/exceptions/custom.exception";
 import { getErrorMessage } from "../../utils/error";
+import { CreateArchitectInput } from "src/models/api/architect";
 
 export const architectRouter = (router: Router, controller: ArchitectController): void => {
 
@@ -21,4 +22,20 @@ export const architectRouter = (router: Router, controller: ArchitectController)
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
+
+	router.post(api.ARCHITECTS, authenticate, async (request: Request, response: Response) => {
+		try {
+			const input = request.body as CreateArchitectInput;
+			const result = await controller.create(input);
+			match(
+				result,
+				(createArchitectOutput) => response.status(201).json(createArchitectOutput),
+				(error) => sendErrorResponse(response, error),
+			);
+		} catch (error) {
+			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
+		}
+	});
+
+	router.delete(api.ARCHITECTS);
 };
