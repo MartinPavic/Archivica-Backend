@@ -6,10 +6,17 @@ export class ArchitectureStyleDomain implements Domain {
 	_id!: ObjectId;
 	name!: string;
 	synonyms: string[] = [];
-	yearStart!: number;
-	yearStartAD: boolean = false;
-	yearEnd?: number;
-	yearEndAD?: boolean;
+
+	start!: {
+		year: number;
+		unit: "AD" | "BC";
+	};
+
+	end!: {
+		year: number;
+		unit: "AD" | "BC";
+	};
+
 	stillActive: boolean = false;
 
 	toJson(): string {
