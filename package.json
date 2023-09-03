@@ -37,6 +37,7 @@
         "pino-pretty": "^10.0.0",
         "redis": "^3.1.2",
         "sequelize": "^6.25.3",
+        "ts-migrate-mongoose": "^3.3.2",
         "validator": "^13.9.0"
     },
     "devDependencies": {

@@ -1,12 +1,7 @@
 import { model, Document, Schema, Model } from "mongoose";
-// import Cities from "migration/data/cities.json";
+import { CityDomain } from "../domain/city";
 
-export interface ICity extends Document {
-    name: string;
-    countryId: number;
-    latitude: string;
-    longitude: string;
-}
+type CityDocument = Document & CityDomain;
 
 const CitySchema: Schema = new Schema({
 	name: {
@@ -14,9 +9,11 @@ const CitySchema: Schema = new Schema({
 		required: true,
 		unique: false,
 	},
-	countryId: { type: Schema.Types.ObjectId, unique: false },
-	latitude: { type: String, unique: false },
-	longitude: { type: String, unique: false },
+	countryId: {
+		type: Schema.Types.Number,
+	},
+	latitude: { type: String, required: true },
+	longitude: { type: String, required: true },
 });
 
 // CitySchema.statics.migrateCities = async function() {
@@ -28,8 +25,6 @@ const CitySchema: Schema = new Schema({
 
 // };
 
-export interface CityModel extends Model<ICity> {
-    migrateCities(): Promise<any>
-}
+const CityModel: Model<CityDocument> = model<CityDocument>("City", CitySchema);
 
-export default model<ICity, CityModel>("City", CitySchema);
+export { CityDocument, CityModel };

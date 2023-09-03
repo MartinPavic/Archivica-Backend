@@ -4,6 +4,7 @@ import { Domain } from "../domain";
 
 export class CountryDomain implements Domain {
 	_id!: ObjectId;
+	id!: number;
 	name!: string;
 	continentId!: ObjectId;
 

@@ -5,8 +5,8 @@ type ContinentDocument = ContinentDomain & Document;
 
 const ContinentSchema: Schema = new Schema({
 	id: {
-		type: Number,
-		unique: true,
+		type: Schema.Types.Number,
+		required: true,
 	},
 	name: {
 		type: String,
