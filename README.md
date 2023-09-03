@@ -3,6 +3,8 @@
 
 ### Migrations:
 
+https://github.com/ilovepixelart/ts-migrate-mongoose#readme
+
 Located in `Archivica-Backend/migration`
 
 Migration scripts are located in `Archivica-Backend/migration/migrations`
