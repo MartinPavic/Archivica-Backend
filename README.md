@@ -4,6 +4,7 @@
 ### Migrations:
 
 Located in `Archivica-Backend/migration`
+
 Migration scripts are located in `Archivica-Backend/migration/migrations`
 
 Config in .env file:
@@ -13,8 +14,8 @@ Config in .env file:
 ##### Create:
 - npx migrate create what-is-new
 
-##### Upgrade
+##### Upgrade:
 - npx migrate up migration-name
 
-##### Downgrade
+##### Downgrade:
 - npx migrate down migration-name
