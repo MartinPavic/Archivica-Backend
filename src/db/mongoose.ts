@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import logger from "../utils/logger";
 
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", false);
@@ -22,11 +23,11 @@ export const connectMongo = async (): Promise<void> => {
 	db = mongoose.connection;
 
 	db.once("open", async () => {
-		console.log("Connected to db");
+		logger.info("Connected to mongo db");
 	});
 
 	db.on("error", () => {
-		console.log("Error connecting to db");
+		logger.error("Error connecting to mongo db");
 	});
 
 };
@@ -40,7 +41,7 @@ export const disconnectMongo = (): void => {
 	mongoose.disconnect();
 
 	db.once("close", async () => {
-		console.log("Diconnected  to db");
+		logger.info("Diconnected to mongo db");
 	});
 
 };

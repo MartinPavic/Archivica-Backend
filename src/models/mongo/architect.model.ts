@@ -24,8 +24,7 @@ const ArchitectSchema: Schema = new Schema({
 		required: false,
 	},
 	countryId: {
-		type: Schema.Types.ObjectId,
-		ref: "countries",
+		type: Schema.Types.Number,
 	},
 });
 

@@ -16,7 +16,7 @@
         "declaration": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "incremental": true,
+        "incremental": false,
         "noImplicitAny": true, // recommended => true
         "removeComments": true,
         "strict": true,
@@ -25,7 +25,7 @@
         "strictFunctionTypes": true, // recommended => true
         "strictNullChecks": true,
         "target": "ESNext",
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
     },
     "lib": [
         "ESNext"

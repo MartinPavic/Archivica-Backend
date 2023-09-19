@@ -22,7 +22,7 @@ export class UserRepository extends BaseRepository<UserDocument> {
 					return makeLeft(error);
 				}
 			}
-			const error = CustomException.notFound(`User with email: ${input.email} not found`);
+			const error = CustomException.notFound(`User with email: ${input.email} not registered`);
 			logger.error(`[UserRepository] ${error}`);
 			return makeLeft(error);
 		} catch (error) {

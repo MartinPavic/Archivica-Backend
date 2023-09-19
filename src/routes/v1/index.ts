@@ -35,6 +35,10 @@ import { countryRouter } from "./country.routes";
 import { CountryController } from "../../controllers/country.controller";
 import { CountryRepository } from "../../repositories/country.repository";
 import { CountryModel } from "../../models/mongo/country.model";
+import { cityRouter } from "./city.routes";
+import { CityController } from "../../controllers/city.controller";
+import { CityModel } from "../../models/mongo/city.model";
+import { CityRepository } from "../../repositories/city.repository";
 
 const router = Router();
 
@@ -63,4 +67,8 @@ architectRouter(router, new ArchitectController(new ArchitectRepository("Archite
 
 /* =========== Country routes =========== */
 countryRouter(router, new CountryController(new CountryRepository("Country", CountryModel)));
+
+/* =========== City routes =========== */
+cityRouter(router, new CityController(new CityRepository("City", CityModel)));
+
 export default router;

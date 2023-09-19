@@ -13,5 +13,6 @@ export default {
 	CODENAMES: "/api/v1/codenames",
 	ARCHITECTS: "/api/v1/architects",
 	COUNTRIES: "/api/v1/countries",
+	CITIES: "/api/v1/cities",
 	ARCHITECTURE_STYLES: "/api/v1/architecture-styles",
 };

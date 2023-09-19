@@ -31,7 +31,7 @@ export async function down (): Promise<void> {
 	await ArchitectureStyleModel.deleteMany({ name: { $in: architectureStyle.map(v => v.name) } }).exec();
 	await ContinentModel.deleteMany({ name: { $in: continents.map(v => v.name) } }).exec();
 	await CountryModel.deleteMany({ name: { $in: countries.map(v => v.name) } }).exec();
-	await CityModel.deleteMany({ name: { $in: cities.map(v => v.name) } }).exec();
+	await CityModel.deleteMany({ name: { $in: (cities as { name: string }[]).map(v => v.name) } }).exec();
 	await BlogModel.deleteMany({ name: { $in: blogs.map(v => v.name) } }).exec();
 	await PostModel.deleteMany({ name: { $in: posts.map(v => v.name) } }).exec();
 }
