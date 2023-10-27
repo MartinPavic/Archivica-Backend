@@ -39,6 +39,14 @@ import { cityRouter } from "./city.routes";
 import { CityController } from "../../controllers/city.controller";
 import { CityModel } from "../../models/mongo/city.model";
 import { CityRepository } from "../../repositories/city.repository";
+import { architectureStyleRouter } from "./architectureStyle.routes";
+import { ArchitectureStyleController } from "../../controllers/architectureStyle.controller";
+import { ArchitectureStyleRepository } from "../../repositories/architectureStyle.repository";
+import { ArchitectureStyleModel } from "../../models/mongo/architectureStyle.model";
+import { ArchitecturePeriodController } from "../../controllers/architecturePeriod.controller";
+import { ArchitecturePeriodModel } from "../../models/mongo/architecturePeriod.model";
+import { ArchitecturePeriodRepository } from "../../repositories/architecturePeriod.repository";
+import { architecturePeriodRouter } from "./architecturePeriod.routes";
 
 const router = Router();
 
@@ -70,5 +78,11 @@ countryRouter(router, new CountryController(new CountryRepository("Country", Cou
 
 /* =========== City routes =========== */
 cityRouter(router, new CityController(new CityRepository("City", CityModel)));
+
+/* =========== Architecture Style routes =========== */
+architectureStyleRouter(router, new ArchitectureStyleController(new ArchitectureStyleRepository("ArchitectureStyle", ArchitectureStyleModel)));
+
+/* =========== Architecture Period routes =========== */
+architecturePeriodRouter(router, new ArchitecturePeriodController(new ArchitecturePeriodRepository("ArchitecturePeriod", ArchitecturePeriodModel)));
 
 export default router;

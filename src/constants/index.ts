@@ -15,4 +15,5 @@ export default {
 	COUNTRIES: "/api/v1/countries",
 	CITIES: "/api/v1/cities",
 	ARCHITECTURE_STYLES: "/api/v1/architecture-styles",
+	ARCHITECTURE_PERIODS: "/api/v1/architecture-periods",
 };

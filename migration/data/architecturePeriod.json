@@ -1,0 +1,98 @@
+[
+    {
+        "name": "Prehistoric",
+		"synonyms": "",
+		"start": {
+			"year": 11600,
+			"unit": "BC"
+		},
+		"end": {
+			"year": 3500,
+			"unit": "BC"
+		}
+    },
+    {
+        "name": "Ancient Egypt",
+		"synonyms": "",
+		"start": {
+			"year": 3050,
+			"unit": "BC"
+		},
+		"end": {
+			"year": 900,
+			"unit": "BC"
+		}
+    },
+    {
+        "name": "Classical",
+		"synonyms": "",
+		"start": {
+			"year": 850,
+			"unit": "BC"
+		},
+		"end": {
+			"year": 476,
+			"unit": "AD"
+		}
+    },
+    {
+        "name": "Byzantine",
+		"synonyms": "",
+		"start": {
+			"year": 527,
+			"unit": "AD"
+		},
+		"end": {
+			"year": 565,
+			"unit": "AD"
+		}
+    },
+    {
+        "name": "Romanesque",
+		"synonyms": "",
+		"start": {
+			"year": 800,
+			"unit": "AD"
+		},
+		"end": {
+			"year": 1200,
+			"unit": "AD"
+		}
+    },
+    {
+        "name": "Gothic",
+		"synonyms": "",
+		"start": {
+			"year": 1100,
+			"unit": "AD"
+		},
+		"end": {
+			"year": 1450,
+			"unit": "AD"
+		}
+    },
+    {
+        "name": "Renaissance",
+		"synonyms": "",
+		"start": {
+			"year": 1400,
+			"unit": "AD"
+		},
+		"end": {
+			"year": 1600,
+			"unit": "AD"
+		}
+    },
+    {
+        "name": "Baroque",
+		"synonyms": "",
+		"start": {
+			"year": 1600,
+			"unit": "AD"
+		},
+		"end": {
+			"year": 1830,
+			"unit": "AD"
+		}
+    }
+]

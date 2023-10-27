@@ -3,6 +3,8 @@ import { ArchitectModel } from "../../src/models/mongo/architect.model";
 import architects from "../data/architects.json";
 import { ArchitectureStyleModel } from "../../src/models/mongo/architectureStyle.model";
 import architectureStyle from "../data/architectureStyle.json";
+import { ArchitecturePeriodModel } from "../../src/models/mongo/architecturePeriod.model";
+import architecturePeriod from "../data/architecturePeriod.json";
 import { CityModel } from "../../src/models/mongo/city.model";
 import cities from "../data/cities.json";
 import { ContinentModel } from "../../src/models/mongo/continent.model";
@@ -18,6 +20,7 @@ export async function up (): Promise<void> {
 	await connectMongo();
 	await ArchitectModel.create(architects);
 	await ArchitectureStyleModel.create(architectureStyle);
+	await ArchitecturePeriodModel.create(architecturePeriod);
 	await ContinentModel.create(continents);
 	await CountryModel.create(countries);
 	await CityModel.create(cities);
@@ -29,6 +32,7 @@ export async function down (): Promise<void> {
 	await connectMongo();
 	await ArchitectModel.deleteMany({ firstName: { $in: architects.map(v => v.firstName) } }).exec();
 	await ArchitectureStyleModel.deleteMany({ name: { $in: architectureStyle.map(v => v.name) } }).exec();
+	await ArchitecturePeriodModel.deleteMany({ name: { $in: architectureStyle.map(v => v.name) } }).exec();
 	await ContinentModel.deleteMany({ name: { $in: continents.map(v => v.name) } }).exec();
 	await CountryModel.deleteMany({ name: { $in: countries.map(v => v.name) } }).exec();
 	await CityModel.deleteMany({ name: { $in: (cities as { name: string }[]).map(v => v.name) } }).exec();
