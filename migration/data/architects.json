@@ -1,0 +1,47 @@
+[
+    {
+        "firstName": "Alvaro",
+        "lastName": "Siza",
+		"countryId": 1
+    },
+    {
+        "firstName": "Antoine",
+        "lastName": "Predock",
+		"countryId": 1
+    },
+    {
+        "firstName": "Ben Van",
+        "lastName": "Berkel",
+		"yearBorn": 1900,
+		"yearDied": 1960,
+		"countryId": 1
+    },
+    {
+        "firstName": "Bernard",
+        "lastName": "Tschumi",
+		"yearBorn": 1900,
+		"yearDied": 1960,
+		"countryId": 1
+    },
+    {
+        "firstName": "Zaha",
+        "lastName": "Hadid",
+		"yearBorn": 1900,
+		"yearDied": 1960,
+		"countryId": 1
+    },
+    {
+        "firstName": "Le",
+        "lastName": "Corbusier",
+		"yearBorn": 1900,
+		"yearDied": 1960,
+		"countryId": 1
+    },
+    {
+        "firstName": "Renzo",
+        "lastName": "Piano",
+		"yearBorn": 1900,
+		"yearDied": 1960,
+		"countryId": 1
+    }
+]

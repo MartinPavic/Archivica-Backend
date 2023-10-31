@@ -1,0 +1,46 @@
+[
+    {
+        "name": "Dark Age Europe",
+		"synonyms": "",
+		"start": {
+			"year": 500,
+			"unit": "AD"
+		},
+		"end": {
+			"year": 1400,
+			"unit": "AD"
+		}
+    },
+    {
+        "name": "Early Modern Europe",
+		"synonyms": "",
+		"start": {
+			"year": 1400,
+			"unit": "AD"
+		},
+		"end": {
+			"year": 1800,
+			"unit": "AD"
+		}
+    },
+    {
+        "name": "Modern Europe",
+		"synonyms": "",
+		"start": {
+			"year": 1800,
+			"unit": "AD"
+		},
+		"end": {
+			"year": 2000,
+			"unit": "AD"
+		}
+    },
+    {
+        "name": "Post Modern Europe",
+		"synonyms": "",
+		"start": {
+			"year": 2000,
+			"unit": "AD"
+		}
+    }
+]

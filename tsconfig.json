@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+		"rootDir": "src",
+        "outDir": "dist",
+        "resolveJsonModule": true,
+        "types": [
+            "node",
+        ],
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "declaration": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "incremental": false,
+        "noImplicitAny": true, // recommended => true
+        "removeComments": true,
+        "strict": true,
+		"noUncheckedIndexedAccess": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true, // recommended => true
+        "strictNullChecks": true,
+        "target": "ESNext",
+		"forceConsistentCasingInFileNames": true,
+    },
+    "lib": [
+        "ESNext"
+    ],
+    "include": [
+        "src/**/*",
+    ],
+}
