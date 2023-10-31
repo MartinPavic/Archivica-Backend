@@ -3,9 +3,7 @@ import redis from "redis";
 import logger from "../utils/logger";
 
 const redisClient = redis.createClient({
-	host: process.env.REDIS_HOST,
-	port: parseInt(process.env.REDIS_PORT!),
-	password: process.env.REDIS_PASSWORD,
+	url: process.env.REDIS_URL,
 });
 
 const setExRedisAsync = promisify(redisClient.setex).bind(redisClient);

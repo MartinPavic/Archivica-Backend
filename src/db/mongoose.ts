@@ -10,7 +10,7 @@ export const connectMongo = async (): Promise<void> => {
 
 	const url = process.env.MONGODB_URI;
 	if (url === undefined) {
-		console.log("No mongo url!");
+		logger.error("No mongo url!");
 		return;
 	}
 
