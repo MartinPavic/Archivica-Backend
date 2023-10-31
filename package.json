@@ -12,11 +12,11 @@
         "compile": "tsc && node --experimental-specifier-resolution=node dist/server.js",
         "start:local": "cross-env NODE_ENV=local nodemon server.js",
         "start:dev": "rm -rf dist && npm run lint && cross-env NODE_ENV=development NODE_PATH=./dist nodemon -e ts --exec 'npm run compile'",
-        "start": "cross-env NODE_ENV=production NODE_PATH=./dist node dist/server.js",
+        "start": "cross-env NODE_ENV=production NODE_PATH=./dist node --experimental-specifier-resolution=node dist/server.js",
         "lint:js": "eslint --ext .js .",
         "lint": "run-s lint:**",
         "migrate:list": "migrate list",
-        "start:dev:win": "rd /s /q dist && npm run lint && cross-env NODE_ENV=development NODE_PATH=./dist nodemon -e ts --exec 'npm run compile'"
+        "start:dev:win": "npm run lint && cross-env NODE_ENV=development NODE_PATH=./dist nodemon -e ts --exec 'npm run compile'"
     },
     "author": "Martin Pavić & Juraj Jukić",
     "license": "ISC",
