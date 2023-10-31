@@ -48,7 +48,7 @@ const getUserToken = (key: string): Promise<string | null> => {
 };
 
 redisClient.on("error", (err: any) => {
-	logger.error("Redis Error: ", err);
+	logger.error(`Redis ${process.env.REDIS_URL} Error: `, err);
 });
 
 redisClient.on("ready", () => {
