@@ -56,7 +56,7 @@ redisClient.on("ready", () => {
 });
 
 redisClient.on("connect", () => {
-	logger.info("Redis Db is connecting...");
+	logger.info("Redis Db is connecting to url: " + process.env.REDIS_URL);
 });
 
 export {
