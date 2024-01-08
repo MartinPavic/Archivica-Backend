@@ -3,19 +3,16 @@
 	"env": {
 		"jest": true,
 		"es6": true,
-		"node": true,
+		"node": true
 	},
 	"globals": { "Atomics": "readonly", "SharedArrayBuffer": "readonly" },
 	"parser": "@typescript-eslint/parser",
 	"extends": [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/recommended"
 	],
-	"plugins": [
-		"@typescript-eslint",
-		"import",
-	],
+	"plugins": ["@typescript-eslint", "import"],
 	"rules": {
 		"indent": ["error", "tab", { "SwitchCase": 1 }],
 		"react/prop-types": 0,
@@ -45,7 +42,7 @@
 		"key-spacing": [2, { "beforeColon": false, "afterColon": true }],
 		"camelcase": 2,
 		"quotes": [2, "double"],
-		"linebreak-style": ["error", "unix"],
+		"linebreak-style": 0,
 		"@typescript-eslint/no-explicit-any": 0,
 		"@typescript-eslint/no-unused-vars": "off",
 		"@typescript-eslint/no-inferrable-types": "off",
@@ -54,13 +51,13 @@
 		"no-multi-spaces": "error",
 		"import/no-unresolved": 0,
 		"import/no-commonjs": 1,
-		"import/extensions": [0, "ignorePackages"],
+		"import/extensions": [0, "ignorePackages"]
 	},
 	"parserOptions": {
 		"ecmaVersion": 2021,
 		"ecmaFeatures": {
-			"arrowFunctions": true,
+			"arrowFunctions": true
 		},
-		"sourceType": "module",
-	},
+		"sourceType": "module"
+	}
 }

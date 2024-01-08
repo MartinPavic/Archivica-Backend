@@ -8,7 +8,6 @@ import logger from "../utils/logger";
 import { BaseRepository } from "./base.repository";
 
 export class UserRepository extends BaseRepository<UserDocument> {
-
 	async getByCredentials(input: LoginInput): Promise<Either<CustomException, UserDocument>> {
 		try {
 			const user = await UserModel.findOne({ email: input.email });
@@ -55,5 +54,4 @@ export class UserRepository extends BaseRepository<UserDocument> {
 			return makeLeft(new CustomException(getErrorMessage(error)));
 		}
 	}
-
 }
