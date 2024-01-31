@@ -4,6 +4,7 @@ import path from "path";
 import { connectMongo } from "./db/mongoose";
 import { config } from "dotenv";
 import { fileURLToPath } from "url";
+import documentation from "./swagger";
 
 config();
 
@@ -17,6 +18,7 @@ async function run(): Promise<void> {
 
 	app.use("/", api);
 	app.use("/public", express.static(path.join(__dirname, "resources")));
+	documentation(app);
 
 	app.disable("x-powered-by");
 

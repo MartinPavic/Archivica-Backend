@@ -26,6 +26,10 @@ const UserSchema: Schema = new Schema({
 		type: Schema.Types.String,
 		required: false,
 	},
+	role: {
+		type: Schema.Types.String,
+		required: false,
+	},
 });
 
 const UserModel: Model<UserDocument> = model<UserDocument>("User", UserSchema);

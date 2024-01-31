@@ -8,16 +8,16 @@ import logger from "../utils/logger";
 import { getErrorMessage } from "../utils/error";
 
 export type JwtUser = {
-    id: string;
-    type: TokenType;
-    iat: number;
-    exp: number;
-}
+	id: string;
+	type: TokenType;
+	iat: number;
+	exp: number;
+};
 
 const authenticate = async (
 	req: Request,
 	res: Response<any, Record<string, any>>,
-	next: NextFunction,
+	next: NextFunction
 ): Promise<Response<any, Record<string, any>> | undefined> => {
 	try {
 		const bearerToken = req.header("Authorization");

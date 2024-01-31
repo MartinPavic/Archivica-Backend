@@ -1,7 +1,15 @@
 import { Router, Request, Response } from "express";
 import api from "../../constants";
 import { UserController } from "../../controllers/user.controller";
-import { ForgotPasswordInput, LoginInput, RefreshTokenInput, RegisterInput, ResetPasswordInput, UserOutput, ValidateTokenInput } from "../../models/api/user";
+import {
+	ForgotPasswordInput,
+	LoginInput,
+	RefreshTokenInput,
+	RegisterInput,
+	ResetPasswordInput,
+	UserOutput,
+	ValidateTokenInput,
+} from "../../models/api/user";
 import { match } from "../../utils/either";
 import { sendErrorResponse } from "../../utils";
 import authenticate from "../../middleware/authenticaton.middleware";
@@ -11,6 +19,13 @@ import { CustomException } from "../../models/exceptions/custom.exception";
 import { getErrorMessage } from "../../utils/error";
 
 export const userRouter = (router: Router, controller: UserController): void => {
+	/**
+	 * @openapi
+	 * /users/register/:
+	 *   post:
+	 *     description: Welcome to swagger-jsdoc!
+	 *
+	 */
 	router.post(api.USER_REGISTER, async (request: Request, response: Response) => {
 		try {
 			const registerInput = request.body as RegisterInput;
@@ -18,7 +33,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(registerOutput) => response.status(201).json(registerOutput),
-				(error) => sendErrorResponse(response, error),
+				(error) => sendErrorResponse(response, error)
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
@@ -32,7 +47,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(loginOutput) => response.json(loginOutput),
-				(error) => sendErrorResponse(response, error),
+				(error) => sendErrorResponse(response, error)
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
@@ -73,7 +88,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(refreshTokenOutput) => response.json(refreshTokenOutput),
-				(error) => sendErrorResponse(response, error),
+				(error) => sendErrorResponse(response, error)
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
@@ -87,7 +102,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(forgotPasswordOutput) => response.json(forgotPasswordOutput),
-				(error) => sendErrorResponse(response, error),
+				(error) => sendErrorResponse(response, error)
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
@@ -101,7 +116,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(validateTokenOutput) => response.json(validateTokenOutput),
-				(error) => sendErrorResponse(response, error),
+				(error) => sendErrorResponse(response, error)
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
@@ -115,11 +130,10 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(resetPasswordOutput) => response.json(resetPasswordOutput),
-				(error) => sendErrorResponse(response, error),
+				(error) => sendErrorResponse(response, error)
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
-
 };

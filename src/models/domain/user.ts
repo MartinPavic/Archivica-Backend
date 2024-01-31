@@ -10,17 +10,18 @@ export class UserDomain implements Domain {
 	email: string;
 	password?: string;
 	image?: string;
+	role?: string;
 
 	constructor(userDocument: UserDocument) {
-    	this.firstName = userDocument.firstName;
-    	this.lastName = userDocument.lastName;
-    	this.email = userDocument.email;
-    	this.password = userDocument.password;
-    	this.image = userDocument.image;
+		this.firstName = userDocument.firstName;
+		this.lastName = userDocument.lastName;
+		this.email = userDocument.email;
+		this.password = userDocument.password;
+		this.image = userDocument.image;
+		this.role = userDocument.role;
 	}
 
 	toJson(): string {
-    	return JSON.stringify(this);
+		return JSON.stringify(this);
 	}
-
 }
