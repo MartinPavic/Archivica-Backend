@@ -19,13 +19,36 @@ import { CustomException } from "../../models/exceptions/custom.exception";
 import { getErrorMessage } from "../../utils/error";
 
 export const userRouter = (router: Router, controller: UserController): void => {
-	/**
-	 * @openapi
-	 * /users/register/:
-	 *   post:
-	 *     description: Welcome to swagger-jsdoc!
-	 *
-	 */
+/**
+ * @swagger
+ * /api/v1/users/register:
+ *   post:
+ *     description: Register a new user
+ *     tags: [Users]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         in: body
+ *         description: User registration information
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             firstName:
+ *               type: string
+ *             lastName:
+ *               type: string
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *     responses:
+ *       201:
+ *         description: Created
+ *       500:
+ *         description: Illegal arguments
+ */
 	router.post(api.USER_REGISTER, async (request: Request, response: Response) => {
 		try {
 			const registerInput = request.body as RegisterInput;
@@ -33,13 +56,57 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(registerOutput) => response.status(201).json(registerOutput),
-				(error) => sendErrorResponse(response, error)
+				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
 
+	/**
+ * @swagger
+ * /api/v1/users/login:
+ *   post:
+ *     description: Login
+ *     tags: [Users]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         in: body
+ *         description: User login information
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *         schema:
+ *           type: object
+ *           properties:
+ *             firstName:
+ *               type: string
+ *               example: John
+ *             lastName:
+ *               type: string
+ *               example: Doe
+ *             email:
+ *               type: string
+ *               example: john.doe@example.com
+ *             accessToken:
+ *               type: string
+ *               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *             refreshToken:
+ *               type: string
+ *               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       404:
+ *         description: Not found
+ */
 	router.post(api.USER_LOGIN, async (request: Request, response: Response) => {
 		try {
 			const loginInput = request.body as LoginInput;
@@ -47,12 +114,54 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(loginOutput) => response.json(loginOutput),
-				(error) => sendErrorResponse(response, error)
+				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
+
+	/**
+ * @swagger
+ * /api/v1/users/current:
+ *   get:
+ *     description: Get current user
+ *     tags: [Users]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: accessToken
+ *         in: header
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             accessToken:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *         schema:
+ *           type: object
+ *           properties:
+ *             firstName:
+ *               type: string
+ *               example: John
+ *             lastName:
+ *               type: string
+ *               example: Doe
+ *             email:
+ *               type: string
+ *               example: john.doe@example.com
+ *             accessToken:
+ *               type: string
+ *               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *             refreshToken:
+ *               type: string
+ *               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       401:
+ *         description: Unauthorized
+ */
 
 	router.get(api.CURRENT_USER, authenticate, (request: Request, response: Response) => {
 		try {
@@ -67,6 +176,22 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
 		}
 	});
+
+	/**
+ * @swagger
+ * /api/v1/users/logout:
+ *   delete:
+ *     description: Logout
+ *     tags: [Users]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: access_token
+ *         in: header
+ *     responses:
+ *       200:
+ *         description: OK
+ */
 
 	router.delete(api.USER_LOGOUT, authenticate, async (request: Request, response: Response) => {
 		try {
@@ -88,7 +213,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(refreshTokenOutput) => response.json(refreshTokenOutput),
-				(error) => sendErrorResponse(response, error)
+				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
@@ -102,7 +227,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(forgotPasswordOutput) => response.json(forgotPasswordOutput),
-				(error) => sendErrorResponse(response, error)
+				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
@@ -116,7 +241,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(validateTokenOutput) => response.json(validateTokenOutput),
-				(error) => sendErrorResponse(response, error)
+				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
@@ -130,7 +255,7 @@ export const userRouter = (router: Router, controller: UserController): void => 
 			match(
 				result,
 				(resetPasswordOutput) => response.json(resetPasswordOutput),
-				(error) => sendErrorResponse(response, error)
+				(error) => sendErrorResponse(response, error),
 			);
 		} catch (error) {
 			sendErrorResponse(response, new CustomException(getErrorMessage(error)));
