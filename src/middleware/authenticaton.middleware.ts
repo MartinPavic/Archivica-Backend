@@ -17,7 +17,7 @@ export type JwtUser = {
 const authenticate = async (
 	req: Request,
 	res: Response<any, Record<string, any>>,
-	next: NextFunction
+	next: NextFunction,
 ): Promise<Response<any, Record<string, any>> | undefined> => {
 	try {
 		const bearerToken = req.header("Authorization");

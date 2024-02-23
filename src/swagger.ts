@@ -1,28 +1,15 @@
-import swaggerJsdoc from "swagger-jsdoc";
+import path from "path";
 import swaggerUi from "swagger-ui-express";
+import { fileURLToPath } from "url";
+import YAML from "yamljs";
 
-const options = {
-	swaggerDefinition: {
-		restapi: "3.0.0",
-		info: {
-			title: "Archivica",
-			version: "1.0.0",
-			description: "Archivica Backend",
-			author: "Jebeni David",
-		},
-		servers: [
-			{
-				url: "http://localhost:4000",
-			},
-		],
-	},
-	apis: ["**/*.ts"],
-};
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const specs = swaggerJsdoc(options);
+const swaggerJsDocs = YAML.load(path.resolve(__dirname, "../docs.yml"));
 
 const documentation = (app: any) => {
-	app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(specs));
+	app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerJsDocs));
 };
 
 export default documentation;

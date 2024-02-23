@@ -1,0 +1,248 @@
+openapi: "3.0.2"
+info:
+  title: Archivica
+  version: "1.0"
+servers:
+  - url: http://localhost:4000
+components:
+  securitySchemes:
+    bearerToken:
+      type: apiKey
+      in: header
+      name: accessToken
+  schemas:
+    RegisterInput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+        firstName:
+          type: string
+          description: user first name
+        lastName:
+          type: string
+          description: user last name
+
+    RegisterOutput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        firstName:
+          type: string
+          description: user first name
+        lastName:
+          type: string
+          description: user last name
+        accessToken:
+          type: string
+          description: access token
+        refreshToken:
+          type: string
+          description: refresh token
+
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+
+    LoginOutput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        firstName:
+          type: string
+          description: user first name
+        lastName:
+          type: string
+          description: user last name
+        accessToken:
+          type: string
+          description: access token
+        refreshToken:
+          type: string
+          description: refresh token
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example: { message: Bad or malformed request from client. }
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example: { message: User not authorized }
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example: { message: Not Found }
+    ServerError:
+      description: SERVER ERROR
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              error:
+                type: string
+          example:
+            {
+              message: "Oops! It's not you, it's us.",
+              error: A server error occured.,
+            }
+
+  examples:
+    randomUser:
+      value:
+        email: "test@test.com"
+        password: "testPassword123"
+        firstName: "First Name"
+        lastName: "Last Name"
+
+paths:
+  /api/v1/users/register:
+    post:
+      description: Register a new user
+      tags: [Users]
+      requestBody:
+        description: User registration information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterOutput"
+        500:
+          $ref: "#/components/responses/ServerError"
+  /api/v1/users/login:
+    post:
+      description: Login
+      tags: [Users]
+      requestBody:
+        description: User login information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginOutput"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/ServerError"
+  /api/v1/users/current:
+    get:
+      description: Get current user
+      tags: [Users]
+      parameters:
+        - name: accessToken
+          in: header
+          required: true
+          schema:
+            type: object
+            properties:
+              accessToken:
+                type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterOutput"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/v1/users/logout:
+    delete:
+      description: Logout
+      tags: [Users]
+      parameters:
+        - name: accessToken
+          in: header
+          required: true
+          schema:
+            type: object
+            properties:
+              accessToken:
+                type: string
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/v1/users/refresh-token:
+    post:
+      description: Refresh token
+      tags: [Users]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  refreshToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        400:
+          $ref: "#/components/responses/BadRequest"
