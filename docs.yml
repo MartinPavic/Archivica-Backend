@@ -11,6 +11,58 @@ components:
       in: header
       name: accessToken
   schemas:
+    PostDomain:
+      type: object
+      properties:
+        description:
+          type: string
+        architect:
+          type: string
+        city:
+          type: string
+        subAge:
+          type: string
+        owner:
+          type: string
+          format: ObjectId
+        gallery:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              imagePath:
+                type: string
+              width:
+                type: number
+              height:
+                type: number
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              owner:
+                type: string
+                format: ObjectId
+              comment:
+                type: string
+        likes:
+          type: array
+          items:
+            type: object
+            properties:
+              owner:
+                type: string
+                format: ObjectId
+              liked:
+                type: boolean
+      required:
+        - date
+        - description
+        - owner
+
     RegisterInput:
       type: object
       properties:
@@ -122,6 +174,12 @@ components:
               message: "Oops! It's not you, it's us.",
               error: A server error occured.,
             }
+    PostResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/examples/randomPostMinimal"
 
   examples:
     randomUser:
@@ -130,6 +188,29 @@ components:
         password: "testPassword123"
         firstName: "First Name"
         lastName: "Last Name"
+    randomPostMinimal:
+      value:
+        _id: "659c43804d863ea1cdc9bfb3"
+        date: "1970-05-23T20:42:26.588Z"
+        description: "Great Britain"
+        architect: "616027eac10676d00130cf84"
+        city: "615ed354fb3769b9966360ce"
+        subAge: "6164115e26ce643608f42d65"
+        owner: "615ee4cb14de96bf4f2fd6e1"
+        gallery:
+          - name: "Image1"
+            imagePath: "https://picsum.photos/960/540"
+            width: 960
+            height: 540
+            _id: "659c43804d863ea1cdc9bfb4"
+        comments:
+          - owner: "615ee72db9d47904c7e22931"
+            comment: "This is awesome!"
+            _id: "659c43804d863ea1cdc9bfb8"
+        likes:
+          - owner: "615ee72db9d47904c7e22931"
+            liked: true
+            _id: "659c43804d863ea1cdc9bfba"
 
 paths:
   /api/v1/users/register:
@@ -246,3 +327,119 @@ paths:
                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         400:
           $ref: "#/components/responses/BadRequest"
+  /api/v1/users/forgot-password:
+    post:
+      description: Forgot password
+      tags: [Users]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  string:
+                    type: string
+                    example: Hello ${user.firstName} ${user.lastName}!Looks like you forgot your password.
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/v1/users/validate-token:
+    post:
+      description: Token validation
+      tags: [Users]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                token:
+                  type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: true
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/v1/users/reset-password:
+    post:
+      description: Password reset
+      tags: [Users]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                token: 
+                  type: string
+                newPassword:
+                  type: string
+                confirmNewPassword:
+                  type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Password successfully changed.
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/v1/posts:
+    get:
+      description: Get posts
+      tags: [Posts]
+      responses:
+        200:
+          description: OK
+          $ref: "#/components/responses"
+        400:
+          $ref: "#/components/responses/BadRequest"
+    post:
+      description: Get posts by ID
+      tags: [Posts]
+      requestBody:
+        description: User login information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostDomain"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Created.
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/v1/posts/:id:
+    get:
+      description: Get posts by ID
+      tags: [Posts]
+      responses:
+        200:
+          $ref: "#/components/responses/PostResponse"
+
+    
