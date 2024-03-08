@@ -10,6 +10,35 @@ components:
       type: apiKey
       in: header
       name: accessToken
+  parameters:
+    Filter:
+      in: query
+      name: filter
+      schema:
+        type: string
+      description: Filter results
+      example: "name,eq,pero"
+    Page:
+      in: query
+      name: page
+      schema:
+        type: number
+      description: Page of the results - used in pagination
+      example: "1"
+    Sort:
+      in: query
+      name: sort
+      schema:
+        type: string
+      description: Sort results
+      example: "name,asc"
+    ID:
+      in: path
+      name: id
+      schema:
+        type: string
+      required: true
+
   schemas:
     PostDomain:
       type: object
@@ -127,6 +156,109 @@ components:
           type: string
           description: refresh token
 
+    Architect:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Architect first name
+        lastName:
+          type: string
+          description: Architect last name
+        yearBorn:
+          type: number
+          description: Architect year of birth
+        yearDied:
+          type: number
+          description: Architect year of death
+        countryId:
+          type: string
+          description: Id of architect's country
+    ArchitecturePeriod:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name
+        synonyms:
+          type: array
+          description: Other names used for this period
+          items:
+            example: string
+        start:
+          type: object
+          properties:
+            year:
+              type: number
+            unit:
+              type: string
+              example: "AD or BC"
+        end:
+          type: object
+          properties:
+            year:
+              type: number
+            unit:
+              type: string
+              example: "AD or BC"
+    ArchitectureStyle:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name
+        synonyms:
+          type: array
+          description: Other names used for this style
+          items:
+            example: string
+        start:
+          type: object
+          properties:
+            year:
+              type: number
+            unit:
+              type: string
+              example: "AD or BC"
+        end:
+          type: object
+          properties:
+            year:
+              type: number
+            unit:
+              type: string
+              example: "AD or BC"
+  examples:
+    randomUser:
+      value:
+        email: "test@test.com"
+        password: "testPassword123"
+        firstName: "First Name"
+        lastName: "Last Name"
+    randomPostMinimal:
+      value:
+        _id: "659c43804d863ea1cdc9bfb3"
+        date: "1970-05-23T20:42:26.588Z"
+        description: "Great Britain"
+        architect: "616027eac10676d00130cf84"
+        city: "615ed354fb3769b9966360ce"
+        subAge: "6164115e26ce643608f42d65"
+        owner: "615ee4cb14de96bf4f2fd6e1"
+        gallery:
+          - name: "Image1"
+            imagePath: "https://picsum.photos/960/540"
+            width: 960
+            height: 540
+            _id: "659c43804d863ea1cdc9bfb4"
+        comments:
+          - owner: "615ee72db9d47904c7e22931"
+            comment: "This is awesome!"
+            _id: "659c43804d863ea1cdc9bfb8"
+        likes:
+          - owner: "615ee72db9d47904c7e22931"
+            liked: true
+            _id: "659c43804d863ea1cdc9bfba"
+
   responses:
     BadRequest:
       description: Bad Request
@@ -174,44 +306,6 @@ components:
               message: "Oops! It's not you, it's us.",
               error: A server error occured.,
             }
-    PostResponse:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/examples/randomPostMinimal"
-
-  examples:
-    randomUser:
-      value:
-        email: "test@test.com"
-        password: "testPassword123"
-        firstName: "First Name"
-        lastName: "Last Name"
-    randomPostMinimal:
-      value:
-        _id: "659c43804d863ea1cdc9bfb3"
-        date: "1970-05-23T20:42:26.588Z"
-        description: "Great Britain"
-        architect: "616027eac10676d00130cf84"
-        city: "615ed354fb3769b9966360ce"
-        subAge: "6164115e26ce643608f42d65"
-        owner: "615ee4cb14de96bf4f2fd6e1"
-        gallery:
-          - name: "Image1"
-            imagePath: "https://picsum.photos/960/540"
-            width: 960
-            height: 540
-            _id: "659c43804d863ea1cdc9bfb4"
-        comments:
-          - owner: "615ee72db9d47904c7e22931"
-            comment: "This is awesome!"
-            _id: "659c43804d863ea1cdc9bfb8"
-        likes:
-          - owner: "615ee72db9d47904c7e22931"
-            liked: true
-            _id: "659c43804d863ea1cdc9bfba"
-
 paths:
   /api/v1/users/register:
     post:
@@ -388,7 +482,7 @@ paths:
               properties:
                 email:
                   type: string
-                token: 
+                token:
                   type: string
                 newPassword:
                   type: string
@@ -411,14 +505,19 @@ paths:
       responses:
         200:
           description: OK
-          $ref: "#/components/responses"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PostDomain"
         400:
           $ref: "#/components/responses/BadRequest"
     post:
-      description: Get posts by ID
+      description: Create post
       tags: [Posts]
       requestBody:
-        description: User login information
+        description: Create post request body
         required: true
         content:
           application/json:
@@ -434,12 +533,203 @@ paths:
                 example: Created.
         400:
           $ref: "#/components/responses/BadRequest"
-  /api/v1/posts/:id:
+  /api/v1/posts/{id}:
     get:
       description: Get posts by ID
       tags: [Posts]
+      parameters:
+        - $ref: "#/components/parameters/ID"
       responses:
         200:
-          $ref: "#/components/responses/PostResponse"
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostDomain"
+  /api/v1/architects:
+    get:
+      description: Get all architects
+      tags: [Architects]
+      parameters:
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Sort"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Architect"
 
-    
+    post:
+      description: Create an architect
+      tags: [Architects]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Architect"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              example: "Created"
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/v1/architects/{id}:
+    put:
+      description: Update an architect
+      tags: [Architects]
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Architect"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Architect"
+        400:
+          $ref: "#/components/responses/BadRequest"
+    delete:
+      description: Delete an architect
+      tags: [Architects]
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        200:
+          description: OK
+
+  /api/v1/architecture-periods:
+    get:
+      description: Get all architecture periods
+      tags: [Architecture Periods]
+      parameters:
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Sort"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ArchitecturePeriod"
+
+    post:
+      description: Create an architecture period
+      tags: [Architecture Periods]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArchitecturePeriod"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              example: "Created"
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/v1/architecture-periods/{id}:
+    put:
+      description: Update an architecture period
+      tags: [Architecture Periods]
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArchitecturePeriod"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchitecturePeriod"
+        400:
+          $ref: "#/components/responses/BadRequest"
+    delete:
+      description: Delete an architecture period
+      tags: [Architecture Periods]
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        200:
+          description: OK
+  /api/v1/architecture-styles:
+    get:
+      description: Get all architecture styles
+      tags: [Architecture Styles]
+      parameters:
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Sort"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ArchitectureStyle"
+
+    post:
+      description: Create an architecture style
+      tags: [Architecture Styles]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArchitectureStyle"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              example: "Created"
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/v1/architecture-styles/{id}:
+    put:
+      description: Update an architecture style
+      tags: [Architecture Styles]
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArchitectureStyle"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchitectureStyle"
+        400:
+          $ref: "#/components/responses/BadRequest"
+    delete:
+      description: Delete an architecture style
+      tags: [Architecture Styles]
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        200:
+          description: OK
