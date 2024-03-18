@@ -48,7 +48,7 @@ After that install packages used in project with
 
 Run backend with command
  ```sh 
-  npm start:win:run
+  npm run start:dev:win
 ```
 Before checking frontend, migrate data to database so you don't have errors.
 ```sh
